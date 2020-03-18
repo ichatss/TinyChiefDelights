@@ -4,11 +4,37 @@ import java.util.List;
 
 public class Customer extends User {
 
-    double wallet;
-    List<Order> orderList;
+    // Поля
+    private double wallet;
 
-    void depositMoney(){}
-    void withdrawMoney(){}
-    void makeOrder(){}
+    private List<Order> orderList;
 
+    // Методы
+    public void depositMoney(){// Внести деньги на счет
+
+        }
+
+    public void withdrawMoney(){// Вывести деньги со счета
+
+        }
+
+    public void makeOrder(){// Сделать заказ
+
+        }
+
+    public double getWallet() {
+        return wallet;
+    }
+
+    public void setWallet(double wallet) {
+        this.wallet = wallet;
+    }
+
+    public List<Order> getOrderList() {
+        return orderList;
+    }
+
+    public void setOrderList(List<Order> orderList) {
+        this.orderList = orderList;
+    }
 }

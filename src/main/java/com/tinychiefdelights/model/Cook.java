@@ -2,10 +2,10 @@ package com.tinychiefdelights.model;
 
 import java.util.List;
 
-public class Cook {
+public class Cook extends User {
 
     // Тип повара
-    enum CookType{
+     private enum CookType{
 
         CHEF{
             // Методы
@@ -28,12 +28,44 @@ public class Cook {
         }
 
     // Поля
-    float rating;
+    private float rating;
 
-    boolean cookStatus;
+    private boolean cookStatus;
 
-    List<Review> reviewList;
+    private List<Review> reviewList;
 
-    String aboutCook;
+    private String aboutCook;
 
+    // Методы
+    public float getRating() {
+        return rating;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
+    }
+
+    public boolean isCookStatus() {
+        return cookStatus;
+    }
+
+    public void setCookStatus(boolean cookStatus) {
+        this.cookStatus = cookStatus;
+    }
+
+    public List<Review> getReviewList() {
+        return reviewList;
+    }
+
+    public void setReviewList(List<Review> reviewList) {
+        this.reviewList = reviewList;
+    }
+
+    public String getAboutCook() {
+        return aboutCook;
+    }
+
+    public void setAboutCook(String aboutCook) {
+        this.aboutCook = aboutCook;
+    }
 }

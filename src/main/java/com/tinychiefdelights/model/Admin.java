@@ -2,23 +2,23 @@ package com.tinychiefdelights.model;
 
 import java.util.List;
 
-public class Admin {
+public class Admin extends User {
 
 
     // Методы
-    List<Order> getCurrentOrders(){ // Вывод списка всех заказов
+    public List<Order> getCurrentOrders(){ // Вывод списка всех заказов
         return null;
     }
 
-    Order getOrderInfo(){ // Вывод информации по конкретному заказу
+    public Order getOrderInfo(){ // Вывод информации по конкретному заказу
         return null;
     }
 
-    void removeCook(){ // Удалить повара
+    public void removeCook(){ // Удалить повара
 
     }
 
-    void editCook(){ // Изменить карту повара
+    public void editCook(){ // Изменить карту повара
 
     }
 }
