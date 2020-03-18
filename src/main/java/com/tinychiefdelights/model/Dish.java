@@ -19,7 +19,8 @@ public class Dish {
 
     private String aboutDish;
 
-    // Методы
+
+    // Getters and Setters
     public String getDishName() {
         return dishName;
     }
@@ -67,4 +68,8 @@ public class Dish {
     public void setAboutDish(String aboutDish) {
         this.aboutDish = aboutDish;
     }
+
+
+    // Метод
+    // ...
 }

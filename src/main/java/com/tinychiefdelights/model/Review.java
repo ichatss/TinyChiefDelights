@@ -7,7 +7,7 @@ public class Review {
 
     private float rate;
 
-    // Методы
+    // Getters and Setters
     public String getReview() {
         return review;
     }
@@ -23,4 +23,8 @@ public class Review {
     public void setRate(float rate) {
         this.rate = rate;
     }
+
+
+    // Методы
+    // ...
 }

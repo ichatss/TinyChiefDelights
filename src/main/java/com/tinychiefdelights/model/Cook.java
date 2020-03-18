@@ -36,7 +36,7 @@ public class Cook extends User {
 
     private String aboutCook;
 
-    // Методы
+    // Getters and Setters
     public float getRating() {
         return rating;
     }
@@ -68,4 +68,7 @@ public class Cook extends User {
     public void setAboutCook(String aboutCook) {
         this.aboutCook = aboutCook;
     }
+
+    // Методы
+    //...
 }

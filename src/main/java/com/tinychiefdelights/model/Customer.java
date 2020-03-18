@@ -9,19 +9,7 @@ public class Customer extends User {
 
     private List<Order> orderList;
 
-    // Методы
-    public void depositMoney(){// Внести деньги на счет
-
-        }
-
-    public void withdrawMoney(){// Вывести деньги со счета
-
-        }
-
-    public void makeOrder(){// Сделать заказ
-
-        }
-
+    // Getters and Setters
     public double getWallet() {
         return wallet;
     }
@@ -37,4 +25,18 @@ public class Customer extends User {
     public void setOrderList(List<Order> orderList) {
         this.orderList = orderList;
     }
+
+
+    // Методы
+    public void depositMoney(){// Внести деньги на счет
+
+        }
+
+    public void withdrawMoney(){// Вывести деньги со счета
+
+        }
+
+    public void makeOrder(){// Сделать заказ
+
+        }
 }

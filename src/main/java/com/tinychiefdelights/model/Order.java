@@ -10,7 +10,7 @@ public class Order {
 
     private Customer customer;
 
-    private String adress;
+    private String address;
 
     private String phoneNumber;
 
@@ -22,19 +22,7 @@ public class Order {
 
     private enum orderStatus{}
 
-    // Методы
-    public double calculateCost(){// Посчитать стоимость заказа
-        return 0;
-    }
-
-    public void setReview(){// Оставить отзыв и оценку
-
-    }
-
-    public void cancelOrder(){// Отменить заказ
-
-    }
-
+    // Getters and Setters
     public short getOrderNumber() {
         return orderNumber;
     }
@@ -51,12 +39,12 @@ public class Order {
         this.customer = customer;
     }
 
-    public String getAdress() {
-        return adress;
+    public String getAddress() {
+        return address;
     }
 
-    public void setAdress(String adress) {
-        this.adress = adress;
+    public void setAddress(String adress) {
+        this.address = adress;
     }
 
     public String getPhoneNumber() {
@@ -89,5 +77,18 @@ public class Order {
 
     public void setDishes(List<Dish> dishes) {
         this.dishes = dishes;
+    }
+
+    // Методы
+    public double calculateCost(){// Посчитать стоимость заказа
+        return 0;
+    }
+
+    public void setReview(){// Оставить отзыв и оценку
+
+    }
+
+    public void cancelOrder(){// Отменить заказ
+
     }
 }

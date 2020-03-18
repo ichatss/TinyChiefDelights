@@ -1,7 +1,5 @@
 package com.tinychiefdelights.model;
 
-import java.util.List;
-
 public class User {
 
     // Поля
@@ -13,11 +11,8 @@ public class User {
 
     private String lastName;
 
-    // Методы
-    public void changePassword(){// Сменить пароль
 
-    }
-
+    // Getters and Setters
     public String getLogin() {
         return login;
     }
@@ -48,5 +43,11 @@ public class User {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+
+    // Методы
+    public void changePassword(){// Сменить пароль
+
     }
 }
