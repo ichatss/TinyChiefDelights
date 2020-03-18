@@ -1,30 +1,18 @@
 package com.tinychiefdelights.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.List;
 
+@Getter
+@Setter
 public class Customer extends User {
 
     // Поля
     private double wallet;
 
     private List<Order> orderList;
-
-    // Getters and Setters
-    public double getWallet() {
-        return wallet;
-    }
-
-    public void setWallet(double wallet) {
-        this.wallet = wallet;
-    }
-
-    public List<Order> getOrderList() {
-        return orderList;
-    }
-
-    public void setOrderList(List<Order> orderList) {
-        this.orderList = orderList;
-    }
 
 
     // Методы

@@ -1,7 +1,12 @@
 package com.tinychiefdelights.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.List;
 
+@Getter
+@Setter
 public class Cook extends User {
 
     // Тип повара
@@ -36,38 +41,6 @@ public class Cook extends User {
 
     private String aboutCook;
 
-    // Getters and Setters
-    public float getRating() {
-        return rating;
-    }
-
-    public void setRating(float rating) {
-        this.rating = rating;
-    }
-
-    public boolean isCookStatus() {
-        return cookStatus;
-    }
-
-    public void setCookStatus(boolean cookStatus) {
-        this.cookStatus = cookStatus;
-    }
-
-    public List<Review> getReviewList() {
-        return reviewList;
-    }
-
-    public void setReviewList(List<Review> reviewList) {
-        this.reviewList = reviewList;
-    }
-
-    public String getAboutCook() {
-        return aboutCook;
-    }
-
-    public void setAboutCook(String aboutCook) {
-        this.aboutCook = aboutCook;
-    }
 
     // Методы
     //...
