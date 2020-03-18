@@ -27,7 +27,7 @@ public class Customer extends User {
 
     private double wallet;
 
-    private List<Order> orderList;
+//    private List<Order> orderList; Выдает ошибку, надо потом глянуть в чем дело
 
 
     // Методы

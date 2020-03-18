@@ -25,6 +25,13 @@ public class User {
 
     private String lastName;
 
+    @Override
+    public String toString() { // Без этого метода вместо инициализированных строк выводятся символы.
+        return "User{" +
+                "name='" + name + '\'' +
+                ", lastName='" + lastName + '\'' +
+                '}';
+    }
 
     // Методы
     public void changePassword(){// Сменить пароль
