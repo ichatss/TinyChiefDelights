@@ -4,7 +4,6 @@ import java.util.List;
 
 public class Admin extends User {
 
-
     // Методы
     public List<Order> getCurrentOrders(){ // Вывод списка всех заказов
         return null;

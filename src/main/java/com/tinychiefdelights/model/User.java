@@ -7,6 +7,15 @@ import lombok.Setter;
 @Setter
 public class User {
 
+    public User(){ // Пустой конструктор для Hibernate
+
+    }
+
+    User(String name, String lastName){ // Базовый конструктор для дочерних классов
+        this.name = name;
+        this.lastName = lastName;
+    }
+
     // Поля
     private String login;
 
