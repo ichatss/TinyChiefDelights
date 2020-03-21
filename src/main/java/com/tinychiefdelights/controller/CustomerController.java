@@ -1,6 +1,6 @@
 package com.tinychiefdelights.controller;
 
-import com.tinychiefdelights.exceptions.CustomerNotFoundException;
+import com.tinychiefdelights.exceptions.NotFoundException;
 import com.tinychiefdelights.model.Customer;
 import com.tinychiefdelights.repository.CustomerRepository;
 import org.springframework.web.bind.annotation.*;
@@ -32,10 +32,10 @@ public class CustomerController {
     @GetMapping("/customers/{id}")
     Customer one(@PathVariable Long id) {
         return customerRepository.findById(id)
-                .orElseThrow(() -> new CustomerNotFoundException(id));
+                .orElseThrow(() -> new NotFoundException(id));
     }
 
-    @PutMapping("/employees/{id}")
+    @PutMapping("/customers/{id}")
     Customer replaceCustomer(@RequestBody Customer newCustomer, @PathVariable Long id){
         return customerRepository.findById(id)
                 .map(customer -> {
