@@ -1,11 +1,10 @@
 package com.tinychiefdelights.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.List;
 
 @Getter
@@ -27,7 +26,9 @@ public class Customer extends User {
 
     private double wallet;
 
-//    private List<Order> orderList; Выдает ошибку, надо потом глянуть в чем дело
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<Order> orderList;
 
 
     // Методы

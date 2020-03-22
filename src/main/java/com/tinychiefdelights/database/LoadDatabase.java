@@ -25,7 +25,7 @@ public class LoadDatabase {
     CommandLineRunner Review(ReviewRepository reviewRepository) { // Добавляю данные для Review
         return args -> {
             log.info("Preloading " + reviewRepository.save(new Review("Выйграл лигу поваров 2015", 5.0f)));
-            log.info("Preloading " + reviewRepository.save(new Review("Хуй с горы", 2.4f)));
+            log.info("Preloading " + reviewRepository.save(new Review("Очень невкусно готовит", 2.4f)));
         };
     }
 }
