@@ -5,9 +5,9 @@ import lombok.Setter;
 
 import javax.persistence.MappedSuperclass;
 
-@MappedSuperclass
 @Getter
 @Setter
+@MappedSuperclass
 public class User {
 
     public User(){ // Пустой конструктор для Hibernate
@@ -37,7 +37,7 @@ public class User {
     }
 
     // Методы
-    public void changePassword(){// Сменить пароль
+    public void changePassword(){ // Сменить пароль
 
     }
 }

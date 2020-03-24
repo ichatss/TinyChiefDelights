@@ -1,6 +1,7 @@
 package com.tinychiefdelights.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Entity;
@@ -30,8 +31,12 @@ public class Order {
 
     private Date dateOrder;
 
+    @ManyToOne(fetch= FetchType.LAZY, cascade= CascadeType.ALL)
+    @JsonBackReference
     private Cook cook;
 
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Dish> dishes;
 
     private enum orderStatus{}

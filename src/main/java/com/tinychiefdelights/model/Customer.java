@@ -16,9 +16,14 @@ public class Customer extends User {
 
     }
 
-    public Customer(String name, String lastName){ // Пользовательский конструктор создается,
-        super(name, lastName);                     // когда нам нужно создать новый экземпляр,
-    }                                              // но у нас еще нет ID.
+    public Customer(String name, String lastName,
+                    double wallet, List<Order> orderList){ // Пользовательский конструктор создается,
+                                                            // когда нам нужно создать новый экземпляр,
+                                                            // но у нас еще нет ID.
+        super(name, lastName);
+        this.wallet = wallet;
+        this.orderList = orderList;
+    }
 
 
     // Поля
@@ -44,4 +49,3 @@ public class Customer extends User {
 
         }
 }
-
