@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RestController
 public class CookController {
 
     private final CookRepository cookRepository;
@@ -50,7 +51,7 @@ public class CookController {
     }
 
     @DeleteMapping("/cooks/{id}")
-    void deleteCooks(@PathVariable Long id){
+    void deleteCook(@PathVariable Long id){
         cookRepository.deleteById(id);
     }
 }

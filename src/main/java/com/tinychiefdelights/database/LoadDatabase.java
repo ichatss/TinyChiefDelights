@@ -1,13 +1,7 @@
 package com.tinychiefdelights.database;
 
-import com.tinychiefdelights.model.Admin;
-import com.tinychiefdelights.model.Cook;
-import com.tinychiefdelights.model.Customer;
-import com.tinychiefdelights.model.Review;
-import com.tinychiefdelights.repository.AdminRepository;
-import com.tinychiefdelights.repository.CookRepository;
-import com.tinychiefdelights.repository.CustomerRepository;
-import com.tinychiefdelights.repository.ReviewRepository;
+import com.tinychiefdelights.model.*;
+import com.tinychiefdelights.repository.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -20,8 +14,8 @@ public class LoadDatabase {
     @Bean
     CommandLineRunner Customer(CustomerRepository customerRepository) { // Добавляю данные для Customer
         return args -> {
-            log.info("Preloading " + customerRepository.save(new Customer("Артур", "Вартанян")));
-            log.info("Preloading " + customerRepository.save(new Customer("Андрей", "Чекмарев")));
+            log.info("Preloading " + customerRepository.save(new Customer(/*"Артур", "Вартанян"*/)));
+            log.info("Preloading " + customerRepository.save(new Customer(/*"Андрей", "Чекмарев"*/)));
         };
     }
 
@@ -44,8 +38,24 @@ public class LoadDatabase {
     @Bean
     CommandLineRunner Cook(CookRepository cookRepository) { // Добавляю данные для Cook
         return args -> {
-            log.info("Preloading " + cookRepository.save(new Cook("Зураб", "Белый", 5.0f, true)));
-            log.info("Preloading " + cookRepository.save(new Cook("Максим", "Иванов", 2.7f, false)));
+            log.info("Preloading " + cookRepository.save(new Cook(/*"Зураб", "Белый", 5.0f, true*/)));
+            log.info("Preloading " + cookRepository.save(new Cook(/*"Максим", "Иванов", 2.7f, false*/)));
+        };
+    }
+
+    @Bean
+    CommandLineRunner Dish(DishRepository dishRepository) { // Добавляю данные для Dish
+        return args -> {
+            log.info("Preloading " + dishRepository.save(new Dish()));
+            log.info("Preloading " + dishRepository.save(new Dish()));
+        };
+    }
+
+    @Bean
+    CommandLineRunner Order(OrderRepository orderRepository) { // Добавляю данные для Order
+        return args -> {
+            log.info("Preloading " + orderRepository.save(new Order()));
+            log.info("Preloading " + orderRepository.save(new Order()));
         };
     }
 }

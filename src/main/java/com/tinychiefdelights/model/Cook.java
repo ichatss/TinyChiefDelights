@@ -30,7 +30,7 @@ public class Cook extends User {
             void removeDish(){
 
             }
-        }, CONFECTIONER, FISH_COOK, MEAT_COOK, EnumDesc;
+        }, CONFECTIONER, FISH_COOK, MEAT_COOK;
 
         // Общие поля на все ENUM
         double startSalary;
