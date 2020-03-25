@@ -38,7 +38,7 @@ public class LoadDatabase {
     @Bean
     CommandLineRunner Cook(CookRepository cookRepository) { // Добавляю данные для Cook
         return args -> {
-            log.info("Preloading " + cookRepository.save(new Cook(/*"Зураб", "Белый", 5.0f, true*/)));
+            log.info("Preloading " + cookRepository.save(new Cook(/*"Зураб", "Белый", 5.0f, true, new Review("Все круто", 5.0f), "Крутой")*/)));
             log.info("Preloading " + cookRepository.save(new Cook(/*"Максим", "Иванов", 2.7f, false*/)));
         };
     }

@@ -15,9 +15,8 @@ public class Dish {
 
     public Dish(){}
 
-    public Dish(String dishName, double dishCost,
-                List<Cook> cookList, short weight,
-                short cookingTime, String aboutDish) {
+    public Dish(String dishName, double dishCost, short weight,
+                List<Cook> cook, short cookingTime, String aboutDish) {
 
         this.dishName = dishName;
         this.dishCost = dishCost;
@@ -25,6 +24,7 @@ public class Dish {
         this.weight = weight;
         this.cookingTime = cookingTime;
         this.aboutDish = aboutDish;
+        this.cookList = cook;
     }
 
     // Поля

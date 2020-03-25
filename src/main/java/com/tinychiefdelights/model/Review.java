@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-public class Review {
+public class Review {  // Отзыв
 
     public Review(){ // Пустой конструктор для Hibernate
 
@@ -18,6 +18,7 @@ public class Review {
     public Review(String review, float rate){
         this.review = review;
         this.rate = rate;
+
     }
 
     // Поля
