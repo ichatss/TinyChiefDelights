@@ -41,7 +41,7 @@ public class CookController {
                     cook.setName(newCook.getName());
                     cook.setLastName(newCook.getLastName());
                     cook.setRating(newCook.getRating());
-                    cook.isCookStatus();
+                    cook.setCookStatus(newCook.isCookStatus());
                     cook.setReviewList(newCook.getReviewList());
                     cook.setAboutCook(newCook.getAboutCook());
                     return cookRepository.save(cook);

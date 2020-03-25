@@ -1,5 +1,7 @@
 package com.tinychiefdelights.exceptions;
 
+// ОДИН ОБЩИЙ ДЛЯ ВСЕХ КАК И ДОГОВАРИВАЛИСЬ
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

@@ -41,16 +41,19 @@ public class Cook extends User {
     }
 
     public Cook(String name, String lastName, float rating, boolean cookStatus,
-                List<Review> reviewList, String aboutCook){
+                List<Review> reviewList, String aboutCook, CookType cookType){
          super(name, lastName);
          this.rating = rating;
          this.cookStatus = cookStatus;
          this.reviewList = reviewList;
          this.aboutCook = aboutCook;
+         this.cookType = cookType;
     }
 
     // Поля
     private @Id @GeneratedValue Long id;
+
+    private CookType cookType;
 
     private float rating;
 
