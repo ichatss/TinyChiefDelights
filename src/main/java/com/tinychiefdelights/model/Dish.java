@@ -18,6 +18,7 @@ public class Dish {
     public Dish(String dishName, double dishCost,
                 List<Cook> cookList, short weight,
                 short cookingTime, String aboutDish) {
+
         this.dishName = dishName;
         this.dishCost = dishCost;
         this.cookList = cookList;

@@ -14,7 +14,7 @@ public class LoadDatabase {
     @Bean
     CommandLineRunner Customer(CustomerRepository customerRepository) { // Добавляю данные для Customer
         return args -> {
-            log.info("Preloading " + customerRepository.save(new Customer(/*"Артур", "Вартанян"*/)));
+            log.info("Preloading " + customerRepository.save(new Customer(/*"Артур", "Вартанян", 5347.56, new Order(1, */)));
             log.info("Preloading " + customerRepository.save(new Customer(/*"Андрей", "Чекмарев"*/)));
         };
     }
