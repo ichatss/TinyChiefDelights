@@ -5,10 +5,12 @@ import lombok.Setter;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.List;
 
 @Setter
 @Entity
+//@Table(name = "ADMIN")
 public class Admin extends User {
 
     public Admin(){ // Пустой конструктор для Hibernate
