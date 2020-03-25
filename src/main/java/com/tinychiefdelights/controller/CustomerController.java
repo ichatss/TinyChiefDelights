@@ -41,6 +41,8 @@ public class CustomerController {
                 .map(customer -> {
                     customer.setName(newCustomer.getName());
                     customer.setLastName(newCustomer.getLastName());
+                    customer.setWallet(newCustomer.getWallet());
+                    customer.setOrderList(newCustomer.getOrderList());
                     return customerRepository.save(customer);
                 })
                 .orElseGet(() -> {

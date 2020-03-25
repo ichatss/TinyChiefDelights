@@ -42,6 +42,8 @@ public class CookController {
                     cook.setLastName(newCook.getLastName());
                     cook.setRating(newCook.getRating());
                     cook.isCookStatus();
+                    cook.setReviewList(newCook.getReviewList());
+                    cook.setAboutCook(newCook.getAboutCook());
                     return cookRepository.save(cook);
                 })
                 .orElseGet(() -> {
