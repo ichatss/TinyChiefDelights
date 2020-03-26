@@ -2,21 +2,21 @@ package com.tinychiefdelights.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @Entity
 public class Dish {
 
-    public Dish(){}
+    public Dish(){ // Пустой конструктор для Hibernate
 
-    public Dish(String dishName, double dishCost, short weight,
-                List<Cook> cook, short cookingTime, String aboutDish) {
+    }
+
+    public Dish(String dishName, double dishCost, List<Cook> cookList,
+                short weight, short cookingTime, String aboutDish) { // Базовый конструктор
 
         this.dishName = dishName;
         this.dishCost = dishCost;
@@ -24,7 +24,6 @@ public class Dish {
         this.weight = weight;
         this.cookingTime = cookingTime;
         this.aboutDish = aboutDish;
-        this.cookList = cook;
     }
 
     // Поля
@@ -33,8 +32,6 @@ public class Dish {
     private String dishName;
 
     private double dishCost;
-
-    private enum KitchenType{}
 
     @OneToMany(mappedBy = "dish", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
@@ -49,8 +46,4 @@ public class Dish {
     @ManyToOne(fetch= FetchType.LAZY, cascade= CascadeType.ALL)
     @JsonBackReference
     private Order order;
-
-
-    // Метод
-    // ...
 }

@@ -2,24 +2,23 @@ package com.tinychiefdelights.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @Entity
 public class Order {
 
-    public Order(){
+    public Order(){ // Пустой конструктор для Hibernate
 
     }
 
     public Order(short orderNumber, Customer customer, String address,
-                 String phoneNumber, Date dateOrder, Cook cook, List<Dish> dishes) {
+                 String phoneNumber, Date dateOrder, Cook cook,
+                 List<Dish> dishes, boolean orderStatus) { // Базовый конструктор
 
         this.orderNumber = orderNumber;
         this.customer = customer;
@@ -28,6 +27,7 @@ public class Order {
         this.dateOrder = dateOrder;
         this.cook = cook;
         this.dishes = dishes;
+        this.orderStatus = orderStatus;
     }
 
     // Поля
@@ -53,19 +53,5 @@ public class Order {
     @JsonManagedReference
     private List<Dish> dishes;
 
-    private enum orderStatus{}
-
-
-    // Методы
-    public double calculateCost(){// Посчитать стоимость заказа
-        return 0;
-    }
-
-    public void setReview(){// Оставить отзыв и оценку
-
-    }
-
-    public void cancelOrder(){// Отменить заказ
-
-    }
+    private boolean orderStatus;
 }

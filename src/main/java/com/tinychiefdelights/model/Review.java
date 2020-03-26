@@ -1,13 +1,11 @@
 package com.tinychiefdelights.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import javax.persistence.*;
 
-@Getter
-@Setter
+@Data
 @Entity
 public class Review {  // Отзыв
 
@@ -15,10 +13,9 @@ public class Review {  // Отзыв
 
     }
 
-    public Review(String review, float rate){
+    public Review(String review, float rate){ // Базовый конструктор
         this.review = review;
         this.rate = rate;
-
     }
 
     // Поля
@@ -31,8 +28,4 @@ public class Review {  // Отзыв
     @ManyToOne(fetch= FetchType.LAZY, cascade= CascadeType.ALL)
     @JsonBackReference
     private Cook cook;
-
-
-    // Методы
-    // ...
 }

@@ -2,14 +2,12 @@ package com.tinychiefdelights.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @Entity
 public class Cook extends User {
 
@@ -36,18 +34,20 @@ public class Cook extends User {
 
         }
 
-    public Cook(){
+    public Cook(){ // Пустой конструктор для Hibernate
 
     }
 
-    public Cook(String name, String lastName, float rating, boolean cookStatus,
-                List<Review> reviewList, String aboutCook, CookType cookType){
-         super(name, lastName);
-         this.rating = rating;
-         this.cookStatus = cookStatus;
-         this.reviewList = reviewList;
-         this.aboutCook = aboutCook;
-         this.cookType = cookType;
+    public Cook(String name, String lastName, String login, String password,
+                CookType cookType, float rating, boolean cookStatus,
+                List<Review> reviewList, String aboutCook){ // Вызываем родительский конструктор вместе со своими полями
+
+        super(name, lastName, login, password);
+        this.cookType = cookType;
+        this.rating = rating;
+        this.cookStatus = cookStatus;
+        this.reviewList = reviewList;
+        this.aboutCook = aboutCook;
     }
 
     // Поля
@@ -69,7 +69,5 @@ public class Cook extends User {
     @JsonBackReference
     private  Dish dish;
 
-
-    // Методы
-    //...
+    // Поля name, lastName, login, password наследуются от класса User;
 }

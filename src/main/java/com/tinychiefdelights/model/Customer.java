@@ -1,14 +1,12 @@
 package com.tinychiefdelights.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @Entity
 public class Customer extends User {
 
@@ -16,11 +14,10 @@ public class Customer extends User {
 
     }
 
-    public Customer(String name, String lastName,
-                    double wallet, List<Order> orderList){ // Пользовательский конструктор создается,
-                                                            // когда нам нужно создать новый экземпляр,
-                                                            // но у нас еще нет ID.
-        super(name, lastName);
+    public Customer(String name, String lastName, String login,
+                    String password, double wallet, List<Order> orderList){ // Вызываем родительский конструктор вместе со своими данными
+
+        super(name, lastName, login, password);
         this.wallet = wallet;
         this.orderList = orderList;
     }
@@ -35,17 +32,5 @@ public class Customer extends User {
     @JsonManagedReference
     private List<Order> orderList;
 
-
-    // Методы
-    public void depositMoney(){// Внести деньги на счет
-
-        }
-
-    public void withdrawMoney(){// Вывести деньги со счета
-
-        }
-
-    public void makeOrder(){// Сделать заказ
-
-        }
+    // Поля name, lastName, login, password наследуются от класса User;
 }
