@@ -10,7 +10,7 @@ import java.util.List;
 
 @Setter
 @Entity
-//@Table(name = "ADMIN")
+@Table(name = "admin")
 public class Admin extends User {
 
     public Admin(){ // Пустой конструктор для Hibernate
