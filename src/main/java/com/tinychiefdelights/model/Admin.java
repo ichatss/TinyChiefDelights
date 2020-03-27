@@ -14,8 +14,8 @@ public class Admin extends User {
 
     }
 
-    public Admin(String name, String lastName, String login, String password){ // Вызываем родительский конструктор
-        super(name, lastName, login, password);
+    public Admin(String name, String lastName, String role, String login, String password){ // Вызываем родительский конструктор
+        super(name, lastName, role, login, password);
     }
 
     // Поля

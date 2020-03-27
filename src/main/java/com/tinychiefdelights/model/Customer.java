@@ -14,10 +14,10 @@ public class Customer extends User {
 
     }
 
-    public Customer(String name, String lastName, String login,
+    public Customer(String name, String lastName, String role, String login,
                     String password, double wallet, List<Order> orderList){ // Вызываем родительский конструктор вместе со своими данными
 
-        super(name, lastName, login, password);
+        super(name, lastName, role, login, password);
         this.wallet = wallet;
         this.orderList = orderList;
     }

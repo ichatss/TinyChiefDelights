@@ -38,11 +38,11 @@ public class Cook extends User {
 
     }
 
-    public Cook(String name, String lastName, String login, String password,
+    public Cook(String name, String lastName, String role, String login, String password,
                 CookType cookType, float rating, boolean cookStatus,
                 List<Review> reviewList, String aboutCook){ // Вызываем родительский конструктор вместе со своими полями
 
-        super(name, lastName, login, password);
+        super(name, lastName, role, login, password);
         this.cookType = cookType;
         this.rating = rating;
         this.cookStatus = cookStatus;

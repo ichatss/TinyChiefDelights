@@ -19,6 +19,10 @@ repositories {
 }
 
 dependencies {
+	// https://mvnrepository.com/artifact/org.hibernate/hibernate-entitymanager
+	compile group: 'org.hibernate', name: 'hibernate-entitymanager', version: '5.4.12.Final'
+	// https://mvnrepository.com/artifact/org.hibernate/hibernate-core
+	compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.12.Final'
 	compile group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc', version: '2.2.5.RELEASE'
 	compile group: 'org.postgresql', name: 'postgresql', version: '42.2.11'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
