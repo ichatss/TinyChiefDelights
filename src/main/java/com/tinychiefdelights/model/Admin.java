@@ -2,12 +2,11 @@
 //
 //import lombok.Data;
 //
-//import javax.persistence.Entity;
-//import javax.persistence.GeneratedValue;
-//import javax.persistence.Id;
+//import javax.persistence.*;
 //
 //@Data
 //@Entity
+//@Table(name = "pg_user", schema = "public")
 //public class Admin extends User {
 //
 //    public Admin(){ // Пустой конструктор для Hibernate

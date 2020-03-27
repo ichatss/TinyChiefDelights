@@ -1,4 +1,4 @@
 package com.tinychiefdelights.service;
 
-public class DishService {
+public class ReviewService {
 }
