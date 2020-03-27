@@ -5,9 +5,9 @@ import lombok.Data;
 import javax.persistence.*;
 
 @Data
-@MappedSuperclass
+//@MappedSuperclass
 @Entity
-@Table(name = "pg_user")
+@Table(name = "pg_user", schema = "public")
 public class User {
 
     public User(){ // Пустой конструктор для Hibernate
@@ -35,5 +35,6 @@ public class User {
 
     private String name;
 
+    @Column(name = "lastname")
     private String lastName;
 }
