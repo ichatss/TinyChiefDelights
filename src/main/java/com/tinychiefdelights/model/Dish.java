@@ -9,6 +9,7 @@ import java.util.List;
 
 @Data
 @Entity
+@Table(name = "dish", schema = "public")
 public class Dish {
 
     public Dish(){ // Пустой конструктор для Hibernate
@@ -48,7 +49,6 @@ public class Dish {
     @Column(name = "about_dish")
     private String aboutDish;
 
-//    @ManyToOne(fetch= FetchType.LAZY, cascade= CascadeType.ALL)
-//    @JsonBackReference
-//    private Order order;
+    @ManyToMany(mappedBy = "dishes", fetch= FetchType.LAZY, cascade= CascadeType.ALL)
+    private List<Order> ordersList;
 }
