@@ -57,7 +57,7 @@ public class Order {
             name = "pg_order_dish",
             joinColumns = @JoinColumn(name = "dish_id"),
             inverseJoinColumns = @JoinColumn(name = "order_id"))
-    @JsonManagedReference
+    @JsonManagedReference // Таким образом я предотвратил рекурсию
     private List<Dish> dishes;
 
     @Column(name = "order_status")

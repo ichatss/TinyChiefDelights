@@ -50,6 +50,6 @@ public class Dish {
     private String aboutDish;
 
     @ManyToMany(mappedBy = "dishes", fetch= FetchType.LAZY, cascade= CascadeType.ALL)
-    @JsonBackReference
+    @JsonBackReference // Таким образом я предотвратил рекурсию
     private List<Order> ordersList;
 }
