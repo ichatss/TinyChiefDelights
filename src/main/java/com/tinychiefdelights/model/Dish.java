@@ -50,5 +50,6 @@ public class Dish {
     private String aboutDish;
 
     @ManyToMany(mappedBy = "dishes", fetch= FetchType.LAZY, cascade= CascadeType.ALL)
+    @JsonBackReference
     private List<Order> ordersList;
 }
