@@ -5,8 +5,8 @@ import lombok.Data;
 import javax.persistence.*;
 
 @Data
-//@MappedSuperclass
-@Entity
+@MappedSuperclass // позволяет включать класс и его jpa аннотации в производный класс,
+                    // не делая базовый класс сущностью.
 @Table(name = "pg_user", schema = "public")
 public class User {
 
@@ -27,12 +27,16 @@ public class User {
     // Поля
     private @Id @GeneratedValue Long id;
 
+    @Column(name = "login")
     private String login;
 
+    @Column(name = "password")
     private String password;
 
+    @Column(name = "role")
     private String role;
 
+    @Column(name = "name")
     private String name;
 
     @Column(name = "lastname")
