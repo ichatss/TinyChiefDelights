@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Entity
@@ -22,11 +23,13 @@ public class Review {  // Отзыв
     // Поля
     private @Id @GeneratedValue Long id;
 
+    @Column(name = "review")
     private String review;
 
+    @Column(name = "rate")
     private float rate;
 
-//    @ManyToOne(fetch= FetchType.LAZY, cascade= CascadeType.ALL)
-//    @JsonBackReference
-//    private Cook cook;
+    @ManyToMany(fetch= FetchType.LAZY, cascade= CascadeType.ALL)
+    @JsonBackReference // Таким образом я предотвратил рекурсию
+    private List<Cook> cook;
 }

@@ -17,11 +17,11 @@ public class Order {
 
     }
 
-    public Order(/*Customer customer,*/ String address,
+    public Order(Customer customer, String address,
                  String phoneNumber, Date dateOrder, /* Cook cook,*/
                  List<Dish> dishes, boolean orderStatus) { // Базовый конструктор
 
-//        this.customer = customer;
+        this.customer = customer;
         this.address = address;
         this.phoneNumber= phoneNumber;
         this.dateOrder = dateOrder;
@@ -34,9 +34,9 @@ public class Order {
     private @Id @GeneratedValue Long id;
 
 
-//    @ManyToOne(fetch= FetchType.LAZY, cascade= CascadeType.ALL)
-//    @JsonBackReference
-//    private Customer customer;
+    @ManyToOne(fetch= FetchType.LAZY, cascade= CascadeType.ALL)
+    @JsonBackReference // Таким образом я предотвратил рекурсию
+    private Customer customer;
 
     @Column(name = "address")
     private String address;
@@ -54,7 +54,7 @@ public class Order {
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
-            name = "pg_order_dish",
+            name = "order_dish",
             joinColumns = @JoinColumn(name = "dish_id"),
             inverseJoinColumns = @JoinColumn(name = "order_id"))
     @JsonManagedReference // Таким образом я предотвратил рекурсию

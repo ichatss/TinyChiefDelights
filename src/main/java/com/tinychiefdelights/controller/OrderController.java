@@ -38,7 +38,7 @@ public class OrderController {
     Order replaceOrder(@RequestBody Order newOrder, @PathVariable Long id){
         return orderRepository.findById(id)
                 .map(order -> {
-//                    order.setCustomer(newOrder.getCustomer());
+                    order.setCustomer(newOrder.getCustomer());
                     order.setAddress(newOrder.getAddress());
                     order.setPhoneNumber(newOrder.getPhoneNumber());
                     order.setDateOrder(newOrder.getDateOrder());
