@@ -29,7 +29,7 @@ public class Review {  // Отзыв
     @Column(name = "rate")
     private byte rate;
 
-    @ManyToMany(fetch= FetchType.LAZY, cascade= CascadeType.ALL)
+    @ManyToOne(fetch= FetchType.LAZY, cascade= CascadeType.ALL)
     @JsonBackReference // Таким образом я предотвратил рекурсию
     private List<Cook> cook;
 }

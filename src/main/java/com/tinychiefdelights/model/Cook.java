@@ -44,8 +44,7 @@ public class Cook extends User {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name = "cook_review",
-            joinColumns = @JoinColumn(name = "review_id"),
-            inverseJoinColumns = @JoinColumn(name = "cook_id"))
+            joinColumns = @JoinColumn(name = "review_id"))
     @JsonManagedReference // Таким образом я предотвратил рекурсию
     private List<Review> reviewList;
 
