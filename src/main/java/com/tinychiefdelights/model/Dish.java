@@ -36,9 +36,9 @@ public class Dish {
     @Column(name = "dish_cost")
     private double dishCost;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private List<Cook> cookList;
+//    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @JsonManagedReference
+//    private List<Cook> cookList;
 
     @Column(name = "weight")
     private short weight;

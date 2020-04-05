@@ -52,13 +52,13 @@ public class Cook extends User {
     @Column(name = "about_cook")
     private String aboutCook;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "cook_dish",
-            joinColumns = @JoinColumn(name = "dish_id"),
-            inverseJoinColumns = @JoinColumn(name = "cook_id"))
-    @JsonManagedReference // Таким образом я предотвратил рекурсию
-    private  List<Dish> dish;
+//    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @JoinTable(
+//            name = "cook_dish",
+//            joinColumns = @JoinColumn(name = "dish_id"),
+//            inverseJoinColumns = @JoinColumn(name = "cook_id"))
+//    @JsonManagedReference // Таким образом я предотвратил рекурсию
+//    private  List<Dish> dish;
 
     // Поля name, lastName, login, password наследуются от класса User;
 }
