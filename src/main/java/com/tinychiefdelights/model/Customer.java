@@ -9,10 +9,18 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "customer", schema = "public")
-public class Customer {
+public class Customer extends User {
 
     public Customer(){ // Пустой конструктор для Hibernate
 
+    }
+
+    public Customer(String name, String lastName, String role, String login,
+                    String password, double wallet, List<Order> orderList){ // Вызываем родительский конструктор вместе со своими данными
+
+        super(name, lastName, role, login, password);
+        this.wallet = wallet;
+        this.orderList = orderList;
     }
 
     // Поля

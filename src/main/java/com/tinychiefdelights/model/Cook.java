@@ -11,10 +11,22 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "cook", schema = "public")
-public class Cook {
+public class Cook extends User {
 
     public Cook(){ // Пустой конструктор для Hibernate
 
+    }
+
+    public Cook(String name, String lastName, String role, String login, String password,
+                CookService.CookType cookType, float rating, boolean cookStatus,
+                List<Review> reviewList, String aboutCook){ // Вызываем родительский конструктор вместе со своими полями
+
+        super(name, lastName, role, login, password);
+        this.cookType = cookType;
+        this.rating = rating;
+        this.cookStatus = cookStatus;
+        this.reviewList = reviewList;
+        this.aboutCook = aboutCook;
     }
 
     // Поля
