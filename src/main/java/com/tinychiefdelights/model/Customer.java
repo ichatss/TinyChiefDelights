@@ -18,6 +18,9 @@ public class Customer {
     // Поля
     private @Id @GeneratedValue Long id;
 
+    @OneToOne(mappedBy = "")
+    private User user;
+
     @Column(name = "wallet")
     private double wallet;
 
