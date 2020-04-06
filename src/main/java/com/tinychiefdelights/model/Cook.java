@@ -3,6 +3,7 @@ package com.tinychiefdelights.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.tinychiefdelights.service.CookService;
+import com.tinychiefdelights.service.CookType;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -18,7 +19,7 @@ public class Cook extends User {
     }
 
     public Cook(String name, String lastName, String role, String login, String password,
-                CookService.CookType cookType, float rating, boolean cookStatus,
+                CookType cookType, float rating, boolean cookStatus,
                 List<Review> reviewList, String aboutCook){ // Вызываем родительский конструктор вместе со своими полями
 
         super(name, lastName, role, login, password);
@@ -35,7 +36,7 @@ public class Cook extends User {
     @OneToOne(mappedBy = "")
     private User user;
 
-    private CookService.CookType cookType;
+    private CookType cookType;
 
     @Column(name = "rating")
     private float rating;
