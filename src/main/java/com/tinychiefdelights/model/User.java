@@ -5,7 +5,7 @@ import lombok.Data;
 import javax.persistence.*;
 
 @Data
-@MappedSuperclass // позволяет включать класс и его jpa аннотации в производный класс,
+@Entity // позволяет включать класс и его jpa аннотации в производный класс,
                     // не делая базовый класс сущностью.
 @Table(name = "pg_user", schema = "public")
 public class User {
@@ -41,4 +41,7 @@ public class User {
 
     @Column(name = "last_name")
     private String lastName;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private Admin admin;
 }
