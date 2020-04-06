@@ -23,9 +23,11 @@ public class Customer extends User {
         this.orderList = orderList;
     }
 
-
     // Поля
     private @Id @GeneratedValue Long id;
+
+    @OneToOne(mappedBy = "")
+    private User user;
 
     @Column(name = "wallet")
     private double wallet;

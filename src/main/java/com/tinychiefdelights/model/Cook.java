@@ -32,7 +32,9 @@ public class Cook extends User {
     // Поля
     private @Id @GeneratedValue Long id;
 
-    // ПООБЩАТЬСЯ С ЗУРАБОМ
+    @OneToOne(mappedBy = "")
+    private User user;
+
     private CookService.CookType cookType;
 
     @Column(name = "rating")
