@@ -15,7 +15,7 @@ public class Review {  // Отзыв
 
     }
 
-    public Review(String review, byte rate){ // Базовый конструктор
+    public Review(String review, float rate){ // Базовый конструктор
         this.review = review;
         this.rate = rate;
     }
@@ -27,7 +27,7 @@ public class Review {  // Отзыв
     private String review;
 
     @Column(name = "rate")
-    private byte rate;
+    private float rate;
 
     @ManyToMany(fetch= FetchType.LAZY, cascade= CascadeType.ALL)
     @JsonBackReference // Таким образом я предотвратил рекурсию
