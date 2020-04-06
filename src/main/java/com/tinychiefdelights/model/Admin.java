@@ -20,8 +20,8 @@ public class Admin extends User {
     // Поля
     private @Id @GeneratedValue Long id;
 
-    @OneToOne(mappedBy = "pg_user")
-    private User user;
+//    @OneToOne(mappedBy = "pg_user")
+//    private User user;
 
     // Поля name, lastName, role, login, password наследуются от класса User;
 }
