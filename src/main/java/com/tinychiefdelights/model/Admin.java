@@ -13,10 +13,6 @@ public class Admin {
 
     }
 
-    public Admin(User user){ // Вызываем родительский конструктор
-        this.user = user;
-    }
-
     // Поля
     private @Id @GeneratedValue Long id;
 
