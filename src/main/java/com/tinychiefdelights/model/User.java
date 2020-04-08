@@ -35,6 +35,7 @@ public class User {
 
     @Column(name = "role")
     private String role;
+    //здесь должен быть enum
 
     @Column(name = "name")
     private String name;

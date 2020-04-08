@@ -38,8 +38,9 @@ public class CookController {
     Cook replaceCook(@RequestBody Cook newCook, @PathVariable Long id){
         return cookRepository.findById(id)
                 .map(cook -> {
-                    cook.setName(newCook.getName());
-                    cook.setLastName(newCook.getLastName());
+                    cook.setUser(newCook.getUser());
+//                    cook.setName(newCook.getName());
+//                    cook.setLastName(newCook.getLastName());
                     cook.setRating(newCook.getRating());
                     cook.setCookStatus(newCook.isCookStatus());
                     cook.setReviewList(newCook.getReviewList());
