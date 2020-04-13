@@ -9,36 +9,36 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "customer", schema = "public")
-public class Customer extends User {
+public class Customer {
 
-    public Customer(){ // Пустой конструктор для Hibernate
+    public Customer() { // Пустой конструктор для Hibernate
 
     }
 
-    public Customer(String name, String lastName, String role, String login,
-                    String password, double wallet, List<Order> orderList){ // Вызываем родительский конструктор вместе со своими данными
-
-        super(name, lastName, role, login, password);
-        this.wallet = wallet;
-        this.orderList = orderList;
-    }
 
     // Поля
-    private @Id @GeneratedValue Long id;
 
-    @OneToOne(mappedBy = "")
-    private User user;
+    // name, lastName, login, password берем от класса User через связи;
+
+    private @Id
+    @GeneratedValue
+    Long id;
 
     @Column(name = "wallet")
     private double wallet;
 
+
+    //Relationships
+    //
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id") // Join without Customer in User class
+    private User user;
+
+    //Лист заказов
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
-            name = "order_customer",
-            joinColumns = @JoinColumn(name = "order_id"),
-            inverseJoinColumns = @JoinColumn(name = "customer_id"))
+            name = "customer",
+            joinColumns = @JoinColumn(name = "order_id"))
     @JsonManagedReference // Таким образом я предотвратил рекурсию
     private List<Order> orderList;
-
-    // Поля name, lastName, login, password наследуются от класса User;
 }

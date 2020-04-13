@@ -11,17 +11,20 @@ import java.util.List;
 @Table(name = "review", schema = "public")
 public class Review {  // Отзыв
 
-    public Review(){ // Пустой конструктор для Hibernate
+    public Review() { // Пустой конструктор для Hibernate
 
     }
 
-    public Review(String review, float rate){ // Базовый конструктор
+    public Review(String review, float rate) { // Базовый конструктор
         this.review = review;
         this.rate = rate;
     }
 
+
     // Поля
-    private @Id @GeneratedValue Long id;
+    private @Id
+    @GeneratedValue
+    Long id;
 
     @Column(name = "review")
     private String review;
@@ -29,7 +32,13 @@ public class Review {  // Отзыв
     @Column(name = "rate")
     private float rate;
 
-    @ManyToMany(fetch= FetchType.LAZY, cascade= CascadeType.ALL)
+
+    //Relationships
+    //Повар
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "review",
+            joinColumns = @JoinColumn(name = "cook_id"))
     @JsonBackReference // Таким образом я предотвратил рекурсию
-    private List<Cook> cook;
+    private Cook cook;
 }

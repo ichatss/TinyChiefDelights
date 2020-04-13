@@ -42,7 +42,7 @@ public class OrderController {
                     order.setAddress(newOrder.getAddress());
                     order.setPhoneNumber(newOrder.getPhoneNumber());
                     order.setDateOrder(newOrder.getDateOrder());
-//                    order.setCook(newOrder.getCook());
+                    order.setCook(newOrder.getCook());
                     order.setDishes(newOrder.getDishes());
                     return orderRepository.save(order);
                 })

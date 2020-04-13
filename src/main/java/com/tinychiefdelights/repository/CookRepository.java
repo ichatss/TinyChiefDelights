@@ -5,8 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface CookRepository extends JpaRepository<Cook, Long> {
+public interface CookRepository extends JpaRepository<Cook, Long> { // Интерфейс для репозитория Cook
 
     List<Cook> findByUserRole(String role);
-    // Интерфейс для репозитория Cook
 }

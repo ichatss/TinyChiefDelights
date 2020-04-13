@@ -43,7 +43,7 @@ public class DishController {
                     dish.setCookingTime(newDish.getCookingTime());
                     dish.setWeight(newDish.getWeight());
                     dish.setAboutDish(newDish.getAboutDish());
-//                    dish.setCookList(newDish.getCookList());
+                    dish.setCookList(newDish.getCookList());
                     return dishRepository.save(dish);
                 })
                 .orElseGet(() -> {

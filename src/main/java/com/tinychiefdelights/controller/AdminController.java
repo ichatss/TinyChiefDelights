@@ -19,7 +19,7 @@ public class AdminController {
     // Aggregate Root
     @GetMapping("/admins")
     List<Admin> all(){
-        return adminRepository.findAll();
+        return adminRepository.findByUserRole("admin");
     }
 
     @PostMapping("/admins")
@@ -38,8 +38,7 @@ public class AdminController {
     Admin replaceAdmin(@RequestBody Admin newAdmin, @PathVariable Long id){
         return adminRepository.findById(id)
                 .map(admin -> {
-                    admin.setName(newAdmin.getName());
-                    admin.setLastName(newAdmin.getLastName());
+                    admin.setUser(newAdmin.getUser());
                     return adminRepository.save(admin);
                 })
                 .orElseGet(() -> {

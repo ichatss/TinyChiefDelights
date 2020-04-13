@@ -18,25 +18,21 @@ public class Order {
     }
 
     public Order(Customer customer, String address,
-                 String phoneNumber, Date dateOrder, /* Cook cook,*/
+                 String phoneNumber, Date dateOrder, Cook cook,
                  List<Dish> dishes, boolean orderStatus) { // Базовый конструктор
 
         this.customer = customer;
         this.address = address;
         this.phoneNumber= phoneNumber;
         this.dateOrder = dateOrder;
-//        this.cook = cook;
+        this.cook = cook;
         this.dishes = dishes;
         this.orderStatus = orderStatus;
     }
 
+
     // Поля
     private @Id @GeneratedValue Long id;
-
-
-    @ManyToOne(fetch= FetchType.LAZY, cascade= CascadeType.ALL)
-    @JsonBackReference // Таким образом я предотвратил рекурсию
-    private Customer customer;
 
     @Column(name = "address")
     private String address;
@@ -47,11 +43,20 @@ public class Order {
     @Column(name = "date_order")
     private Date dateOrder;
 
+    @Column(name = "order_status")
+    private boolean orderStatus;
 
-//    @ManyToOne(fetch= FetchType.LAZY, cascade= CascadeType.ALL)
-//    @JsonBackReference
-//    private Cook cook;
 
+    //Relationships
+    //Заказчик
+    @ManyToOne(fetch= FetchType.LAZY, cascade= CascadeType.ALL)
+    @JoinTable(
+            name = "pg_order",
+            joinColumns = @JoinColumn(name = "customer_id"))
+    @JsonBackReference
+    private Customer customer;
+
+    //Лист блюд
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name = "order_dish",
@@ -60,6 +65,9 @@ public class Order {
     @JsonManagedReference // Таким образом я предотвратил рекурсию
     private List<Dish> dishes;
 
-    @Column(name = "order_status")
-    private boolean orderStatus;
+    //Повар
+    @ManyToOne(fetch= FetchType.LAZY, cascade= CascadeType.ALL)
+    @JsonBackReference // Таким образом я предотвратил рекурсию
+    private Cook cook;
+
 }

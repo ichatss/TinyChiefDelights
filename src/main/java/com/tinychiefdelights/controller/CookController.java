@@ -19,7 +19,7 @@ public class CookController {
     // Aggregate Root
     @GetMapping("/cooks")
     List<Cook> all(){
-        return cookRepository.findAll();
+        return cookRepository.findByUserRole("cook");
     }
 
     @PostMapping("/cooks")
@@ -39,8 +39,6 @@ public class CookController {
         return cookRepository.findById(id)
                 .map(cook -> {
                     cook.setUser(newCook.getUser());
-//                    cook.setName(newCook.getName());
-//                    cook.setLastName(newCook.getLastName());
                     cook.setRating(newCook.getRating());
                     cook.setCookStatus(newCook.isCookStatus());
                     cook.setReviewList(newCook.getReviewList());

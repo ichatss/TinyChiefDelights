@@ -39,8 +39,6 @@ public class CustomerController {
     Customer replaceCustomer(@RequestBody Customer newCustomer, @PathVariable Long id){
         return customerRepository.findById(id)
                 .map(customer -> {
-                    customer.setName(newCustomer.getName());
-                    customer.setLastName(newCustomer.getLastName());
                     customer.setWallet(newCustomer.getWallet());
                     customer.setOrderList(newCustomer.getOrderList());
                     return customerRepository.save(customer);
