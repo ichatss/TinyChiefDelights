@@ -15,7 +15,6 @@ import java.util.List;
 public class Cook {
 
     public Cook() { // Пустой конструктор для Hibernate
-
     }
 
 
