@@ -36,10 +36,6 @@ public class Cook {
     @JoinColumn(name = "user_id", referencedColumnName = "id") // Join without Cook in User class
     private User user;
 
-//    @OneToOne(cascade = CascadeType.ALL)//через джоин без кука в юзере
-//    @PrimaryKeyJoinColumn
-//    private User user;
-
     //private CookType cookType;
 
     @Column(name = "rating")
@@ -48,23 +44,21 @@ public class Cook {
     @Column(name = "cook_status")
     private boolean cookStatus;
 
-//    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    @JoinTable(
-//            name = "cook",
-//            joinColumns = @JoinColumn(name = "review_id"))
-//    @JsonManagedReference // Таким образом я предотвратил рекурсию
-//    private List<Review> reviewList;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "review_id", referencedColumnName = "id")
+    @JsonManagedReference // Таким образом я предотвратил рекурсию
+    private List<Review> reviewList;
 
     @Column(name = "about_cook")
     private String aboutCook;
 
-//    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    @JoinTable(
-//            name = "cook_dish",
-//            joinColumns = @JoinColumn(name = "dish_id"),
-//            inverseJoinColumns = @JoinColumn(name = "cook_id"))
-//    @JsonManagedReference // Таким образом я предотвратил рекурсию
-//    private List<Dish> dish;
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "cook_dish",
+            joinColumns = @JoinColumn(name = "dish_id"),
+            inverseJoinColumns = @JoinColumn(name = "cook_id"))
+    @JsonManagedReference // Таким образом я предотвратил рекурсию
+    private List<Dish> dish;
 
     // Поля name, lastName, login, password наследуются от класса User;
 }

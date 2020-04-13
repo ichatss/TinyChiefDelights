@@ -36,9 +36,7 @@ public class Review {  // Отзыв
     //Relationships
     //Повар
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "review",
-            joinColumns = @JoinColumn(name = "cook_id"))
+    @JoinColumn(name = "cook_id", referencedColumnName = "id")
     @JsonBackReference // Таким образом я предотвратил рекурсию
     private Cook cook;
 }

@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Data
 @Entity
-@Table(name = "admin", schema = "public")
+@Table(name = "pg_user", schema = "public")
 public class Admin {
 
     public Admin() { // Пустой конструктор для Hibernate
@@ -25,6 +25,6 @@ public class Admin {
     // Relationships
     //
     @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id") // Join without Admin in User class
+    @JoinColumn(name = "id"/*, referencedColumnName = "id"*/) // Join without Admin in User class
     private User user;
 }
