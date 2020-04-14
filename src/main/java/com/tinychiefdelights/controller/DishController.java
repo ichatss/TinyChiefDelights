@@ -56,4 +56,5 @@ public class DishController {
     void deleteDish(@PathVariable Long id){
         dishRepository.deleteById(id);
     }
+
 }

@@ -62,4 +62,5 @@ public class Cook {
             inverseJoinColumns = @JoinColumn(name = "cook_id"))
     @JsonManagedReference // Таким образом я предотвратил рекурсию
     private List<Dish> dish;
+
 }

@@ -66,5 +66,4 @@ public class Order {
     @ManyToOne(fetch= FetchType.LAZY, cascade= CascadeType.ALL)
     @JsonBackReference // Таким образом я предотвратил рекурсию
     private Cook cook;
-
 }

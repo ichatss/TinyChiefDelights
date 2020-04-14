@@ -9,6 +9,5 @@ import java.util.List;
 
 public interface CookRepository extends JpaRepository<Cook, Long> { // Интерфейс для репозитория Cook
 
-    //@Query("SELECT c FROM pg_user WHERE role = 'cook'")
     List<Cook> findByUserRole(String role);
 }

@@ -9,4 +9,5 @@ import java.util.List;
 public interface CustomerRepository extends JpaRepository<Customer, Long> { // Интерфейс для репозитория Customer
 
     List<Customer> findByUserRole(String role);
+
 }

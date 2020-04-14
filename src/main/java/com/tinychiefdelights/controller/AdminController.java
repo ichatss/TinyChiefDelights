@@ -51,4 +51,5 @@ public class AdminController {
     void deleteAdmins(@PathVariable Long id){
         adminRepository.deleteById(id);
     }
+
 }

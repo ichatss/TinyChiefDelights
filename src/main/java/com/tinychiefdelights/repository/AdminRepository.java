@@ -9,5 +9,4 @@ import java.util.List;
 public interface AdminRepository extends JpaRepository<Admin, Long> { // Интерфейс для репозитория Admin
 
     List<Admin> findByUserRole(String role);
-
 }

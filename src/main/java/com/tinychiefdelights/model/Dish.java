@@ -64,4 +64,5 @@ public class Dish {
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonBackReference // Таким образом я предотвратил рекурсию
     private List<Order> ordersList;
+
 }

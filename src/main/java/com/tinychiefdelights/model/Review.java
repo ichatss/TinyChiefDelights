@@ -36,4 +36,5 @@ public class Review {  // Отзыв
     @JsonBackReference// Таким образом я предотвратил рекурсию
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Cook cook;
+
 }

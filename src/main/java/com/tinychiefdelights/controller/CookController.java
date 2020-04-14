@@ -55,4 +55,5 @@ public class CookController {
     void deleteCook(@PathVariable Long id){
         cookRepository.deleteById(id);
     }
+
 }

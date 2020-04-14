@@ -42,4 +42,5 @@ public class User {
 
     @Column(name = "last_name")
     private String lastName;
+
 }
