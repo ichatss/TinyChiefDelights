@@ -20,7 +20,7 @@ public class CustomerController {
     // Aggregate Root
     @GetMapping("/customers")
     List<Customer> all(){
-        return customerRepository.findAll();
+        return customerRepository.findByUserRole("customer");
     }
 
     @PostMapping("/customers")
@@ -39,6 +39,7 @@ public class CustomerController {
     Customer replaceCustomer(@RequestBody Customer newCustomer, @PathVariable Long id){
         return customerRepository.findById(id)
                 .map(customer -> {
+                    customer.setUser(newCustomer.getUser());
                     customer.setWallet(newCustomer.getWallet());
                     customer.setOrderList(newCustomer.getOrderList());
                     return customerRepository.save(customer);

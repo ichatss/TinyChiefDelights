@@ -35,10 +35,7 @@ public class Customer {
     private User user;
 
     //Лист заказов
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "customer",
-            joinColumns = @JoinColumn(name = "order_id"))
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     @JsonManagedReference // Таким образом я предотвратил рекурсию
     private List<Order> orderList;
 }

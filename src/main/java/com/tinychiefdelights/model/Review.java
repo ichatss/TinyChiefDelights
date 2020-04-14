@@ -1,6 +1,8 @@
 package com.tinychiefdelights.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -13,11 +15,6 @@ public class Review {  // Отзыв
 
     public Review() { // Пустой конструктор для Hibernate
 
-    }
-
-    public Review(String review, float rate) { // Базовый конструктор
-        this.review = review;
-        this.rate = rate;
     }
 
 
@@ -36,7 +33,7 @@ public class Review {  // Отзыв
     //Relationships
     //Повар
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "cook_id", referencedColumnName = "id")
-    @JsonBackReference // Таким образом я предотвратил рекурсию
+    @JsonBackReference// Таким образом я предотвратил рекурсию
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Cook cook;
 }

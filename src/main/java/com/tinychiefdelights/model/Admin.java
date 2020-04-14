@@ -25,6 +25,6 @@ public class Admin {
     // Relationships
     //
     @OneToOne
-    @JoinColumn(name = "id"/*, referencedColumnName = "id"*/) // Join without Admin in User class
+    @JoinColumn(name = "id") // Join without Admin in User class
     private User user;
 }

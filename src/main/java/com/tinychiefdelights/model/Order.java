@@ -49,11 +49,8 @@ public class Order {
 
     //Relationships
     //Заказчик
-    @ManyToOne(fetch= FetchType.LAZY, cascade= CascadeType.ALL)
-    @JoinTable(
-            name = "pg_order",
-            joinColumns = @JoinColumn(name = "customer_id"))
-    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonBackReference// Таким образом я предотвратил рекурсию
     private Customer customer;
 
     //Лист блюд
