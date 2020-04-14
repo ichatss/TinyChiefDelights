@@ -19,6 +19,10 @@ repositories {
 }
 
 dependencies {
+	// https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui
+	compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+	// https://mvnrepository.com/artifact/io.springfox/springfox-swagger2
+	compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
 	// https://mvnrepository.com/artifact/org.hibernate/hibernate-entitymanager
 	compile group: 'org.hibernate', name: 'hibernate-entitymanager', version: '5.4.12.Final'
 	// https://mvnrepository.com/artifact/org.hibernate/hibernate-core
