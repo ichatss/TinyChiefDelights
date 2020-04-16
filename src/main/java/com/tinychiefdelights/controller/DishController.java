@@ -3,10 +3,12 @@ package com.tinychiefdelights.controller;
 import com.tinychiefdelights.exceptions.NotFoundException;
 import com.tinychiefdelights.model.Dish;
 import com.tinychiefdelights.repository.DishRepository;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Api(value = "Работа с Блюдом", tags = {"Блюдо"})
 @RestController
 public class DishController {
 

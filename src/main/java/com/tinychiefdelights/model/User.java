@@ -23,6 +23,7 @@ public class User {
         this.password = password;
     }
 
+
     // Поля
     private @Id
     @GeneratedValue
@@ -35,7 +36,7 @@ public class User {
     private String password;
 
     @Column(name = "role")
-    private String role; // ИСПРАВИТЬ: здесь должен быть ENUM
+    private String role;
 
     @Column(name = "name")
     private String name;

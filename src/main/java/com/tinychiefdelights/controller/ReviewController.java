@@ -3,10 +3,12 @@ package com.tinychiefdelights.controller;
 import com.tinychiefdelights.exceptions.NotFoundException;
 import com.tinychiefdelights.model.Review;
 import com.tinychiefdelights.repository.ReviewRepository;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Api(value = "Работа с Отзывами", tags = {"Отзыв"})
 @RestController
 public class ReviewController {
 
