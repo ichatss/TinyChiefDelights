@@ -24,6 +24,7 @@ public enum CookType {
     }, CONFECTIONER, FISH_COOK, MEAT_COOK;
 
     // Общие поля на все ENUM
+    //
     double startSalary; // Начальная ставка
 
     CookRepository cookRepository; // Повар; DI через сеттер
