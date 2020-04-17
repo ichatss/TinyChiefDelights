@@ -21,6 +21,7 @@ public enum CookType {
         void removeDish() {
 
         }
+
     }, CONFECTIONER, FISH_COOK, MEAT_COOK;
 
     // Общие поля на все ENUM
