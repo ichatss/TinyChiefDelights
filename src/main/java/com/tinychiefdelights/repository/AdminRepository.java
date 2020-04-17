@@ -4,9 +4,13 @@ import com.tinychiefdelights.model.Admin;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface AdminRepository extends JpaRepository<Admin, Long> { // Интерфейс для репозитория Admin
 
-    List<Admin> findByUserRole(String role); // Фильтр из БД для Администратора
+    List<Admin> findByUserRole(String role); // Фильтр из БД для Администратора only Role
 
+    Optional<Admin> findByUserRoleAndId(String role, Long id); // Фильтр из БД для Администратора ID + Role
+
+    void deleteByUserRoleAndId(String role, Long id); // Удалить из БД ID + Role
 }

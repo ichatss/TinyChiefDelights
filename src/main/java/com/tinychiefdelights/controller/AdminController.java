@@ -2,6 +2,7 @@ package com.tinychiefdelights.controller;
 
 import com.tinychiefdelights.exceptions.NotFoundException;
 import com.tinychiefdelights.model.Admin;
+import com.tinychiefdelights.model.Cook;
 import com.tinychiefdelights.model.Order;
 import com.tinychiefdelights.repository.AdminRepository;
 import com.tinychiefdelights.service.AdminService;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Api(value = "Работа с Админом", tags = {"Администратор"})
 @RestController
@@ -31,28 +33,31 @@ public class AdminController {
     private AdminService adminService;
 
 
-    // Aggregate Root
+
+    // Методы
     @GetMapping("/admins")
-    List<Admin> all(){ // Ищем в базе только тех, у кого ENUM == role
+    List<Admin> all(){ // Ищем в базе только тех, у кого role == cook
         return adminRepository.findByUserRole("admin");
     }
+
 
     @PostMapping("/admins")
     Admin newAdmin(@RequestBody Admin newAdmin){
         return adminRepository.save(newAdmin);
     }
 
-    //Single Item
-    @GetMapping("/admins/{id}")
+
+    @GetMapping("/admins/{id}") // Вывод админов по конкретному ID
     Admin one(@PathVariable Long id) {
-        return adminRepository.findById(id)
+        return adminRepository.findByUserRoleAndId("admin", id)
                 .orElseThrow(() -> new NotFoundException(id));
     }
 
+
     @PutMapping("/admins/{id}")
     Admin replaceAdmin(@RequestBody Admin newAdmin, @PathVariable Long id){
-        return adminRepository.findById(id)
-                .map(admin -> {
+        return adminRepository.findById(id)  // ИСПРАВИТЬ
+                .map(admin -> { // ЧТО С ЭТИМИ МЕТОДАМИ НЕ ТАК
                     admin.setUser(newAdmin.getUser());
                     return adminRepository.save(admin);
                 })
@@ -62,15 +67,33 @@ public class AdminController {
                 });
     }
 
-    @DeleteMapping("/admins/{id}")
+
+    @DeleteMapping("/admins/{id}") // Удалить админа по конкретному ID
     void deleteAdmins(@PathVariable Long id){
-        adminRepository.deleteById(id);
+        adminRepository.deleteByUserRoleAndId("admin", id);
     }
 
 
-    @GetMapping("/order/{id}")
-    Order getOrderInfo(Long id){
+    @GetMapping("admin/orders")
+    List<Order> getAllOrders(){ // Вывод списка всех заказов
+        return adminService.getAllOrders();
+    }
+
+
+    @GetMapping("admin/orders/{id}")
+    Order getOrderInfo(@PathVariable Long id){ // Вывод информации по конкретному заказу по ID
         return adminService.getOrderInfo(id);
     }
 
+
+    @GetMapping("admin/cooks")
+    List<Cook> getAllCooks(@PathVariable Long id){ // Вывод всех поваров
+        return adminService.getAllCooks(id);
+    }
+
+
+    @DeleteMapping("/admin/cooks/delete/{id}")
+    void removeCook(@PathVariable Long id){ // Удалить конкретного повара по ID
+        adminService.removeCook(id);
+    }
 }
