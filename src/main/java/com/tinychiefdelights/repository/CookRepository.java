@@ -15,4 +15,5 @@ public interface CookRepository extends JpaRepository<Cook, Long> { // Инте�
 
     List<Cook> findByUserRoleAndId(String role, Long id); // Фильтр из БД для Администратора ID + Role
 
+
 }

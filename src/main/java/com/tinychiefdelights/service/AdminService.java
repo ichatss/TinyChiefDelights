@@ -60,7 +60,7 @@ public class AdminService extends UserService {
 
     }
 
-    public List<Cook> getAllCooks(Long id){
+    public List<Cook> getAllCooks(Long id){ // Вывод всех поваров
         return cookRepository.findByUserRoleAndId("cook", id);
     }
 
