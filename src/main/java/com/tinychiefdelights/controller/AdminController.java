@@ -56,8 +56,8 @@ public class AdminController {
 
     @PutMapping("/admins/{id}")
     Admin replaceAdmin(@RequestBody Admin newAdmin, @PathVariable Long id){
-        return adminRepository.findById(id)  // ИСПРАВИТЬ
-                .map(admin -> { // ЧТО С ЭТИМИ МЕТОДАМИ НЕ ТАК
+        return adminRepository.findByUserRoleAndId("admin", id)
+                .map(admin -> {
                     admin.setUser(newAdmin.getUser());
                     return adminRepository.save(admin);
                 })
