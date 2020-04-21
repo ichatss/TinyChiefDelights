@@ -10,4 +10,6 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> { // Ð
 
     List<Customer> findByUserRole(String role);
 
+//    void depositMoney(double money);
+
 }

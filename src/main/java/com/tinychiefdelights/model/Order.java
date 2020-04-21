@@ -1,7 +1,9 @@
 package com.tinychiefdelights.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -15,19 +17,6 @@ public class Order {
 
     public Order(){ // Пустой конструктор для Hibernate
 
-    }
-
-    public Order(Customer customer, String address,
-                 String phoneNumber, Date dateOrder, Cook cook,
-                 List<Dish> dishes, boolean orderStatus) { // Базовый конструктор
-
-        this.customer = customer;
-        this.address = address;
-        this.phoneNumber= phoneNumber;
-        this.dateOrder = dateOrder;
-        this.cook = cook;
-        this.dishes = dishes;
-        this.orderStatus = orderStatus;
     }
 
 
@@ -50,7 +39,7 @@ public class Order {
     //Relationships
     //Заказчик
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonBackReference// Таким образом я предотвратил рекурсию
+    @JsonBackReference(value = "customer") // Таким образом я предотвратил рекурсию
     private Customer customer;
 
     //Лист блюд
@@ -59,11 +48,12 @@ public class Order {
             name = "order_dish",
             joinColumns = @JoinColumn(name = "dish_id"),
             inverseJoinColumns = @JoinColumn(name = "order_id"))
-    @JsonManagedReference // Таким образом я предотвратил рекурсию
+    @JsonManagedReference(value = "order") // Таким образом я предотвратил рекурсию
     private List<Dish> dishes;
 
     //Повар
     @ManyToOne(fetch= FetchType.LAZY, cascade= CascadeType.ALL)
-    @JsonBackReference // Таким образом я предотвратил рекурсию
+    @JsonBackReference(value = "cook") // Таким образом я предотвратил рекурсию
     private Cook cook;
+
 }

@@ -1,7 +1,9 @@
 package com.tinychiefdelights.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -14,17 +16,6 @@ public class Dish {
 
     public Dish() { // Пустой конструктор для Hibernate
 
-    }
-
-    public Dish(String dishName, double dishCost, List<Cook> cookList,
-                short weight, short cookingTime, String aboutDish) { // Базовый конструктор
-
-        this.dishName = dishName;
-        this.dishCost = dishCost;
-        this.cookList = cookList;
-        this.weight = weight;
-        this.cookingTime = cookingTime;
-        this.aboutDish = aboutDish;
     }
 
 

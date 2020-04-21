@@ -19,6 +19,8 @@ repositories {
 }
 
 dependencies {
+	// https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
+	testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.7.0-M1'
 	// https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui
 	compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
 	// https://mvnrepository.com/artifact/io.springfox/springfox-swagger2
@@ -38,6 +40,8 @@ dependencies {
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
+	implementation 'org.junit.jupiter:junit-jupiter'
+	implementation 'junit:junit:4.12'
 }
 
 test {
