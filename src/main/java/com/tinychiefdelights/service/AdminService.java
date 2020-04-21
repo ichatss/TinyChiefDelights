@@ -56,7 +56,7 @@ public class AdminService extends UserService {
         cookRepository.deleteByUserRoleAndId("cook", id); // Узнать у Зураба, что сделать с этим!!!
     }
 
-    public void editCook(){ // Изменить карту повара
+    public void editCook(){ // Изменить карту повара ()
 
     }
 

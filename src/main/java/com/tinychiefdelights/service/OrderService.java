@@ -7,7 +7,7 @@ public class OrderService {
         return 0;
     }
 
-    public void setReview(){// Оставить отзыв и оценку
+    public void setReview(){// Оставить отзыв и оценку ()
 
     }
 

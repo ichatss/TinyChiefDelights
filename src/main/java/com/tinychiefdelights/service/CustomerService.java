@@ -3,7 +3,7 @@ package com.tinychiefdelights.service;
 public class CustomerService extends UserService {
 
     // Методы
-    public void depositMoney(){ // Внести деньги на счет
+    public void depositMoney(){ // Внести деньги на счет ()
 
     }
 
@@ -11,7 +11,7 @@ public class CustomerService extends UserService {
 
     }
 
-    public void makeOrder(){ // Сделать заказ
+    public void makeOrder(){ // Сделать заказ ()
 
     }
 }
