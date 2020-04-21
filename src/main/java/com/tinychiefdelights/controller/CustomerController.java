@@ -57,4 +57,9 @@ public class CustomerController {
         customerRepository.deleteById(id);
     }
 
+
+    @PutMapping("/customer/withdraw") // ДОДЕЛАТЬ НАДО!!!!!!!!!!
+    void withdrawMoney(@RequestBody Customer customer, Double money){
+        customerRepository.withdrawMoney(customer, money);
+    }
 }
