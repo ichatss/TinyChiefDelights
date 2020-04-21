@@ -39,4 +39,5 @@ public class Customer {
     @JsonManagedReference // Таким образом я предотвратил рекурсию
     private List<Order> orderList;
 
+
 }
