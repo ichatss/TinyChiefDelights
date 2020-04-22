@@ -12,6 +12,6 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> { // Ð
 
 //    void depositMoney(double money);
 
-    void withdrawMoney(Customer customer, Double money);
+    void withdrawMoney(Customer customer, double money);
 
 }
