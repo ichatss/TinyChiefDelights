@@ -25,7 +25,7 @@ public class CustomerService extends UserService {
 
     }
 
-    public void withdrawMoney(Customer customer, Double money){ // Вывести деньги со счета
+    public void withdrawMoney(Customer customer, double money){ // Вывести деньги со счета
         if (money <= customer.getWallet()) { // Делаем проверку, чтобы сумма указанная заказчиком была меньше кошелька
             customer.setWallet(customer.getWallet() - money);
         } else {

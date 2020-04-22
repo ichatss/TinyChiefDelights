@@ -24,8 +24,6 @@ public class Cook {
     @GeneratedValue
     Long id;
 
-
-
     //private CookType cookType;
 
     @Column(name = "rating")

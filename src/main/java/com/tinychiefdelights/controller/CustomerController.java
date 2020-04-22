@@ -3,7 +3,9 @@ package com.tinychiefdelights.controller;
 import com.tinychiefdelights.exceptions.NotFoundException;
 import com.tinychiefdelights.model.Customer;
 import com.tinychiefdelights.repository.CustomerRepository;
+import com.tinychiefdelights.service.CustomerService;
 import io.swagger.annotations.Api;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,11 +14,22 @@ import java.util.List;
 @RestController
 public class CustomerController {
 
+    //Constructor
+    //
+    @Autowired
+    public CustomerController(CustomerRepository customerRepository, CustomerService customerService) {
+        this.customerRepository = customerRepository;
+        this.customerService = customerService;
+    }
+
+
+    // Fields
+    //Injects into constructor
+    //
     private final CustomerRepository customerRepository;
 
-    public CustomerController(CustomerRepository customerRepository) {
-        this.customerRepository = customerRepository;
-    }
+    private CustomerService customerService;
+
 
 
     // Aggregate Root
@@ -59,7 +72,7 @@ public class CustomerController {
 
 
     @PutMapping("/customer/withdraw") // ДОДЕЛАТЬ НАДО!!!!!!!!!!
-    void withdrawMoney(@RequestBody Customer customer, Double money){
-        customerRepository.withdrawMoney(customer, money);
+    void withdrawMoney(@RequestBody Customer customer, @PathVariable double money){
+        customerService.withdrawMoney(customer, money);
     }
 }
