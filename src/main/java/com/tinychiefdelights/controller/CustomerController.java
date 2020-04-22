@@ -71,8 +71,8 @@ public class CustomerController {
     }
 
 
-    @PutMapping("/customer/withdraw") // ДОДЕЛАТЬ НАДО!!!!!!!!!!
-    void withdrawMoney(@RequestBody Customer customer, @PathVariable double money){
+    @PutMapping("/customer/withdraw/{id}") // ДОДЕЛАТЬ НАДО!!!!!!!!!!
+    void withdrawMoney(@RequestBody Customer customer, @PathVariable Long id, @PathVariable double money){
         customerService.withdrawMoney(customer, money);
     }
 }

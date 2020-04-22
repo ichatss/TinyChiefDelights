@@ -39,7 +39,7 @@ public class Customer {
 
     //Лист заказов
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
-    @JsonManagedReference(value = "customer") // Таким образом я предотвратил рекурсию
+    @JsonManagedReference // Таким образом я предотвратил рекурсию
     private List<Order> orderList;
 
 

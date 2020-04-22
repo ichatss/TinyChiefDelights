@@ -29,7 +29,8 @@ public class CustomerService extends UserService {
         if (money <= customer.getWallet()) { // Делаем проверку, чтобы сумма указанная заказчиком была меньше кошелька
             customer.setWallet(customer.getWallet() - money);
         } else {
-            System.out.println("СПРОСИТЬ У ЗАРАБА ЧТО ВЫВЕСТИ ТУТ!!!!!КАКОЙ ИМЕННО МЕТОД");
+            throw new RuntimeException("Введенная Вами сумма превышает остаток на счете!");
+
         }
     }
 

@@ -39,7 +39,7 @@ public class Order {
     //Relationships
     //Заказчик
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonBackReference(value = "customer") // Таким образом я предотвратил рекурсию
+    @JsonBackReference // Таким образом я предотвратил рекурсию
     private Customer customer;
 
     //Лист блюд
