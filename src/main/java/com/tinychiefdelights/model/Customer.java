@@ -1,8 +1,6 @@
 package com.tinychiefdelights.model;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import com.tinychiefdelights.repository.CustomerRepository;
 import lombok.Data;
 
@@ -39,7 +37,7 @@ public class Customer {
 
     //Лист заказов
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
-    @JsonManagedReference(value = "customer") // Таким образом я предотвратил рекурсию
+    @JsonIgnore // Таким образом я предотвратил рекурсию
     private List<Order> orderList;
 
 

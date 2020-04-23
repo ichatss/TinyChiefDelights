@@ -1,6 +1,8 @@
 package com.tinychiefdelights.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
@@ -44,12 +46,12 @@ public class Cook {
 
     // Лист отзывов
     @OneToMany(mappedBy = "cook", cascade = CascadeType.ALL)
-    @JsonManagedReference // Таким образом я предотвратил рекурсию
+    @JsonIgnore // Таким образом я предотвратил рекурсию
     private List<Review> reviewList;
 
     // Лист поваров
     @OneToMany(mappedBy = "cook", cascade = CascadeType.ALL)
-    @JsonManagedReference // Таким образом я предотвратил рекурсию
+    @JsonIgnore // Таким образом я предотвратил рекурсию
     private List<Order> orderList;
 
     // Лист блюд
@@ -58,7 +60,7 @@ public class Cook {
             name = "cook_dish",
             joinColumns = @JoinColumn(name = "dish_id"),
             inverseJoinColumns = @JoinColumn(name = "cook_id"))
-    @JsonManagedReference // Таким образом я предотвратил рекурсию
+    @JsonIgnore // Таким образом я предотвратил рекурсию
     private List<Dish> dish;
 
 }
