@@ -28,28 +28,22 @@ public class User {
 
 
     // Поля
-    @ApiModelProperty
     private @Id
     @GeneratedValue
     Long id;
 
-    @ApiModelProperty
     @Column(name = "login")
     private String login;
 
-    @ApiModelProperty
     @Column(name = "password")
     private String password;
 
-    @ApiModelProperty
     @Column(name = "role")
     private String role;
 
-    @ApiModelProperty
     @Column(name = "name")
     private String name;
 
-    @ApiModelProperty
     @Column(name = "last_name")
     private String lastName;
 }

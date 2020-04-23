@@ -1,9 +1,6 @@
 package com.tinychiefdelights.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -48,12 +45,12 @@ public class Dish {
             name = "cook_dish",
             joinColumns = @JoinColumn(name = "cook_id"),
             inverseJoinColumns = @JoinColumn(name = "dish_id"))
-    @JsonBackReference // Таким образом я предотвратил рекурсию
+    @JsonIgnore // Таким образом я предотвратил рекурсию
     private List<Cook> cookList;
 
     // Лист Заказов в которых находятся блюда
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonBackReference // Таким образом я предотвратил рекурсию
+    @JsonIgnore // Таким образом я предотвратил рекурсию
     private List<Order> ordersList;
 
 }
