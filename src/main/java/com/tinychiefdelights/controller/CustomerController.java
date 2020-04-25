@@ -2,6 +2,7 @@ package com.tinychiefdelights.controller;
 
 import com.tinychiefdelights.exceptions.NotFoundException;
 import com.tinychiefdelights.model.Customer;
+import com.tinychiefdelights.model.User;
 import com.tinychiefdelights.repository.CustomerRepository;
 import com.tinychiefdelights.service.CustomerService;
 import io.swagger.annotations.Api;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Api(value = "Работа с Заказчиком", tags = {"Заказчик"})
 @RestController
@@ -39,8 +41,8 @@ public class CustomerController {
     }
 
     @PostMapping("/customers")
-    Customer newCustomer(@RequestBody Customer newCustomer){
-        return customerRepository.save(newCustomer);
+    Customer addCustomer(User newUser, @RequestBody Customer newCustomer){
+        return customerService.addCustomer(newUser, newCustomer);
     }
 
     //Single Item
@@ -71,8 +73,8 @@ public class CustomerController {
     }
 
 
-    @PutMapping("/customer/withdraw/{id}") // ДОДЕЛАТЬ НАДО!!!!!!!!!!
-    void withdrawMoney(@RequestBody Customer customer, @PathVariable Long id, @PathVariable double money){
-        customerService.withdrawMoney(customer, money);
+    @PutMapping("/customer/{id}/withdraw/{money}")
+    void withdrawMoney(@PathVariable Long id, @RequestParam double money){
+        customerService.withdrawMoney(id, money);
     }
 }

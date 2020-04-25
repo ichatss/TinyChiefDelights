@@ -42,23 +42,30 @@ public class AdminService extends UserService {
 
     // Методы
     //
-    public List<Order> getAllOrders(){ // Вывод списка всех заказов
+    // Вывод списка всех заказов
+    public List<Order> getAllOrders(){
         return orderRepository.findAll();
     }
 
-    public Order getOrderInfo(Long id){ // Вывод информации по конкретному заказу
+
+    // Вывод информации по конкретному заказу
+    public Order getOrderInfo(Long id){
         return orderRepository.getById(id);
     }
 
-    public void removeCook(Long id){ // Удалить повара
+
+    // Удалить повара
+    public void removeCook(Long id){ // ДОДЕЛАТЬ
         cookRepository.deleteByUserRoleAndId("cook", id); // Узнать у Зураба, что сделать с этим!!!
     }
+
 
     public void editCook(){ // Изменить карту повара ()
 
     }
 
-    public List<Cook> getAllCooks(Long id){ // Вывод всех поваров
+    // Вывод всех поваров
+    public List<Cook> getAllCooks(Long id){
         return cookRepository.findByUserRoleAndId("cook", id);
     }
 

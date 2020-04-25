@@ -50,6 +50,10 @@ public class Dish {
 
     // Лист Заказов в которых находятся блюда
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "order_dish",
+            joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "dish_id"))
     @JsonIgnore // Таким образом я предотвратил рекурсию
     private List<Order> ordersList;
 
