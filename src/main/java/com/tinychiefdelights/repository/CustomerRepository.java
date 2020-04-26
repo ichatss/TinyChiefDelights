@@ -16,4 +16,5 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> { // �
 
     // Берем Заказчика, фильтруя через ID + Role
     Customer getByIdAndUserRole(Long id, String role);
+
 }

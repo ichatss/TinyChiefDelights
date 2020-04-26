@@ -63,19 +63,9 @@ public class CustomerController {
     // PUT MAPPING
     //
     // Измененить конкретного заказчика по ID
-    @PutMapping("/customers/{id}")
-    Customer replaceCustomer(@RequestBody Customer newCustomer, @PathVariable Long id) {
-        return customerRepository.findById(id)
-                .map(customer -> {
-                    customer.setUser(newCustomer.getUser());
-                    customer.setWallet(newCustomer.getWallet());
-                    customer.setOrderList(newCustomer.getOrderList());
-                    return customerRepository.save(customer);
-                })
-                .orElseGet(() -> {
-                    newCustomer.setId(id);
-                    return customerRepository.save(newCustomer);
-                });
+    @PutMapping("/customer/{id}")
+    Customer editCustomer(@PathVariable Long id, User user, @RequestParam double wallet) {
+        return customerService.editCustomer(id, user, wallet);
     }
 
 
@@ -88,9 +78,9 @@ public class CustomerController {
 
     // DELETE MAPPING
     //
-    // Удалить конкретного заказчика по ID !!!!!!!!!!!ДОДЕЛАТЬ
+    // Удалить конкретного Заказчика по ID
     @DeleteMapping("/customers/{id}")
     void deleteCustomer(@PathVariable Long id) {
-        customerRepository.deleteById(id);
+        customerService.deleteCustomer(id);
     }
 }

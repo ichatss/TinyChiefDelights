@@ -1,5 +1,6 @@
 package com.tinychiefdelights.service;
 
+import com.tinychiefdelights.exceptions.NotFoundException;
 import com.tinychiefdelights.model.Customer;
 import com.tinychiefdelights.model.User;
 import com.tinychiefdelights.repository.CustomerRepository;
@@ -61,5 +62,25 @@ public class CustomerService extends UserService {
 
     public void makeOrder() { // Сделать заказ ()
 
+    }
+
+
+    // Удалить заказчика
+    public void deleteCustomer(Long id){
+        Customer customer = customerRepository.getByIdAndUserRole(id, "customer");
+        try {
+            customerRepository.delete(customer);
+        } catch (Exception e){
+            throw new NotFoundException(id);
+        }
+    }
+
+
+    // Изменить карточку заказчика
+    public Customer editCustomer(Long id, User user, double wallet){
+        Customer customer = customerRepository.getByIdAndUserRole(id, "customer"); // Написать обработчик ошибок!
+        customer.setUser(user);
+        customer.setWallet(wallet);
+        return customerRepository.save(customer);
     }
 }
