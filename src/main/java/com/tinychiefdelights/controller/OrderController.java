@@ -8,36 +8,54 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @Api(value = "Работа с Заказом", tags = {"Заказ"})
 @RestController
 public class OrderController {
 
-    private final OrderRepository orderRepository;
-
+    // Constructor
+    //
+    // Injects are here
     public OrderController(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
     }
 
-    // Aggregate Root
+
+    // Fields
+    //
+    private final OrderRepository orderRepository;
+
+
+    // GET MAPPING
+    //
+    // Вывод всех Заказов
     @GetMapping("/orders")
-    List<Order> all(){
+    List<Order> all() {
         return orderRepository.findAll();
     }
 
-    @PostMapping("/orders")
-    Order newOrder (@RequestBody Order newOrder){
-        return orderRepository.save(newOrder);
-    }
-
-    //Single Item
+    // Вывод заказа по ID
     @GetMapping("/orders/{id}")
     Order one(@PathVariable Long id) {
         return orderRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(id));
     }
 
+
+    // POST MAPPING
+    //
+    // Создать новый Заказ !!!!!!!!!!!!!!!!!!!! ДОДЛЕАТЬ
+    @PostMapping("/orders")
+    Order newOrder(@RequestBody Order newOrder) {
+        return orderRepository.save(newOrder);
+    }
+
+
+    // PUT MAPPING
+    //
+    // Изменить Заказ по ID
     @PutMapping("/orders/{id}")
-    Order replaceOrder(@RequestBody Order newOrder, @PathVariable Long id){
+    Order replaceOrder(@RequestBody Order newOrder, @PathVariable Long id) {
         return orderRepository.findById(id)
                 .map(order -> {
                     order.setCustomer(newOrder.getCustomer());
@@ -54,9 +72,12 @@ public class OrderController {
                 });
     }
 
+
+    // DELETE MAPPING
+    //
+    // Удалить Заказ по ID !!!!!!!! ДОДЕЛАТЬ
     @DeleteMapping("/orders/{id}")
-    void deleteOrder(@PathVariable Long id){
+    void deleteOrder(@PathVariable Long id) {
         orderRepository.deleteById(id);
     }
-
 }

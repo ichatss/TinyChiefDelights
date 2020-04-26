@@ -11,15 +11,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomerService extends UserService {
 
-
     // Поля
+    //
+    // Injects in setters
     private CustomerRepository customerRepository;
 
     private UserRepository userRepository;
 
 
-    //Injects into Setters
+    // SETTERS
     //
+    // Injects into Setters
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -31,7 +33,6 @@ public class CustomerService extends UserService {
     }
 
 
-
     // Методы
     //
     // Добавить нового Заказчика
@@ -41,13 +42,13 @@ public class CustomerService extends UserService {
     }
 
 
-    public void depositMoney(){ // Внести деньги на счет ()
+    public void depositMoney() { // Внести деньги на счет ()
 
     }
 
 
     // Вывести деньги со счета
-    public void withdrawMoney(Long id, double money){
+    public void withdrawMoney(Long id, double money) {
         Customer customer = customerRepository.getByIdAndUserRole(id, "customer");
         if (money <= customer.getWallet()) { // Делаем проверку, чтобы сумма указанная заказчиком была меньше кошелька
             customer.setWallet(customer.getWallet() - money);
@@ -58,7 +59,7 @@ public class CustomerService extends UserService {
     }
 
 
-    public void makeOrder(){ // Сделать заказ ()
+    public void makeOrder() { // Сделать заказ ()
 
     }
 }

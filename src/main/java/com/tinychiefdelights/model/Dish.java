@@ -56,5 +56,4 @@ public class Dish {
             inverseJoinColumns = @JoinColumn(name = "dish_id"))
     @JsonIgnore // Таким образом я предотвратил рекурсию
     private List<Order> ordersList;
-
 }

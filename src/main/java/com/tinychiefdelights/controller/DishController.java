@@ -8,36 +8,55 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @Api(value = "Работа с Блюдом", tags = {"Блюдо"})
 @RestController
 public class DishController {
 
-    private final DishRepository dishRepository;
-
+    // Constructor
+    //
+    // Injects are here
     public DishController(DishRepository dishRepository) {
         this.dishRepository = dishRepository;
     }
 
-    // Aggregate Root
+
+    // Fields
+    //
+    private final DishRepository dishRepository;
+
+
+    // GET MAPPING
+    //
+    // Вывод всех Блюд
     @GetMapping("/dishes")
-    List<Dish> all(){
+    List<Dish> all() {
         return dishRepository.findAll();
     }
 
-    @PostMapping("/dishes")
-    Dish newDish (@RequestBody Dish newDish){
-        return dishRepository.save(newDish);
-    }
 
-    //Single Item
+    // Вывод конкретного блюда по ID
     @GetMapping("/dishes/{id}")
     Dish one(@PathVariable Long id) {
         return dishRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(id));
     }
 
+
+    // POST MAPPING
+    //
+    // Создание нового Блюда
+    @PostMapping("/dishes")
+    Dish newDish(@RequestBody Dish newDish) {
+        return dishRepository.save(newDish);
+    }
+
+
+    // PUT MAPPING
+    //
+    // Изменить Блюдо по ID
     @PutMapping("/dishes/{id}")
-    Dish replaceDish(@RequestBody Dish newDish, @PathVariable Long id){
+    Dish replaceDish(@RequestBody Dish newDish, @PathVariable Long id) {
         return dishRepository.findById(id)
                 .map(dish -> {
                     dish.setDishName(newDish.getDishName());
@@ -54,9 +73,12 @@ public class DishController {
                 });
     }
 
+
+    // DELETE MAPPING
+    //
+    // Удалить Блюдо по ID !!!!!!!!!! ДОДЕЛАТЬ
     @DeleteMapping("/dishes/{id}")
-    void deleteDish(@PathVariable Long id){
+    void deleteDish(@PathVariable Long id) {
         dishRepository.deleteById(id);
     }
-
 }

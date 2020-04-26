@@ -15,6 +15,7 @@ public class AdminService extends UserService {
 
     // Поля
     //
+    // Injects in setters
     private AdminRepository adminRepository; // Администратор
 
     private OrderRepository orderRepository; // Заказ
@@ -23,6 +24,7 @@ public class AdminService extends UserService {
 
 
     // Getters and Setters
+    //
     // Делаем inject через сеттеры
     @Autowired
     public void setAdminRepository(AdminRepository adminRepository) {
@@ -43,30 +45,30 @@ public class AdminService extends UserService {
     // Методы
     //
     // Вывод списка всех заказов
-    public List<Order> getAllOrders(){
+    public List<Order> getAllOrders() {
         return orderRepository.findAll();
     }
 
 
     // Вывод информации по конкретному заказу
-    public Order getOrderInfo(Long id){
+    public Order getOrderInfo(Long id) {
         return orderRepository.getById(id);
     }
 
 
     // Удалить повара
-    public void removeCook(Long id){ // ДОДЕЛАТЬ
+    public void removeCook(Long id) { // ДОДЕЛАТЬ
         cookRepository.deleteByUserRoleAndId("cook", id); // Узнать у Зураба, что сделать с этим!!!
     }
 
 
-    public void editCook(){ // Изменить карту повара ()
+    public void editCook() { // Изменить карту повара ()
 
     }
+
 
     // Вывод всех поваров
-    public List<Cook> getAllCooks(Long id){
+    public List<Cook> getAllCooks(Long id) {
         return cookRepository.findByUserRoleAndId("cook", id);
     }
-
 }

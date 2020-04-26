@@ -1,7 +1,6 @@
 package com.tinychiefdelights.model;
 
 import com.fasterxml.jackson.annotation.*;
-import com.tinychiefdelights.repository.CustomerRepository;
 import lombok.Data;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
@@ -42,6 +41,4 @@ public class Customer {
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     @JsonIgnore // Таким образом я предотвратил рекурсию
     private List<Order> orderList;
-
-
 }

@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
+
 
 @Api(value = "Работа с Заказчиком", tags = {"Заказчик"})
 @RestController
@@ -18,6 +18,7 @@ public class CustomerController {
 
     //Constructor
     //
+    // Injects через конструктор
     @Autowired
     public CustomerController(CustomerRepository customerRepository, CustomerService customerService) {
         this.customerRepository = customerRepository;
@@ -26,34 +27,44 @@ public class CustomerController {
 
 
     // Fields
-    //Injects into constructor
+    // Injects into constructor
     //
     private final CustomerRepository customerRepository;
 
-    private CustomerService customerService;
+    private final CustomerService customerService;
 
 
-
-    // Aggregate Root
+    // GET MAPPING
+    //
+    // Вывод всех Заказчиков, если role == customer
     @GetMapping("/customers")
-    List<Customer> all(){
+    List<Customer> all() {
         return customerRepository.findByUserRole("customer");
     }
 
-    @PostMapping("/customers")
-    Customer addCustomer(User newUser, @RequestBody Customer newCustomer){
-        return customerService.addCustomer(newUser, newCustomer);
-    }
 
-    //Single Item
+    // Вывод заказчика по конкретному ID
     @GetMapping("/customers/{id}")
     Customer one(@PathVariable Long id) {
         return customerRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(id));
     }
 
+
+    // POST MAPPING
+    //
+    // Создание нового заказчика
+    @PostMapping("/customers")
+    Customer addCustomer(User newUser, @RequestBody Customer newCustomer) {
+        return customerService.addCustomer(newUser, newCustomer);
+    }
+
+
+    // PUT MAPPING
+    //
+    // Измененить конкретного заказчика по ID
     @PutMapping("/customers/{id}")
-    Customer replaceCustomer(@RequestBody Customer newCustomer, @PathVariable Long id){
+    Customer replaceCustomer(@RequestBody Customer newCustomer, @PathVariable Long id) {
         return customerRepository.findById(id)
                 .map(customer -> {
                     customer.setUser(newCustomer.getUser());
@@ -67,14 +78,19 @@ public class CustomerController {
                 });
     }
 
-    @DeleteMapping("/customers/{id}")
-    void deleteCustomer(@PathVariable Long id){
-        customerRepository.deleteById(id);
+
+    // Снять деньги со своего депозита (Заказчик)
+    @PutMapping("/customer/{id}/withdraw/{money}")
+    void withdrawMoney(@PathVariable Long id, @RequestParam double money) {
+        customerService.withdrawMoney(id, money);
     }
 
 
-    @PutMapping("/customer/{id}/withdraw/{money}")
-    void withdrawMoney(@PathVariable Long id, @RequestParam double money){
-        customerService.withdrawMoney(id, money);
+    // DELETE MAPPING
+    //
+    // Удалить конкретного заказчика по ID !!!!!!!!!!!ДОДЕЛАТЬ
+    @DeleteMapping("/customers/{id}")
+    void deleteCustomer(@PathVariable Long id) {
+        customerRepository.deleteById(id);
     }
 }
