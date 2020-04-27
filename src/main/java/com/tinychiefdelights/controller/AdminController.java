@@ -6,6 +6,7 @@ import com.tinychiefdelights.model.Order;
 import com.tinychiefdelights.model.User;
 import com.tinychiefdelights.repository.AdminRepository;
 import com.tinychiefdelights.service.AdminService;
+import com.tinychiefdelights.service.UserService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,9 +22,10 @@ public class AdminController {
     //
     // Inject через конструктор
     @Autowired
-    public AdminController(AdminRepository adminRepository, AdminService adminService) {
+    public AdminController(AdminRepository adminRepository, AdminService adminService, UserService userService) {
         this.adminRepository = adminRepository;
         this.adminService = adminService;
+        this.userService = userService;
     }
 
 
@@ -32,6 +34,8 @@ public class AdminController {
     private final AdminRepository adminRepository;
 
     private final AdminService adminService;
+
+    private final UserService userService;
 
 
     // Методы
@@ -100,5 +104,10 @@ public class AdminController {
     @DeleteMapping("/admin/cooks/delete/{id}")
     void removeCook(@PathVariable Long id) {
         adminService.deleteCook(id);
+    }
+
+    @PutMapping("/admin/password")
+    void changePassword(@RequestParam String login,@RequestParam String newPass){
+        userService.changePassword(login, newPass);
     }
 }
