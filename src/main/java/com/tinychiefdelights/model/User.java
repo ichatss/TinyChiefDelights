@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.Set;
 
 @ApiModel
 @Data
@@ -38,6 +39,10 @@ public class User {
     @Size(min = 5)
     @Column(name = "password")
     private String password;
+
+//    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+//    @Enumerated(EnumType.STRING)
+//    private Set<Role> roles;
 
     @Column(name = "role")
     private String role;

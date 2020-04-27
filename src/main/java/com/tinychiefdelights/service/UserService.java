@@ -9,18 +9,23 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
 
+    // Fields
+    //
     private UserRepository userRepository;
 
+    // Injects are here
+    //
     @Autowired
     public void setUserRepository(UserRepository userRepository){
         this.userRepository = userRepository;
     }
 
-    public UserService() {
-    }
+
 
     // Методы
-    public void changePassword(String login, String newPass){ // Сменить пароль ()
+    //
+    // Сменить пароль
+    public void changePassword(String login, String newPass){
 
         User user = userRepository.getByLogin(login);
 
@@ -29,8 +34,10 @@ public class UserService {
             userRepository.save(user);
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException();
-        } catch (Exception e) {
+        } catch (NotFoundException e) {
             throw new NotFoundException(user.getId());
+        } catch (NullPointerException e) {
+            throw new NullPointerException("Ошибка! Указанный Вами логин не существует!"); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!ОШИБКА!!!!!!!
         }
     }
 }

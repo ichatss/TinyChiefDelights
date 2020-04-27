@@ -16,4 +16,5 @@ public interface AdminRepository extends JpaRepository<Admin, Long> { // Инт�
 
     // Удалить из БД Администратора ID + Role
     void deleteByUserRoleAndId(String role, Long id);
+
 }

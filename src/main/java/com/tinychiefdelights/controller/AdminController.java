@@ -1,9 +1,6 @@
 package com.tinychiefdelights.controller;
 
-import com.tinychiefdelights.model.Cook;
-import com.tinychiefdelights.model.Customer;
-import com.tinychiefdelights.model.Order;
-import com.tinychiefdelights.model.User;
+import com.tinychiefdelights.model.*;
 import com.tinychiefdelights.repository.AdminRepository;
 import com.tinychiefdelights.service.AdminService;
 import com.tinychiefdelights.service.UserService;
@@ -97,6 +94,13 @@ public class AdminController {
         adminService.editCook(id, user, rating, aboutCook);
     }
 
+    // Поменять пароль
+    @PutMapping("/admin/password")
+    void changePassword(@RequestParam String login, @RequestParam String newPass){
+        userService.changePassword(login, newPass);
+    }
+
+
 
     // DELETE MAPPING
     //
@@ -104,10 +108,5 @@ public class AdminController {
     @DeleteMapping("/admin/cooks/delete/{id}")
     void removeCook(@PathVariable Long id) {
         adminService.deleteCook(id);
-    }
-
-    @PutMapping("/admin/password")
-    void changePassword(@RequestParam String login,@RequestParam String newPass){
-        userService.changePassword(login, newPass);
     }
 }

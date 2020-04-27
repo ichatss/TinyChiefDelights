@@ -61,7 +61,7 @@ public class CustomerController {
     }
 
     @PutMapping("/customer/password")
-    void changePassword(@RequestParam String login,@RequestParam String newPass){
+    void changePassword(@RequestParam String login, @RequestParam String newPass){
         userService.changePassword(login, newPass);
     }
 

@@ -24,10 +24,6 @@ public class CookController {
 
     private final UserService userService;
 
-    @PutMapping("/cook/password")
-    void changePassword(@RequestParam String login,@RequestParam String newPass){
-        userService.changePassword(login, newPass);
-    }
 
 
     // GET MAPPING
@@ -40,7 +36,10 @@ public class CookController {
 
     // PUT MAPPING
     //
-
+    @PutMapping("/cook/password")
+    void changePassword(@RequestParam String login, @RequestParam String newPass){
+        userService.changePassword(login, newPass);
+    }
 
     // DELETE MAPPING
     //
