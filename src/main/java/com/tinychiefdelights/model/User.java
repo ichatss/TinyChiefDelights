@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 
 @ApiModel
 @Data
@@ -34,6 +35,7 @@ public class User {
     @Column(name = "login")
     private String login;
 
+    @Size(min = 5)
     @Column(name = "password")
     private String password;
 

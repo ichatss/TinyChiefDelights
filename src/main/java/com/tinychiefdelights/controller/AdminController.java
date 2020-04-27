@@ -75,7 +75,7 @@ public class AdminController {
 
 
     // Вывод Заказчика по ID
-    @GetMapping("admin/cook/{id}")
+    @GetMapping("admin/customer/{id}")
     Customer getCustomer(@PathVariable Long id){
         return adminService.getCustomer(id);
     }

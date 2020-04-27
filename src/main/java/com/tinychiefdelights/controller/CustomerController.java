@@ -4,6 +4,7 @@ import com.tinychiefdelights.model.Customer;
 import com.tinychiefdelights.model.User;
 import com.tinychiefdelights.repository.CustomerRepository;
 import com.tinychiefdelights.service.CustomerService;
+import com.tinychiefdelights.service.UserService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,9 +19,10 @@ public class CustomerController {
     //
     // Injects через конструктор
     @Autowired
-    public CustomerController(CustomerRepository customerRepository, CustomerService customerService) {
+    public CustomerController(CustomerRepository customerRepository, CustomerService customerService, UserService userService) {
         this.customerRepository = customerRepository;
         this.customerService = customerService;
+        this.userService = userService;
     }
 
 
@@ -30,6 +32,8 @@ public class CustomerController {
     private final CustomerRepository customerRepository;
 
     private final CustomerService customerService;
+
+    private final UserService userService;
 
 
     // GET MAPPING
@@ -55,6 +59,10 @@ public class CustomerController {
         customerService.withdrawMoney(id, money);
     }
 
+    @PutMapping("/customer/password")
+    void changePassword(@RequestParam String login,@RequestParam String newPass){
+        userService.changePassword(login, newPass);
+    }
 
     // DELETE MAPPING
     //
