@@ -3,7 +3,9 @@ package com.tinychiefdelights.controller;
 import com.tinychiefdelights.exceptions.NotFoundException;
 import com.tinychiefdelights.model.Order;
 import com.tinychiefdelights.repository.OrderRepository;
+import com.tinychiefdelights.service.OrderService;
 import io.swagger.annotations.Api;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,14 +18,19 @@ public class OrderController {
     // Constructor
     //
     // Injects are here
-    public OrderController(OrderRepository orderRepository) {
+    @Autowired
+    public OrderController(OrderRepository orderRepository, OrderService orderService) {
         this.orderRepository = orderRepository;
+        this.orderService = orderService;
     }
 
 
     // Fields
     //
     private final OrderRepository orderRepository;
+
+    private final OrderService orderService;
+
 
 
     // GET MAPPING
@@ -73,11 +80,18 @@ public class OrderController {
     }
 
 
+    // Отменить Заказ
+    @PutMapping("/order/{id}/cancelOrder")
+    void cancelOrder(@PathVariable Long id){
+        orderService.cancelOrder(id);
+    }
+
+
     // DELETE MAPPING
     //
-    // Удалить Заказ по ID !!!!!!!! ДОДЕЛАТЬ
+    // Удалить Заказ по ID
     @DeleteMapping("/orders/{id}")
     void deleteOrder(@PathVariable Long id) {
-        orderRepository.deleteById(id);
+        orderService.deleteOrder(id);
     }
 }

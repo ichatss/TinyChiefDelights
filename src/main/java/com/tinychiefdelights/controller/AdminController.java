@@ -61,7 +61,7 @@ public class AdminController {
     }
 
 
-    // Вывод информации по конкретному заказу по ID !!!!!!!!!!! ДЕДЕЛАТЬ
+    // Вывод информации по конкретному заказу по ID
     @GetMapping("admin/orders/{id}")
     Order getOrderInfo(@PathVariable Long id) {
         return adminService.getOrderInfo(id);
@@ -110,9 +110,9 @@ public class AdminController {
     }
 
 
-    // Удалить конкретного Повара по ID !!!!!!!!!!!!!! Доделать
+    // Удалить конкретного Повара по ID
     @DeleteMapping("/admin/cooks/delete/{id}")
     void removeCook(@PathVariable Long id) {
-        adminService.removeCook(id);
+        adminService.deleteCook(id);
     }
 }

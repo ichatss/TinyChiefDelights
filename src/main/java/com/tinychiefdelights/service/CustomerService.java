@@ -8,6 +8,8 @@ import com.tinychiefdelights.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.NotNull;
+
 
 @Service
 public class CustomerService extends UserService {
@@ -37,7 +39,7 @@ public class CustomerService extends UserService {
     // Методы
     //
     // Добавить нового Заказчика
-    public Customer addCustomer(User newUser, Customer newCustomer) {
+    public Customer addCustomer(User newUser, @NotNull Customer newCustomer) { // Нужен ли NotNull
         newCustomer.setUser(newUser);
         return customerRepository.save(newCustomer);
     }
@@ -55,7 +57,7 @@ public class CustomerService extends UserService {
             customer.setWallet(customer.getWallet() - money);
             customerRepository.save(customer);
         } else {
-            throw new RuntimeException("Введенная Вами сумма превышает остаток на счете!"); // Потом посмотрю, что делать с ошибкой
+            throw new RuntimeException("Введенная Вами сумма превышает остаток на счете!");
         }
     }
 
@@ -66,21 +68,25 @@ public class CustomerService extends UserService {
 
 
     // Удалить заказчика
-    public void deleteCustomer(Long id){
+    public void deleteCustomer(Long id) {
         Customer customer = customerRepository.getByIdAndUserRole(id, "customer");
         try {
             customerRepository.delete(customer);
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new NotFoundException(id);
         }
     }
 
 
     // Изменить карточку заказчика
-    public Customer editCustomer(Long id, User user, double wallet){
-        Customer customer = customerRepository.getByIdAndUserRole(id, "customer"); // Написать обработчик ошибок!
-        customer.setUser(user);
-        customer.setWallet(wallet);
-        return customerRepository.save(customer);
+    public Customer editCustomer(Long id, User user, double wallet) {
+        Customer customer = customerRepository.getByIdAndUserRole(id, "customer");
+        try {
+            customer.setUser(user);
+            customer.setWallet(wallet);
+            return customerRepository.save(customer);
+        } catch (Exception e) {
+            throw new NotFoundException(id);
+        }
     }
 }

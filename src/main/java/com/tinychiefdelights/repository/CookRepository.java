@@ -1,6 +1,7 @@
 package com.tinychiefdelights.repository;
 
 import com.tinychiefdelights.model.Cook;
+import com.tinychiefdelights.model.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -18,4 +19,8 @@ public interface CookRepository extends JpaRepository<Cook, Long> { // Инте�
 
     // Фильтр из БД для Администратора ID + Role
     List<Cook> findByUserRoleAndId(String role, Long id);
+
+    // Берем Повара ID + ROLE
+    Cook getByIdAndUserRole(Long id, String role);
+
 }

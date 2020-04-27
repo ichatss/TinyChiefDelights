@@ -1,6 +1,8 @@
 package com.tinychiefdelights.service;
 
+import com.tinychiefdelights.exceptions.NotFoundException;
 import com.tinychiefdelights.model.Cook;
+import com.tinychiefdelights.model.Customer;
 import com.tinychiefdelights.model.Order;
 import com.tinychiefdelights.repository.AdminRepository;
 import com.tinychiefdelights.repository.CookRepository;
@@ -52,13 +54,11 @@ public class AdminService extends UserService {
 
     // Вывод информации по конкретному заказу
     public Order getOrderInfo(Long id) {
-        return orderRepository.getById(id);
-    }
-
-
-    // Удалить повара
-    public void removeCook(Long id) { // ДОДЕЛАТЬ
-        cookRepository.deleteByUserRoleAndId("cook", id); // Узнать у Зураба, что сделать с этим!!!
+        try {
+            return orderRepository.getById(id);
+        }catch (NotFoundException e) {
+            throw new NotFoundException(id);
+        }
     }
 
 
@@ -70,5 +70,16 @@ public class AdminService extends UserService {
     // Вывод всех поваров
     public List<Cook> getAllCooks(Long id) {
         return cookRepository.findByUserRoleAndId("cook", id);
+    }
+
+
+    // Удалить Повара
+    public void deleteCook(Long id){
+        Cook cook = cookRepository.getByIdAndUserRole(id, "cook");
+        try {
+            cookRepository.delete(cook);
+        } catch (Exception e) {
+            throw new NotFoundException(id);
+        }
     }
 }
