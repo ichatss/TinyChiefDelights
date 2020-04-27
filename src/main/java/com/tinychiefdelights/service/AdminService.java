@@ -64,8 +64,6 @@ public class AdminService extends UserService {
 
     public void editCook() { // Изменить карту повара ()
 
-
-
     }
 
 

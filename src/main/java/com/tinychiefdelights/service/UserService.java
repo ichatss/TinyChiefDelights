@@ -1,9 +1,7 @@
 package com.tinychiefdelights.service;
 
 import com.tinychiefdelights.model.User;
-import org.thymeleaf.standard.expression.TextLiteralExpression;
 
-import java.beans.Expression;
 
 public class UserService {
 
