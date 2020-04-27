@@ -56,6 +56,7 @@ public class CustomerController {
     // Снять деньги со своего депозита (Заказчик)
     @PutMapping("/customer/{id}/withdraw/{money}")
     void withdrawMoney(@PathVariable Long id, @RequestParam double money) {
+
         customerService.withdrawMoney(id, money);
     }
 
@@ -64,7 +65,10 @@ public class CustomerController {
         userService.changePassword(login, newPass);
     }
 
+    @PutMapping("/customer/{id}/money")
+    public void depositMoney(@PathVariable Long id, @RequestParam double money) { // Внести деньги на счет ()
+        customerService.depositMoney(id, money);
+    }
     // DELETE MAPPING
     //
-
 }

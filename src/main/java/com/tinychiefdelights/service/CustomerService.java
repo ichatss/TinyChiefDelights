@@ -37,7 +37,17 @@ public class CustomerService extends UserService {
 
     // Методы
     //
-    public void depositMoney() { // Внести деньги на счет ()
+    public void depositMoney(Long id, double kesh) { // Внести деньги на счет ()
+        Customer customer = customerRepository.getByIdAndUserRole(id, "customer");
+        try {
+            customer.setWallet(customer.getWallet() + kesh);
+            customerRepository.save(customer);
+        }catch(IllegalArgumentException e)
+        {
+            throw new IllegalArgumentException();
+        }catch (Exception e){
+            throw new NotFoundException(id);
+        }
 
     }
 
