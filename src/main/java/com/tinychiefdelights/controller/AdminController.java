@@ -1,9 +1,9 @@
 package com.tinychiefdelights.controller;
 
-import com.tinychiefdelights.exceptions.NotFoundException;
-import com.tinychiefdelights.model.Admin;
 import com.tinychiefdelights.model.Cook;
+import com.tinychiefdelights.model.Customer;
 import com.tinychiefdelights.model.Order;
+import com.tinychiefdelights.model.User;
 import com.tinychiefdelights.repository.AdminRepository;
 import com.tinychiefdelights.service.AdminService;
 import io.swagger.annotations.Api;
@@ -39,21 +39,6 @@ public class AdminController {
 
     // GET MAPPING
     //
-    // Ищем в базе только тех, у кого role == cook
-    @GetMapping("/admins")
-    List<Admin> all() {
-        return adminRepository.findByUserRole("admin");
-    }
-
-
-    // Вывод админов по конкретному ID
-    @GetMapping("/admins/{id}")
-    Admin one(@PathVariable Long id) {
-        return adminRepository.findByUserRoleAndId("admin", id)
-                .orElseThrow(() -> new NotFoundException(id));
-    }
-
-
     // Вывод списка всех заказов
     @GetMapping("admin/orders")
     List<Order> getAllOrders() {
@@ -70,46 +55,47 @@ public class AdminController {
 
     // Вывод всех Поваров
     @GetMapping("admin/cooks")
-    List<Cook> getAllCooks(@PathVariable Long id) {
-        return adminService.getAllCooks(id);
+    List<Cook> getAllCooks() {
+        return adminService.getAllCooks();
+    }
+
+
+    // Вывод Повара по ID
+    @GetMapping("admin/cook/{id}")
+    Cook getCook(@PathVariable Long id){
+        return adminService.getCook(id);
+    }
+
+
+    // Вывод всех пользователей
+    @GetMapping("admin/customers")
+    List<Customer> getAllCustomer(){
+        return adminService.getAllCustomers();
+    }
+
+
+    // Вывод Заказчика по ID
+    @GetMapping("admin/cook/{id}")
+    Customer getCustomer(@PathVariable Long id){
+        return adminService.getCustomer(id);
     }
 
 
     // POST MAPPING
     //
-    // Создаем нового Админа !!!!!!!!!!!!ДОДЕЛАТЬ
-    @PostMapping("/admins")
-    Admin newAdmin(@RequestBody Admin newAdmin) {
-        return adminRepository.save(newAdmin);
-    }
 
 
     // PUT MAPPING
     //
-    // Изменяем конкретного Админа
-    @PutMapping("/admins/{id}")
-    Admin replaceAdmin(@RequestBody Admin newAdmin, @PathVariable Long id) {
-        return adminRepository.findByUserRoleAndId("admin", id)
-                .map(admin -> {
-                    admin.setUser(newAdmin.getUser());
-                    return adminRepository.save(admin);
-                })
-                .orElseGet(() -> {
-                    newAdmin.setId(id);
-                    return adminRepository.save(newAdmin);
-                });
+    // Изменяем Повара по ID
+    @PutMapping("/admin/edit/cook/{id}")
+    void editCook(@PathVariable Long id, User user, @PathVariable float rating, String aboutCook){
+        adminService.editCook(id, user, rating, aboutCook);
     }
 
 
     // DELETE MAPPING
     //
-    // Удалить Админа по конкретному ID !!!!!!!!! Доделать
-    @DeleteMapping("/admins/{id}")
-    void deleteAdmins(@PathVariable Long id) {
-        adminRepository.deleteByUserRoleAndId("admin", id);
-    }
-
-
     // Удалить конкретного Повара по ID
     @DeleteMapping("/admin/cooks/delete/{id}")
     void removeCook(@PathVariable Long id) {

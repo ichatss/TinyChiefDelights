@@ -8,7 +8,6 @@ import com.tinychiefdelights.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.validation.constraints.NotNull;
 
 
 @Service
@@ -38,13 +37,6 @@ public class CustomerService extends UserService {
 
     // Методы
     //
-    // Добавить нового Заказчика
-    public Customer addCustomer(User newUser, @NotNull Customer newCustomer) { // Нужен ли NotNull
-        newCustomer.setUser(newUser);
-        return customerRepository.save(newCustomer);
-    }
-
-
     public void depositMoney() { // Внести деньги на счет ()
 
     }
@@ -67,17 +59,6 @@ public class CustomerService extends UserService {
     }
 
 
-    // Удалить заказчика
-    public void deleteCustomer(Long id) {
-        Customer customer = customerRepository.getByIdAndUserRole(id, "customer");
-        try {
-            customerRepository.delete(customer);
-        } catch (Exception e) {
-            throw new NotFoundException(id);
-        }
-    }
-
-
     // Изменить карточку заказчика
     public Customer editCustomer(Long id, User user, double wallet) {
         Customer customer = customerRepository.getByIdAndUserRole(id, "customer");
@@ -85,6 +66,8 @@ public class CustomerService extends UserService {
             customer.setUser(user);
             customer.setWallet(wallet);
             return customerRepository.save(customer);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException();
         } catch (Exception e) {
             throw new NotFoundException(id);
         }

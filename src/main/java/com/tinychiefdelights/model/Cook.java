@@ -37,7 +37,7 @@ public class Cook {
 
     //Relationships
     //
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id") // Join without Cook in User class
     private User user;
 
