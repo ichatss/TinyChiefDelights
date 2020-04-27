@@ -1,9 +1,6 @@
 package com.tinychiefdelights.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -62,5 +59,4 @@ public class Cook {
             inverseJoinColumns = @JoinColumn(name = "cook_id"))
     @JsonIgnore // Таким образом я предотвратил рекурсию
     private List<Dish> dish;
-
 }

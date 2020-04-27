@@ -12,13 +12,15 @@ import java.util.List;
 @Table(name = "pg_order", schema = "public")
 public class Order {
 
-    public Order(){ // Пустой конструктор для Hibernate
+    public Order() { // Пустой конструктор для Hibernate
 
     }
 
 
     // Поля
-    private @Id @GeneratedValue Long id;
+    private @Id
+    @GeneratedValue
+    Long id;
 
     @Column(name = "address")
     private String address;
@@ -34,6 +36,7 @@ public class Order {
 
 
     //Relationships
+    //
     //Заказчик
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnore // Таким образом я предотвратил рекурсию
@@ -49,8 +52,7 @@ public class Order {
     private List<Dish> dishes;
 
     //Повар
-    @ManyToOne(fetch= FetchType.LAZY, cascade= CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnore // Таким образом я предотвратил рекурсию
     private Cook cook;
-
 }

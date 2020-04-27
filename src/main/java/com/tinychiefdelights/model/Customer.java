@@ -1,8 +1,9 @@
 package com.tinychiefdelights.model;
 
 import com.fasterxml.jackson.annotation.*;
-import com.tinychiefdelights.repository.CustomerRepository;
 import lombok.Data;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 import java.util.List;
@@ -31,14 +32,13 @@ public class Customer {
 
     //Relationships
     //
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id") // Join without Customer in User class
+    @NotFound(action = NotFoundAction.IGNORE)
     private User user;
 
     //Лист заказов
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     @JsonIgnore // Таким образом я предотвратил рекурсию
     private List<Order> orderList;
-
-
 }

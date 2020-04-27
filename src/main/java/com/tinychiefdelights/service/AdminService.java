@@ -1,6 +1,8 @@
 package com.tinychiefdelights.service;
 
+import com.tinychiefdelights.exceptions.NotFoundException;
 import com.tinychiefdelights.model.Cook;
+import com.tinychiefdelights.model.Customer;
 import com.tinychiefdelights.model.Order;
 import com.tinychiefdelights.repository.AdminRepository;
 import com.tinychiefdelights.repository.CookRepository;
@@ -15,6 +17,7 @@ public class AdminService extends UserService {
 
     // Поля
     //
+    // Injects in setters
     private AdminRepository adminRepository; // Администратор
 
     private OrderRepository orderRepository; // Заказ
@@ -23,6 +26,7 @@ public class AdminService extends UserService {
 
 
     // Getters and Setters
+    //
     // Делаем inject через сеттеры
     @Autowired
     public void setAdminRepository(AdminRepository adminRepository) {
@@ -42,24 +46,40 @@ public class AdminService extends UserService {
 
     // Методы
     //
-    public List<Order> getAllOrders(){ // Вывод списка всех заказов
+    // Вывод списка всех заказов
+    public List<Order> getAllOrders() {
         return orderRepository.findAll();
     }
 
-    public Order getOrderInfo(Long id){ // Вывод информации по конкретному заказу
-        return orderRepository.getById(id);
+
+    // Вывод информации по конкретному заказу
+    public Order getOrderInfo(Long id) {
+        try {
+            return orderRepository.getById(id);
+        }catch (NotFoundException e) {
+            throw new NotFoundException(id);
+        }
     }
 
-    public void removeCook(Long id){ // Удалить повара
-        cookRepository.deleteByUserRoleAndId("cook", id); // Узнать у Зураба, что сделать с этим!!!
-    }
 
-    public void editCook(){ // Изменить карту повара ()
+    public void editCook() { // Изменить карту повара ()
 
     }
 
-    public List<Cook> getAllCooks(Long id){ // Вывод всех поваров
+
+    // Вывод всех поваров
+    public List<Cook> getAllCooks(Long id) {
         return cookRepository.findByUserRoleAndId("cook", id);
     }
 
+
+    // Удалить Повара
+    public void deleteCook(Long id){
+        Cook cook = cookRepository.getByIdAndUserRole(id, "cook");
+        try {
+            cookRepository.delete(cook);
+        } catch (Exception e) {
+            throw new NotFoundException(id);
+        }
+    }
 }

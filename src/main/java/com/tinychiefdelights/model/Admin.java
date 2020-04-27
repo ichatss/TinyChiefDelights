@@ -32,5 +32,4 @@ public class Admin {
     @OneToOne
     @JoinColumn(name = "id") // Join without Admin in User class
     private User user;
-
 }

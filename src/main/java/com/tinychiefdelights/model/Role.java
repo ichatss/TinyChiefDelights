@@ -1,6 +1,6 @@
 package com.tinychiefdelights.model;
 
- // ОН ПОКА ПРОСТО СУЩЕСТВУЕТ, В ПРОЕКТ ЭТОТ ENUM НИКАК НЕ ИНТЕГРИРОВАН
+// ОН ПОКА ПРОСТО СУЩЕСТВУЕТ, В ПРОЕКТ ЭТОТ ENUM НИКАК НЕ ИНТЕГРИРОВАН
 
 public enum Role {
 
@@ -11,7 +11,7 @@ public enum Role {
 
 
     // Constructor
-    Role(String role){
+    Role(String role) {
         this.role = role;
     }
 }
