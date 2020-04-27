@@ -2,7 +2,6 @@ package com.tinychiefdelights.controller;
 
 import com.tinychiefdelights.exceptions.NotFoundException;
 import com.tinychiefdelights.model.Customer;
-import com.tinychiefdelights.model.User;
 import com.tinychiefdelights.repository.CustomerRepository;
 import com.tinychiefdelights.service.CustomerService;
 import io.swagger.annotations.Api;
@@ -11,14 +10,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
 @Api(value = "Работа с Заказчиком", tags = {"Заказчик"})
 @RestController
 public class CustomerController {
 
     //Constructor
     //
-    // Injects через конструктор
     @Autowired
     public CustomerController(CustomerRepository customerRepository, CustomerService customerService) {
         this.customerRepository = customerRepository;
@@ -27,60 +24,55 @@ public class CustomerController {
 
 
     // Fields
-    // Injects into constructor
+    //Injects into constructor
     //
     private final CustomerRepository customerRepository;
 
-    private final CustomerService customerService;
+    private CustomerService customerService;
 
 
-    // GET MAPPING
-    //
-    // Вывод всех Заказчиков, если role == customer
+
+    // Aggregate Root
     @GetMapping("/customers")
-    List<Customer> all() {
+    List<Customer> all(){
         return customerRepository.findByUserRole("customer");
     }
 
+    @PostMapping("/customers")
+    Customer newCustomer(@RequestBody Customer newCustomer){
+        return customerRepository.save(newCustomer);
+    }
 
-    // Вывод заказчика по конкретному ID
+    //Single Item
     @GetMapping("/customers/{id}")
     Customer one(@PathVariable Long id) {
         return customerRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(id));
     }
 
-
-    // POST MAPPING
-    //
-    // Создание нового заказчика
-    @PostMapping("/customers")
-    Customer addCustomer(User newUser, @RequestBody Customer newCustomer) {
-        return customerService.addCustomer(newUser, newCustomer);
+    @PutMapping("/customers/{id}")
+    Customer replaceCustomer(@RequestBody Customer newCustomer, @PathVariable Long id){
+        return customerRepository.findById(id)
+                .map(customer -> {
+                    customer.setUser(newCustomer.getUser());
+                    customer.setWallet(newCustomer.getWallet());
+                    customer.setOrderList(newCustomer.getOrderList());
+                    return customerRepository.save(customer);
+                })
+                .orElseGet(() -> {
+                    newCustomer.setId(id);
+                    return customerRepository.save(newCustomer);
+                });
     }
 
-
-    // PUT MAPPING
-    //
-    // Измененить конкретного заказчика по ID
-    @PutMapping("/customer/{id}")
-    Customer editCustomer(@PathVariable Long id, User user, @RequestParam double wallet) {
-        return customerService.editCustomer(id, user, wallet);
-    }
-
-
-    // Снять деньги со своего депозита (Заказчик)
-    @PutMapping("/customer/{id}/withdraw/{money}")
-    void withdrawMoney(@PathVariable Long id, @RequestParam double money) {
-        customerService.withdrawMoney(id, money);
-    }
-
-
-    // DELETE MAPPING
-    //
-    // Удалить конкретного Заказчика по ID
     @DeleteMapping("/customers/{id}")
-    void deleteCustomer(@PathVariable Long id) {
-        customerService.deleteCustomer(id);
+    void deleteCustomer(@PathVariable Long id){
+        customerRepository.deleteById(id);
+    }
+
+
+    @PutMapping("/customer/withdraw/{id}") // ДОДЕЛАТЬ НАДО!!!!!!!!!!
+    void withdrawMoney(@RequestBody Customer customer, @PathVariable Long id, @PathVariable double money){
+        customerService.withdrawMoney(customer, money);
     }
 }
