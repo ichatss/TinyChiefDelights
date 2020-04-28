@@ -1,14 +1,15 @@
 package com.tinychiefdelights.controller;
 
-import com.tinychiefdelights.model.Customer;
-import com.tinychiefdelights.model.User;
+import com.tinychiefdelights.model.*;
 import com.tinychiefdelights.repository.CustomerRepository;
 import com.tinychiefdelights.service.CustomerService;
 import com.tinychiefdelights.service.UserService;
 import io.swagger.annotations.Api;
+import javafx.scene.text.Text;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 
 
 @Api(value = "Работа с Заказчиком", tags = {"Заказчик"})
@@ -68,6 +69,17 @@ public class CustomerController {
     @PutMapping("/customer/{id}/money")
     public void depositMoney(@PathVariable Long id, @RequestParam double money) { // Внести деньги на счет ()
         customerService.depositMoney(id, money);
+    }
+
+    @PutMapping("/customer/makeorder")
+    public void makeOrder(String address, String phoneNumber, Long customerId,
+                          Long cookId, @RequestParam List<Long> dishList){
+        customerService.makeOrder(address, phoneNumber, customerId, cookId, dishList);
+    }
+
+    @PutMapping("/customer/setreview")
+    public void setReview(String text, int rate, Long id){
+        customerService.setReview(text, rate, id);
     }
     // DELETE MAPPING
     //

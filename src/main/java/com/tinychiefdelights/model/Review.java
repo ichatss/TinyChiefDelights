@@ -19,7 +19,7 @@ public class Review {  // Отзыв
     // Поля
     //
     private @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
     @Column(name = "review")

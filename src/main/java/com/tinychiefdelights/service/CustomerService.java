@@ -1,13 +1,15 @@
 package com.tinychiefdelights.service;
 
 import com.tinychiefdelights.exceptions.NotFoundException;
-import com.tinychiefdelights.model.Customer;
-import com.tinychiefdelights.model.User;
-import com.tinychiefdelights.repository.CustomerRepository;
-import com.tinychiefdelights.repository.UserRepository;
+import com.tinychiefdelights.model.*;
+import com.tinychiefdelights.repository.*;
+import javafx.scene.text.Text;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 
 @Service
@@ -18,12 +20,45 @@ public class CustomerService extends UserService {
     // Injects in setters
     private CustomerRepository customerRepository;
 
+    private CookRepository cookRepository;
+
     private UserRepository userRepository;
+
+    private OrderRepository orderRepository;
+
+    private DishRepository dishRepository;
+
+    private ReviewRepository reviewRepository;
+
+    public CustomerService(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
+    }
 
 
     // SETTERS
     //
     // Injects into Setters
+    @Autowired
+    public void setReviewRepository(ReviewRepository reviewRepository){
+        this.reviewRepository = reviewRepository;
+    }
+
+    @Autowired
+    public void setDishRepository(DishRepository dishRepository){
+        this.dishRepository = dishRepository;
+    }
+
+    @Autowired
+    public void setCookRepository(CookRepository cookRepository){
+        this.cookRepository = cookRepository;
+    }
+
+
+    @Autowired
+    public void setOrderRepository(OrderRepository orderRepository){
+        this.orderRepository = orderRepository;
+    }
+
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -63,9 +98,39 @@ public class CustomerService extends UserService {
         }
     }
 
+    public void setReview(String text, int rate, Long id){
+       try {
+           Review review = new Review();
+           review.setReview(text);
+           review.setRate(rate);
+           review.setCook(cookRepository.getByIdAndUserRole(id, "cook"));
+           reviewRepository.save(review);
+       }catch (IllegalArgumentException e){
+           throw new IllegalArgumentException(e);
+       }
 
-    public void makeOrder() { // Сделать заказ ()
+    }
 
+    public void makeOrder(String address, String phoneNumber, Long customerId,
+                          Long cookId, List<Long> dishListId) { // Сделать заказ ()
+        try{
+            Order order = new Order();
+            order.setAddress(address);
+            order.setPhoneNumber(phoneNumber);
+            Date date = new Date();
+            order.setDateOrder(date);
+            order.setOrderStatus(true);
+            order.setCustomer(customerRepository.getByIdAndUserRole(customerId, "customer"));
+            order.setCook(cookRepository.getByIdAndUserRole(cookId,"cook"));
+//            List<Dish> dishList = new ArrayList<Dish>();
+//            for (Long a: dishListId) {
+//                dishList.add(dishRepository.getById(a));
+//            }
+//            order.setDishes(dishList);
+            orderRepository.save(order);
+        }catch (IllegalArgumentException e){
+            throw new IllegalArgumentException(e);
+        }
     }
 
 

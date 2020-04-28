@@ -19,7 +19,7 @@ public class Order {
 
     // Поля
     private @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
     @Column(name = "address")
