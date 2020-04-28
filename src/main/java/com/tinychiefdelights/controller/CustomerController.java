@@ -87,6 +87,12 @@ public class CustomerController {
     }
 
 
+    // Отменить Заказ
+    @PutMapping("/cancel/order/{id}")
+    public void cancelOrder(@PathVariable Long id){
+        customerService.cancelOrder(id);
+    }
+
 
     // DELETE MAPPING
     //

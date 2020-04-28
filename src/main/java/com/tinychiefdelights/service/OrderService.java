@@ -34,10 +34,4 @@ public class OrderService {
     }
 
 
-    // Отменить заказ
-    public void cancelOrder(Long id) {
-        Order order = orderRepository.getById(id);
-        order.setOrderStatus(false); // Добавим сообщение !!!!!!!!!!!!!!!
-        orderRepository.save(order);
-    }
 }

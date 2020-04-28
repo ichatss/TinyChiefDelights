@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 
-
 @Api(value = "Работа с Заказом", tags = {"Заказ"})
 @RestController
 @RequestMapping("/order")
@@ -40,12 +39,6 @@ public class OrderController {
 
     // PUT MAPPING
     //
-    // Отменить Заказ
-    @PutMapping("/{id}/cancelOrder")
-    void cancelOrder(@PathVariable Long id) {
-        orderService.cancelOrder(id);
-    }
-
 
     // DELETE MAPPING
     //

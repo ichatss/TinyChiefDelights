@@ -31,12 +31,12 @@ public class UserService {
         try {
             user.setPassword(newPass);
             userRepository.save(user);
+        } catch (NullPointerException e) {
+            throw new NullPointerException("Ошибка! Указанный Вами логин не существует!"); // Надо посмотреть в чем дело
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException();
         } catch (NotFoundException e) {
             throw new NotFoundException(user.getId());
-        } catch (NullPointerException e) {
-            throw new NullPointerException("Ошибка! Указанный Вами логин не существует!"); // Надо посмотреть в чем дело
         }
     }
 }
