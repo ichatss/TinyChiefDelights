@@ -5,7 +5,6 @@ import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.util.Set;
 
 @ApiModel
 @Data
@@ -17,7 +16,7 @@ public class User {
 
     }
 
-    public User(String name, String lastName, String role,
+    public User(String name, String lastName, Role role,
                 String login, String password) { // Базовый конструктор
 
         this.name = name;
@@ -36,16 +35,13 @@ public class User {
     @Column(name = "login")
     private String login;
 
-    @Size(min = 5)
+    @Size(min = 5, max = 30)
     @Column(name = "password")
     private String password;
 
-//    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
-//    @Enumerated(EnumType.STRING)
-//    private Set<Role> roles;
-
+    @Enumerated(EnumType.STRING)
     @Column(name = "role")
-    private String role;
+    private Role role;
 
     @Column(name = "name")
     private String name;

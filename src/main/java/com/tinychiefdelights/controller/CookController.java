@@ -6,9 +6,9 @@ import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.*;
 
 
-
 @Api(value = "Работа с Поваром", tags = {"Повар"})
 @RestController
+@RequestMapping("/cook")
 public class CookController {
 
     //Injects через конструктор
@@ -25,7 +25,6 @@ public class CookController {
     private final UserService userService;
 
 
-
     // GET MAPPING
     //
 
@@ -36,8 +35,8 @@ public class CookController {
 
     // PUT MAPPING
     //
-    @PutMapping("/cook/password")
-    void changePassword(@RequestParam String login, @RequestParam String newPass){
+    @PutMapping("/change/password")
+    void changePassword(@RequestParam String login, @RequestParam String newPass) {
         userService.changePassword(login, newPass);
     }
 

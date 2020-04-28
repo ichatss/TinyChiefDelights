@@ -1,10 +1,7 @@
 package com.tinychiefdelights.service;
 
 import com.tinychiefdelights.exceptions.NotFoundException;
-import com.tinychiefdelights.model.Cook;
-import com.tinychiefdelights.model.Customer;
-import com.tinychiefdelights.model.Order;
-import com.tinychiefdelights.model.User;
+import com.tinychiefdelights.model.*;
 import com.tinychiefdelights.repository.AdminRepository;
 import com.tinychiefdelights.repository.CookRepository;
 import com.tinychiefdelights.repository.CustomerRepository;
@@ -29,7 +26,6 @@ public class AdminService extends UserService {
     private CustomerRepository customerRepository; // Заказчик
 
 
-
     // Getters and Setters
     //
     // Делаем inject через сеттеры
@@ -48,6 +44,7 @@ public class AdminService extends UserService {
         this.cookRepository = cookRepository;
     }
 
+    @Autowired
     public void setCustomerRepository(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
     }
@@ -65,7 +62,7 @@ public class AdminService extends UserService {
     public Order getOrderInfo(Long id) {
         try {
             return orderRepository.getById(id);
-        }catch (NotFoundException e) {
+        } catch (NotFoundException e) {
             throw new NotFoundException(id);
         }
     }
@@ -74,7 +71,7 @@ public class AdminService extends UserService {
     // Вывод Повара по ID
     public Cook getCook(Long id) {
         try {
-            return cookRepository.getByIdAndUserRole(id, "cook");
+            return cookRepository.getByIdAndUserRole(id, Role.COOK);
         } catch (NotFoundException e) {
             throw new NotFoundException(id);
         } catch (IllegalArgumentException e) {
@@ -85,12 +82,12 @@ public class AdminService extends UserService {
 
     // Изменить карту повара
     public void editCook(Long id, User user, float rating, String aboutCook) {
-        Cook cook = cookRepository.getByIdAndUserRole(id, "cook");
+        Cook cook = cookRepository.getByIdAndUserRole(id, Role.COOK);
         try {
             cook.setUser(user);
             cook.setRating(rating);
             cook.setAboutCook(aboutCook);
-        } catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException();
         } catch (NotFoundException e) {
             throw new NotFoundException(id);
@@ -100,13 +97,13 @@ public class AdminService extends UserService {
 
     // Вывод всех поваров
     public List<Cook> getAllCooks() {
-        return cookRepository.findByUserRole("cook");
+        return cookRepository.findByUserRole(Role.COOK);
     }
 
 
     // Удалить Повара
-    public void deleteCook(Long id){
-        Cook cook = cookRepository.getByIdAndUserRole(id, "cook");
+    public void deleteCook(Long id) {
+        Cook cook = cookRepository.getByIdAndUserRole(id, Role.COOK);
         try {
             cookRepository.delete(cook);
         } catch (Exception e) {
@@ -116,15 +113,15 @@ public class AdminService extends UserService {
 
 
     // Вывод всех Заказчиков
-    public List<Customer> getAllCustomers(){
-        return customerRepository.findByUserRole("customer");
+    public List<Customer> getAllCustomers() {
+        return customerRepository.findByUserRole(Role.CUSTOMER);
     }
 
 
     // Вывод Заказчика по ID
-    public Customer getCustomer(Long id){
+    public Customer getCustomer(Long id) {
         try {
-            return customerRepository.getByIdAndUserRole(id, "customer");
+            return customerRepository.getByIdAndUserRole(id, Role.CUSTOMER);
         } catch (NotFoundException e) {
             throw new NotFoundException(id);
         } catch (IllegalArgumentException e) {

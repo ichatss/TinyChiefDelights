@@ -5,9 +5,9 @@ import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.*;
 
 
-
 @Api(value = "Работа с Отзывами", tags = {"Отзыв"})
 @RestController
+@RequestMapping("/review")
 public class ReviewController {
 
     // Constructor

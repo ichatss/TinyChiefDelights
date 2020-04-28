@@ -13,7 +13,7 @@ public class ExceptionsAdvice {
     @ResponseBody
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String NotFoundHandler(NotFoundException ex){
+    String NotFoundHandler(NotFoundException ex) {
         return ex.getMessage();
     }
 
@@ -22,7 +22,7 @@ public class ExceptionsAdvice {
     @ResponseBody
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    String IllegalArgumentHandler(IllegalArgumentException ex){
+    String IllegalArgumentHandler(IllegalArgumentException ex) {
         return ex.getMessage();
     }
 
@@ -31,7 +31,7 @@ public class ExceptionsAdvice {
     @ResponseBody
     @ExceptionHandler(NullPointerException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    String NullPointerHandler(NullPointerException ex){
+    String NullPointerHandler(NullPointerException ex) {
         return ex.getMessage();
     }
 }

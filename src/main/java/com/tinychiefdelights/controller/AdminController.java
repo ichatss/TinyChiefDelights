@@ -13,6 +13,7 @@ import java.util.List;
 
 @Api(value = "Работа с Админом", tags = {"Администратор"})
 @RestController
+@RequestMapping("/admin")
 public class AdminController {
 
     // Constructor
@@ -37,47 +38,46 @@ public class AdminController {
 
     // Методы
     //
-
     // GET MAPPING
     //
     // Вывод списка всех заказов
-    @GetMapping("admin/orders")
+    @GetMapping("/orders")
     List<Order> getAllOrders() {
         return adminService.getAllOrders();
     }
 
 
     // Вывод информации по конкретному заказу по ID
-    @GetMapping("admin/orders/{id}")
+    @GetMapping("/order/{id}")
     Order getOrderInfo(@PathVariable Long id) {
         return adminService.getOrderInfo(id);
     }
 
 
     // Вывод всех Поваров
-    @GetMapping("admin/cooks")
+    @GetMapping("/cooks")
     List<Cook> getAllCooks() {
         return adminService.getAllCooks();
     }
 
 
     // Вывод Повара по ID
-    @GetMapping("admin/cook/{id}")
-    Cook getCook(@PathVariable Long id){
+    @GetMapping("/cook/{id}")
+    Cook getCook(@PathVariable Long id) {
         return adminService.getCook(id);
     }
 
 
     // Вывод всех пользователей
-    @GetMapping("admin/customers")
-    List<Customer> getAllCustomer(){
+    @GetMapping("/customers")
+    List<Customer> getAllCustomer() {
         return adminService.getAllCustomers();
     }
 
 
     // Вывод Заказчика по ID
-    @GetMapping("admin/customer/{id}")
-    Customer getCustomer(@PathVariable Long id){
+    @GetMapping("/customer/{id}")
+    Customer getCustomer(@PathVariable Long id) {
         return adminService.getCustomer(id);
     }
 
@@ -89,23 +89,22 @@ public class AdminController {
     // PUT MAPPING
     //
     // Изменяем Повара по ID
-    @PutMapping("/admin/edit/cook/{id}")
-    void editCook(@PathVariable Long id, User user, @PathVariable float rating, String aboutCook){
+    @PutMapping("/edit/cook/{id}")
+    void editCook(@PathVariable Long id, User user, @PathVariable float rating, String aboutCook) {
         adminService.editCook(id, user, rating, aboutCook);
     }
 
     // Поменять пароль
-    @PutMapping("/admin/password")
-    void changePassword(@RequestParam String login, @RequestParam String newPass){
+    @PutMapping("/change/password")
+    void changePassword(@RequestParam String login, @RequestParam String newPass) {
         userService.changePassword(login, newPass);
     }
-
 
 
     // DELETE MAPPING
     //
     // Удалить конкретного Повара по ID
-    @DeleteMapping("/admin/cooks/delete/{id}")
+    @DeleteMapping("/delete/cook/{id}")
     void removeCook(@PathVariable Long id) {
         adminService.deleteCook(id);
     }

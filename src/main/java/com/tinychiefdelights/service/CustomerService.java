@@ -3,11 +3,9 @@ package com.tinychiefdelights.service;
 import com.tinychiefdelights.exceptions.NotFoundException;
 import com.tinychiefdelights.model.*;
 import com.tinychiefdelights.repository.*;
-import javafx.scene.text.Text;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -39,23 +37,23 @@ public class CustomerService extends UserService {
     //
     // Injects into Setters
     @Autowired
-    public void setReviewRepository(ReviewRepository reviewRepository){
+    public void setReviewRepository(ReviewRepository reviewRepository) {
         this.reviewRepository = reviewRepository;
     }
 
     @Autowired
-    public void setDishRepository(DishRepository dishRepository){
+    public void setDishRepository(DishRepository dishRepository) {
         this.dishRepository = dishRepository;
     }
 
     @Autowired
-    public void setCookRepository(CookRepository cookRepository){
+    public void setCookRepository(CookRepository cookRepository) {
         this.cookRepository = cookRepository;
     }
 
 
     @Autowired
-    public void setOrderRepository(OrderRepository orderRepository){
+    public void setOrderRepository(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
     }
 
@@ -72,15 +70,15 @@ public class CustomerService extends UserService {
 
     // Методы
     //
-    public void depositMoney(Long id, double kesh) { // Внести деньги на счет ()
-        Customer customer = customerRepository.getByIdAndUserRole(id, "customer");
+    // Внести деньги на счет
+    public void depositMoney(Long id, double money) {
+        Customer customer = customerRepository.getByIdAndUserRole(id, Role.CUSTOMER);
         try {
-            customer.setWallet(customer.getWallet() + kesh);
+            customer.setWallet(customer.getWallet() + money);
             customerRepository.save(customer);
-        }catch(IllegalArgumentException e)
-        {
+        } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException();
-        }catch (Exception e){
+        } catch (NotFoundException e) {
             throw new NotFoundException(id);
         }
 
@@ -89,7 +87,7 @@ public class CustomerService extends UserService {
 
     // Вывести деньги со счета
     public void withdrawMoney(Long id, double money) {
-        Customer customer = customerRepository.getByIdAndUserRole(id, "customer");
+        Customer customer = customerRepository.getByIdAndUserRole(id, Role.CUSTOMER);
         if (money <= customer.getWallet()) { // Делаем проверку, чтобы сумма указанная заказчиком была меньше кошелька
             customer.setWallet(customer.getWallet() - money);
             customerRepository.save(customer);
@@ -98,37 +96,41 @@ public class CustomerService extends UserService {
         }
     }
 
-    public void setReview(String text, int rate, Long id){
-       try {
-           Review review = new Review();
-           review.setReview(text);
-           review.setRate(rate);
-           review.setCook(cookRepository.getByIdAndUserRole(id, "cook"));
-           reviewRepository.save(review);
-       }catch (IllegalArgumentException e){
-           throw new IllegalArgumentException(e);
-       }
+
+    // Оставить Отзыв
+    public void setReview(String text, int rate, Long id) {
+        try {
+            Review review = new Review();
+            review.setReview(text);
+            review.setRate(rate);
+            review.setCook(cookRepository.getByIdAndUserRole(id, Role.COOK));
+            reviewRepository.save(review);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException(e);
+        }
 
     }
 
+
+    // Сделать Заказ
     public void makeOrder(String address, String phoneNumber, Long customerId,
                           Long cookId, List<Long> dishListId) { // Сделать заказ ()
-        try{
+        try {
             Order order = new Order();
             order.setAddress(address);
             order.setPhoneNumber(phoneNumber);
             Date date = new Date();
             order.setDateOrder(date);
             order.setOrderStatus(true);
-            order.setCustomer(customerRepository.getByIdAndUserRole(customerId, "customer"));
-            order.setCook(cookRepository.getByIdAndUserRole(cookId,"cook"));
+            order.setCustomer(customerRepository.getByIdAndUserRole(customerId, Role.CUSTOMER));
+            order.setCook(cookRepository.getByIdAndUserRole(cookId, Role.COOK));
 //            List<Dish> dishList = new ArrayList<Dish>();
 //            for (Long a: dishListId) {
 //                dishList.add(dishRepository.getById(a));
 //            }
 //            order.setDishes(dishList);
             orderRepository.save(order);
-        }catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException(e);
         }
     }
@@ -136,7 +138,7 @@ public class CustomerService extends UserService {
 
     // Изменить карточку заказчика
     public Customer editCustomer(Long id, User user, double wallet) {
-        Customer customer = customerRepository.getByIdAndUserRole(id, "customer");
+        Customer customer = customerRepository.getByIdAndUserRole(id, Role.CUSTOMER);
         try {
             customer.setUser(user);
             customer.setWallet(wallet);

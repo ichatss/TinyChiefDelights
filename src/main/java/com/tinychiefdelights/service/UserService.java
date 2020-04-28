@@ -16,16 +16,15 @@ public class UserService {
     // Injects are here
     //
     @Autowired
-    public void setUserRepository(UserRepository userRepository){
+    public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-
 
 
     // Методы
     //
     // Сменить пароль
-    public void changePassword(String login, String newPass){
+    public void changePassword(String login, String newPass) {
 
         User user = userRepository.getByLogin(login);
 
@@ -37,7 +36,7 @@ public class UserService {
         } catch (NotFoundException e) {
             throw new NotFoundException(user.getId());
         } catch (NullPointerException e) {
-            throw new NullPointerException("Ошибка! Указанный Вами логин не существует!"); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!ОШИБКА!!!!!!!
+            throw new NullPointerException("Ошибка! Указанный Вами логин не существует!"); // Надо посмотреть в чем дело
         }
     }
 }

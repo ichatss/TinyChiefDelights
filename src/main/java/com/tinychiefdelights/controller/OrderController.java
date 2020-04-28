@@ -6,11 +6,11 @@ import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 
 @Api(value = "Работа с Заказом", tags = {"Заказ"})
 @RestController
+@RequestMapping("/order")
 public class OrderController {
 
     // Constructor
@@ -30,7 +30,6 @@ public class OrderController {
     private final OrderService orderService;
 
 
-
     // GET MAPPING
     //
 
@@ -42,8 +41,8 @@ public class OrderController {
     // PUT MAPPING
     //
     // Отменить Заказ
-    @PutMapping("/order/{id}/cancelOrder")
-    void cancelOrder(@PathVariable Long id){
+    @PutMapping("/{id}/cancelOrder")
+    void cancelOrder(@PathVariable Long id) {
         orderService.cancelOrder(id);
     }
 

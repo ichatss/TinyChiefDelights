@@ -5,9 +5,9 @@ import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.*;
 
 
-
 @Api(value = "Работа с Блюдом", tags = {"Блюдо"})
 @RestController
+@RequestMapping("/dish")
 public class DishController {
 
     // Constructor
@@ -25,7 +25,6 @@ public class DishController {
 
     // GET MAPPING
     //
-
 
 
     // POST MAPPING
