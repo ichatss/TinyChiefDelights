@@ -37,7 +37,7 @@ public class CookService extends UserService {
     //
     // Добавить блюдо
      ////////////////////////!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Проверку добавить
-    void createDish(Long id, String aboutDish, short cookingTime,
+    public void createDish(String aboutDish, short cookingTime,
                     List<Cook> cookList, String dishName, short weight, double dishCost) {
 
         Dish dish = new Dish();
@@ -54,7 +54,7 @@ public class CookService extends UserService {
 
 
     // Изменить карту блюда // Добавить ПРОВЕРКУ!!!!!!!!!!!!!!!!!!!!!!!!!
-    void editDish(Long id, String aboutDish, short cookingTime,
+    public void editDish(Long id, String aboutDish, short cookingTime,
                   List<Cook> cookList, String dishName, short weight, double dishCost) {
 
         Dish dish = dishRepository.getById(id);
@@ -70,7 +70,7 @@ public class CookService extends UserService {
     }
 
 
-    // Удалить блюдо
+    // Удалить блюдо // ДОБАВИТЬ ПРОВЕРКУ!!!!!!!!!!!!!!!!!!!!!!!!
     void removeDish(Long id) {
 
         Dish dish = dishRepository.getById(id);

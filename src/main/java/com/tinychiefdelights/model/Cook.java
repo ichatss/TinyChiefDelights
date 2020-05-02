@@ -23,7 +23,9 @@ public class Cook {
     @GeneratedValue
     Long id;
 
-    //private CookType cookType;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type")
+    private CookType cookType;
 
     @Column(name = "rating")
     private float rating;
