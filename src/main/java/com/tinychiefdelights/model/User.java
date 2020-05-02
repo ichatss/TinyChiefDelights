@@ -27,6 +27,7 @@ public class User {
     }
 
 
+
     // Поля
     private @Id
     @GeneratedValue
