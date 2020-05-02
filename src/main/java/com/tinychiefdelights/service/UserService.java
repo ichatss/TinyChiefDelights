@@ -23,7 +23,7 @@ public class UserService {
 
     // Методы
     //
-    // Сменить пароль
+    // Сменить пароль !!!!!!!!!!!!!!! РАЗОБРАТЬСЯ ЧТО ТАК А ЧТО НЕТ
     public void changePassword(String login, String newPass) {
 
         User user = userRepository.getByLogin(login);
