@@ -16,16 +16,6 @@ public class User {
 
     }
 
-    public User(String name, String lastName, Role role,
-                String login, String password) { // Базовый конструктор
-
-        this.name = name;
-        this.lastName = lastName;
-        this.role = role;
-        this.login = login;
-        this.password = password;
-    }
-
 
 
     // Поля

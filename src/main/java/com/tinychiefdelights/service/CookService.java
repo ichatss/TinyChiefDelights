@@ -37,15 +37,15 @@ public class CookService extends UserService {
     //
     // Добавить блюдо
      ////////////////////////!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Проверку добавить
-    public void createDish(String aboutDish, short cookingTime,
-                    List<Cook> cookList, String dishName, short weight, double dishCost) {
+    public void createDish(Long id, String aboutDish, short cookingTime,
+                           String dishName, short weight, double dishCost) {
 
         Dish dish = new Dish();
         dish.setDishName(dishName);
         dish.setDishCost(dishCost);
         dish.setWeight(weight);
         dish.setCookingTime(cookingTime);
-        dish.setCookList(cookList);
+        dish.setCookList(cookRepository.getCookByIdList(id)); // ИСПРАВИТЬ!!!!
         dish.setAboutDish(aboutDish);
 
         dishRepository.save(dish);

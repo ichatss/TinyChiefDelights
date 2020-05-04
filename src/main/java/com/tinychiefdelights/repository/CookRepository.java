@@ -23,4 +23,6 @@ public interface CookRepository extends JpaRepository<Cook, Long> { // Инте�
     // Берем Повара ID + ROLE
     Cook getByIdAndUserRole(Long id, Role role);
 
+    List<Cook> getCookByIdList(Long id);
+
 }

@@ -8,6 +8,7 @@ import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -46,8 +47,8 @@ public class CustomerController {
     // Сделать заказ
     @PostMapping("/make/order")
     public void makeOrder(String address, String phoneNumber, Long customerId,
-                          Long cookId, @RequestParam List<Long> dishList) {
-        customerService.makeOrder(address, phoneNumber, customerId, cookId, dishList);
+                          Long cookId, @RequestParam List<Long> dishList, Date date) {
+        customerService.makeOrder(address, phoneNumber, customerId, cookId, dishList, date);
     }
 
 

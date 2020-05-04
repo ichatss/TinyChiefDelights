@@ -41,10 +41,10 @@ public class CookController {
     //
     // Шеф-Повар создает блюдо для меню
     @PostMapping("/create/dish")
-    void createDish(String aboutDish, short cookingTime,
-                    List<Cook> cookList, String dishName, short weight, double dishCost){
+    void createDish(Long id, String aboutDish, short cookingTime,
+                    String dishName, short weight, double dishCost){
 
-        cookService.createDish(aboutDish, cookingTime, cookList, dishName, weight, dishCost);
+        cookService.createDish(id, aboutDish, cookingTime, dishName, weight, dishCost);
     }
 
 

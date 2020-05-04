@@ -28,9 +28,6 @@ public class CustomerService extends UserService {
 
     private ReviewRepository reviewRepository;
 
-    public CustomerService(OrderRepository orderRepository) {
-        this.orderRepository = orderRepository;
-    }
 
 
     // SETTERS
@@ -66,6 +63,7 @@ public class CustomerService extends UserService {
     public void setCustomerRepository(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
     }
+
 
 
     // Методы
@@ -114,17 +112,17 @@ public class CustomerService extends UserService {
 
     // Сделать Заказ
     public void makeOrder(String address, String phoneNumber, Long customerId,
-                          Long cookId, List<Long> dishListId) { // Сделать заказ ()
+                          Long cookId, List<Long> dishListId, Date date) { // Сделать заказ ()
+
         try {
             Order order = new Order();
-            order.setAddress(address);
             order.setPhoneNumber(phoneNumber);
-            Date date = new Date();
+            order.setAddress(address);
             order.setDateOrder(date);
             order.setOrderStatus(true);
             order.setCustomer(customerRepository.getByIdAndUserRole(customerId, Role.CUSTOMER));
             order.setCook(cookRepository.getByIdAndUserRole(cookId, Role.COOK));
-//            List<Dish> dishList = new ArrayList<Dish>();
+
 //            for (Long a: dishListId) {
 //                dishList.add(dishRepository.getById(a));
 //            }
@@ -140,9 +138,11 @@ public class CustomerService extends UserService {
     public Customer editCustomer(Long id, User user, double wallet) {
         Customer customer = customerRepository.getByIdAndUserRole(id, Role.CUSTOMER);
         try {
+
             customer.setUser(user);
             customer.setWallet(wallet);
             return customerRepository.save(customer);
+
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException();
         } catch (Exception e) {
