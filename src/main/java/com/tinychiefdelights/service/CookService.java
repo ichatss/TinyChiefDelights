@@ -45,7 +45,7 @@ public class CookService extends UserService {
         dish.setDishCost(dishCost);
         dish.setWeight(weight);
         dish.setCookingTime(cookingTime);
-        dish.setCookList(cookRepository.getCookByIdList(id)); // ИСПРАВИТЬ!!!!
+//        dish.setCookList(cookRepository.getCookByIdList(id)); // ИСПРАВИТЬ!!!!
         dish.setAboutDish(aboutDish);
 
         dishRepository.save(dish);
