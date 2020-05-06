@@ -8,12 +8,14 @@ import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
 
 @Api(value = "Работа с Админом", tags = {"Администратор"})
 @RestController
 @RequestMapping("/admin")
+@RolesAllowed("ADMIN")
 public class AdminController {
 
     // Constructor
