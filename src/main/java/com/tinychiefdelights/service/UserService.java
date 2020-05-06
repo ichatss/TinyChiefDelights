@@ -25,7 +25,7 @@ public class UserService {
     //
     // Сменить пароль !!!!!!!!!!!!!!! РАЗОБРАТЬСЯ ЧТО ТАК А ЧТО НЕТ
     public void changePassword(String login, String newPass) {
-
+        /**НПЕ из того что не находит юзера с таким логином**/
         User user = userRepository.getByLogin(login);
 
         try {

@@ -122,7 +122,7 @@ public class CustomerService extends UserService {
             order.setOrderStatus(true);
             order.setCustomer(customerRepository.getByIdAndUserRole(customerId, Role.CUSTOMER));
             order.setCook(cookRepository.getByIdAndUserRole(cookId, Role.COOK));
-
+            /**Сделать через карзину**/
 //            for (Long a: dishListId) {
 //                dishList.add(dishRepository.getById(a));
 //            }
