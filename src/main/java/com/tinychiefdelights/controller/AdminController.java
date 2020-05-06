@@ -15,7 +15,7 @@ import java.util.List;
 @Api(value = "Работа с Админом", tags = {"Администратор"})
 @RestController
 @RequestMapping("/admin")
-@RolesAllowed("ADMIN")
+@RolesAllowed({})
 public class AdminController {
 
     // Constructor

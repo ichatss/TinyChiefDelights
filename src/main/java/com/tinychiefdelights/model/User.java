@@ -3,11 +3,13 @@ package com.tinychiefdelights.model;
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.Collection;
+import java.util.Collections;
 
 @ApiModel
 @Data
@@ -18,7 +20,6 @@ public class User implements UserDetails {
     public User() { // Пустой конструктор для Hibernate
 
     }
-
 
 
     // Поля
@@ -43,33 +44,45 @@ public class User implements UserDetails {
     @Column(name = "last_name")
     private String lastName;
 
+
+    // Методы
+    //
+    // GrantedAuthority
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role));
     }
 
+
+    // userName == login (одно и тоже)
     @Override
     public String getUsername() {
-        return null;
+        return login;
     }
 
+
+    // Во всех флагах стоит TRUE, так как не используются
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
+
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
+
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
+
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
+    //
 }

@@ -4,6 +4,7 @@ import com.tinychiefdelights.exceptions.NotFoundException;
 import com.tinychiefdelights.model.User;
 import com.tinychiefdelights.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -26,6 +27,11 @@ public class UserService implements UserDetailsService {
 
     // Методы
     //
+    //
+    public static User getCurrentUser(){
+        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    }
+
     // Сменить пароль !!!!!!!!!!!!!!! РАЗОБРАТЬСЯ ЧТО ТАК А ЧТО НЕТ
     public void changePassword(String login, String newPass) {
         /**НПЕ из того что не находит юзера с таким логином**/
@@ -43,11 +49,13 @@ public class UserService implements UserDetailsService {
         }
     }
 
+
+    // Загрузка пользователя по login (метод от интерфейса)
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = getUserDataByLogin(username);
+    public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
+        User user = getUserDataByLogin(login);
         if(user == null){
-            throw new UsernameNotFoundException("не нашли" + username);
+            throw new UsernameNotFoundException("не нашли" + login);
         }
         return user;
     }
