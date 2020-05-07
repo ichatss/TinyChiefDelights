@@ -34,6 +34,4 @@ public class ExceptionAdvice{
     String NullPointerHandler(NullPointerException ex) {
         return ex.getMessage();
     }
-
-
 }

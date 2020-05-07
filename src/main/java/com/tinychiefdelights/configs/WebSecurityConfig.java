@@ -38,21 +38,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .authorizeRequests()
-                .antMatchers("/admin/**").hasRole(String.valueOf(Role.ADMIN))
-                .antMatchers("/cook/**").hasRole(String.valueOf(Role.COOK))
-                .antMatchers("/customer/**").permitAll();
-//                .anyRequest().authenticated()
-//                .and()
-//                .exceptionHandling()
-//                .and()
-//                .formLogin()
-//                .loginPage("/login")
-//                .permitAll()
-//                .and()
-//                .logout()
-//                .permitAll();
+                    .authorizeRequests()
+                    .antMatchers("/", "/home").permitAll()
+                    .anyRequest().authenticated()
+                .and()
+                    .formLogin()
+                    .loginPage("/login")
+                    .permitAll()
+                .and()
+                    .logout()
+                    .permitAll();
     }
+
 
 
     // Тут мы переопределяем для работы с внешней БД
