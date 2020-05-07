@@ -36,11 +36,4 @@ public class ExceptionAdvice{
     }
 
 
-    // SecurityException
-    @ResponseBody
-    @ExceptionHandler(SecurityException.class)
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    String SecurityHandler(SecurityException ex) {
-        return ex.getMessage();
-    }
 }
