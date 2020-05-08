@@ -1,6 +1,5 @@
 package com.tinychiefdelights.service;
 
-import com.tinychiefdelights.model.Order;
 import com.tinychiefdelights.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

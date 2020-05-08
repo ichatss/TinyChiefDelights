@@ -2,11 +2,9 @@ package com.tinychiefdelights.service;
 
 import com.tinychiefdelights.exceptions.NotFoundException;
 import com.tinychiefdelights.model.*;
-import com.tinychiefdelights.repository.AdminRepository;
-import com.tinychiefdelights.repository.CookRepository;
-import com.tinychiefdelights.repository.CustomerRepository;
-import com.tinychiefdelights.repository.OrderRepository;
+import com.tinychiefdelights.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
