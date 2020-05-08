@@ -22,7 +22,6 @@ public class UserService implements UserDetailsService {
     private PasswordEncoder passwordEncoder;
 
 
-
     // Injects are here
     //
     @Autowired
@@ -39,7 +38,7 @@ public class UserService implements UserDetailsService {
     // Методы
     //
     //
-    public static User getCurrentUser(){
+    public static User getCurrentUser() {
         return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
@@ -65,7 +64,7 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
         User user = getUserDataByLogin(login);
-        if(user == null){
+        if (user == null) {
             throw new UsernameNotFoundException("не нашли" + login);
         }
         return user;

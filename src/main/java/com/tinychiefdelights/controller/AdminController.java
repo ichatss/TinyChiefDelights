@@ -6,7 +6,6 @@ import com.tinychiefdelights.service.AdminService;
 import com.tinychiefdelights.service.UserService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
@@ -16,7 +15,7 @@ import java.util.List;
 @Api(value = "Работа с Админом", tags = {"Администратор"})
 @RestController
 @RequestMapping("/admin")
-@Secured("ADMIN")
+@RolesAllowed("ADMIN")
 public class AdminController {
 
     // Constructor

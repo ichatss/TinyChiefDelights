@@ -5,7 +5,6 @@ import com.tinychiefdelights.model.*;
 import com.tinychiefdelights.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -31,7 +30,6 @@ public class CustomerService extends UserService {
     private ReviewRepository reviewRepository;
 
     private PasswordEncoder passwordEncoder;
-
 
 
     // SETTERS
@@ -74,12 +72,11 @@ public class CustomerService extends UserService {
     }
 
 
-
     // Методы
     //
     // Внести деньги на счет
     public void depositMoney(Long id, double money) {
-        Customer customer = customerRepository.getByIdAndUserRole(id, Role.CUSTOMER);
+        Customer customer = customerRepository.getByIdAndUserRole(id, "CUSTOMER");
         try {
             customer.setWallet(customer.getWallet() + money);
             customerRepository.save(customer);
@@ -94,7 +91,7 @@ public class CustomerService extends UserService {
 
     // Вывести деньги со счета
     public void withdrawMoney(Long id, double money) {
-        Customer customer = customerRepository.getByIdAndUserRole(id, Role.CUSTOMER);
+        Customer customer = customerRepository.getByIdAndUserRole(id, "CUSTOMER");
         if (money <= customer.getWallet()) { // Делаем проверку, чтобы сумма указанная заказчиком была меньше кошелька
             customer.setWallet(customer.getWallet() - money);
             customerRepository.save(customer);
@@ -110,7 +107,7 @@ public class CustomerService extends UserService {
             Review review = new Review();
             review.setReview(text);
             review.setRate(rate);
-            review.setCook(cookRepository.getByIdAndUserRole(id, Role.COOK));
+            review.setCook(cookRepository.getByIdAndUserRole(id, "COOK"));
             reviewRepository.save(review);
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException(e);
@@ -129,8 +126,8 @@ public class CustomerService extends UserService {
             order.setAddress(address);
             order.setDateOrder(date);
             order.setOrderStatus(true);
-            order.setCustomer(customerRepository.getByIdAndUserRole(customerId, Role.CUSTOMER));
-            order.setCook(cookRepository.getByIdAndUserRole(cookId, Role.COOK));
+            order.setCustomer(customerRepository.getByIdAndUserRole(customerId, "CUSTOMER"));
+            order.setCook(cookRepository.getByIdAndUserRole(cookId, "COOK"));
             /**Сделать через карзину**/
 //            for (Long a: dishListId) {
 //                dishList.add(dishRepository.getById(a));
@@ -145,7 +142,7 @@ public class CustomerService extends UserService {
 
     // Изменить карточку заказчика
     public Customer editCustomer(Long id, User user, double wallet) {
-        Customer customer = customerRepository.getByIdAndUserRole(id, Role.CUSTOMER);
+        Customer customer = customerRepository.getByIdAndUserRole(id, "CUSTOMER");
         try {
 
             customer.setUser(user);
@@ -169,9 +166,9 @@ public class CustomerService extends UserService {
 
 
     // Регистрация
-    public Customer registration(User user, String login, String password, String name, String lastName){
+    public Customer registration(User user, String login, String password, String name, String lastName) {
         User newUser = user;
-        newUser.setRole(Role.CUSTOMER);
+        newUser.setRole("CUSTOMER");
         newUser.setLogin(login);
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         newUser.setName(name);

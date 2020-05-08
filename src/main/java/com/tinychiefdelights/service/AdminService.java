@@ -4,7 +4,6 @@ import com.tinychiefdelights.exceptions.NotFoundException;
 import com.tinychiefdelights.model.*;
 import com.tinychiefdelights.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -69,7 +68,7 @@ public class AdminService extends UserService {
     // Вывод Повара по ID
     public Cook getCook(Long id) {
         try {
-            return cookRepository.getByIdAndUserRole(id, Role.COOK);
+            return cookRepository.getByIdAndUserRole(id, "COOK");
         } catch (NotFoundException e) {
             throw new NotFoundException(id);
         } catch (IllegalArgumentException e) {
@@ -80,7 +79,7 @@ public class AdminService extends UserService {
 
     // Изменить карту повара
     public void editCook(Long id, User user, float rating, String aboutCook) {
-        Cook cook = cookRepository.getByIdAndUserRole(id, Role.COOK);
+        Cook cook = cookRepository.getByIdAndUserRole(id, "COOK");
         try {
             cook.setUser(user);
             cook.setRating(rating);
@@ -95,13 +94,13 @@ public class AdminService extends UserService {
 
     // Вывод всех поваров
     public List<Cook> getAllCooks() {
-        return cookRepository.findByUserRole(Role.COOK);
+        return cookRepository.findByUserRole("COOK");
     }
 
 
     // Удалить Повара
     public void deleteCook(Long id) {
-        Cook cook = cookRepository.getByIdAndUserRole(id, Role.COOK);
+        Cook cook = cookRepository.getByIdAndUserRole(id, "COOK");
         try {
             cookRepository.delete(cook);
         } catch (Exception e) {
@@ -112,14 +111,14 @@ public class AdminService extends UserService {
 
     // Вывод всех Заказчиков
     public List<Customer> getAllCustomers() {
-        return customerRepository.findByUserRole(Role.CUSTOMER);
+        return customerRepository.findByUserRole("CUSTOMER");
     }
 
 
     // Вывод Заказчика по ID
     public Customer getCustomer(Long id) {
         try {
-            return customerRepository.getByIdAndUserRole(id, Role.CUSTOMER);
+            return customerRepository.getByIdAndUserRole(id, "CUSTOMER");
         } catch (NotFoundException e) {
             throw new NotFoundException(id);
         } catch (IllegalArgumentException e) {

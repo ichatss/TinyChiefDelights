@@ -35,14 +35,14 @@ public class Order {
     private boolean orderStatus;
 
 
-    //Relationships
+    // Relationships
     //
-    //Заказчик
+    // Заказчик
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnore // Таким образом я предотвратил рекурсию
     private Customer customer;
 
-    //Лист блюд
+    // Лист блюд
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name = "order_dish",
@@ -51,7 +51,7 @@ public class Order {
     @JsonIgnore // Таким образом я предотвратил рекурсию
     private List<Dish> dishes;
 
-    //Повар
+    // Повар
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnore // Таким образом я предотвратил рекурсию
     private Cook cook;

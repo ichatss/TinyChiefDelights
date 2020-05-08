@@ -6,9 +6,9 @@ import com.tinychiefdelights.service.CustomerService;
 import com.tinychiefdelights.service.UserService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.Date;
 import java.util.List;
 
@@ -16,7 +16,7 @@ import java.util.List;
 @Api(value = "Работа с Заказчиком", tags = {"Заказчик"})
 @RestController
 @RequestMapping("/customer")
-@Secured("CUSTOMER")
+@RolesAllowed("CUSTOMER")
 public class CustomerController {
 
     //Constructor
@@ -56,7 +56,7 @@ public class CustomerController {
 
     // Регистрация
     @PostMapping("/registration")
-    public void registration(User user, String login, String password, String name, String lastName){
+    public void registration(User user, String login, String password, String name, String lastName) {
         customerService.registration(user, login, password, name, lastName);
     }
 
@@ -99,7 +99,7 @@ public class CustomerController {
 
     // Отменить Заказ
     @PutMapping("/cancel/order/{id}")
-    public void cancelOrder(@PathVariable Long id){
+    public void cancelOrder(@PathVariable Long id) {
         customerService.cancelOrder(id);
     }
 

@@ -8,12 +8,14 @@ import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
 
 @Api(value = "Работа с Поваром", tags = {"Повар"})
 @RestController
 @RequestMapping("/cook")
+@RolesAllowed("COOK")
 public class CookController {
 
     //Injects через конструктор

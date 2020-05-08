@@ -17,6 +17,14 @@ import java.util.Collections;
 @Table(name = "pg_user", schema = "public")
 public class User implements UserDetails {
 
+    // Roles
+    //
+    public static final String ROLE_ADMIN = "ADMIN";
+    public static final String ROLE_CUSTOMER = "CUSTOMER";
+    public static final String ROLE_COOK = "COOK";
+    //
+
+
     public User() { // Пустой конструктор для Hibernate
 
     }
@@ -34,9 +42,8 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "role")
-    private Role role;
+    private String role;
 
     @Column(name = "name")
     private String name;
@@ -61,7 +68,7 @@ public class User implements UserDetails {
     }
 
 
-    // Во всех флагах стоит TRUE, так как не используются
+    // Во всех флагах стоит TRUE, так как они не используются
     @Override
     public boolean isAccountNonExpired() {
         return true;

@@ -31,6 +31,4 @@ public class OrderService {
     public void setReview() { // Оставить отзыв и оценку ()
 
     }
-
-
 }
