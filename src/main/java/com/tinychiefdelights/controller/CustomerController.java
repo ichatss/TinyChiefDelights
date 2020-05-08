@@ -6,6 +6,7 @@ import com.tinychiefdelights.service.CustomerService;
 import com.tinychiefdelights.service.UserService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -15,6 +16,7 @@ import java.util.List;
 @Api(value = "Работа с Заказчиком", tags = {"Заказчик"})
 @RestController
 @RequestMapping("/customer")
+@Secured("CUSTOMER")
 public class CustomerController {
 
     //Constructor
@@ -49,6 +51,13 @@ public class CustomerController {
     public void makeOrder(String address, String phoneNumber, Long customerId,
                           Long cookId, @RequestParam List<Long> dishList, Date date) {
         customerService.makeOrder(address, phoneNumber, customerId, cookId, dishList, date);
+    }
+
+
+    // Регистрация
+    @PostMapping("/registration")
+    public void registration(User user, String login, String password, String name, String lastName){
+        customerService.registration(user, login, password, name, lastName);
     }
 
 

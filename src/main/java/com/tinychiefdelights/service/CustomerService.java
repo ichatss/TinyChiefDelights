@@ -4,6 +4,8 @@ import com.tinychiefdelights.exceptions.NotFoundException;
 import com.tinychiefdelights.model.*;
 import com.tinychiefdelights.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -27,6 +29,8 @@ public class CustomerService extends UserService {
     private DishRepository dishRepository;
 
     private ReviewRepository reviewRepository;
+
+    private PasswordEncoder passwordEncoder;
 
 
 
@@ -62,6 +66,11 @@ public class CustomerService extends UserService {
     @Autowired
     public void setCustomerRepository(CustomerRepository customerRepository) {
         this.customerRepository = customerRepository;
+    }
+
+    @Override
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
     }
 
 
@@ -156,5 +165,22 @@ public class CustomerService extends UserService {
         Order order = orderRepository.getById(id);
         order.setOrderStatus(false); // Добавим сообщение !!!!!!!!!!!!!!!
         orderRepository.save(order);
+    }
+
+
+    // Регистрация
+    public Customer registration(User user, String login, String password, String name, String lastName){
+        User newUser = user;
+        newUser.setRole(Role.CUSTOMER);
+        newUser.setLogin(login);
+        newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+        newUser.setName(name);
+        newUser.setLastName(lastName);
+        Customer newCustomer = new Customer();
+        newCustomer.setUser(newUser);
+        newCustomer.setWallet(0);
+        userRepository.save(newUser);
+
+        return customerRepository.save(newCustomer);
     }
 }
