@@ -1,5 +1,6 @@
 package com.tinychiefdelights.service;
 
+import com.tinychiefdelights.exceptions.NotFoundException;
 import com.tinychiefdelights.model.Cook;
 import com.tinychiefdelights.model.Dish;
 import com.tinychiefdelights.repository.CookRepository;
@@ -52,28 +53,39 @@ public class CookService extends UserService {
     }
 
 
-    // Изменить карту блюда // Добавить ПРОВЕРКУ!!!!!!!!!!!!!!!!!!!!!!!!!
+    // Изменить карту блюда
     public void editDish(Long id, String aboutDish, short cookingTime,
                          List<Cook> cookList, String dishName, short weight, double dishCost) {
 
-        Dish dish = dishRepository.getById(id);
+        Long newId = id;
 
-        dish.setDishName(dishName);
-        dish.setDishCost(dishCost);
-        dish.setWeight(weight);
-        dish.setCookingTime(cookingTime);
-        dish.setCookList(cookList);
-        dish.setAboutDish(aboutDish);
+        if (newId != null) {
+            Dish dish = dishRepository.getById(id);
 
-        dishRepository.save(dish);
+            dish.setDishName(dishName);
+            dish.setDishCost(dishCost);
+            dish.setWeight(weight);
+            dish.setCookingTime(cookingTime);
+            dish.setCookList(cookList);
+            dish.setAboutDish(aboutDish);
+
+            dishRepository.save(dish);
+        } else {
+            throw new NotFoundException(newId);
+        }
     }
 
 
-    // Удалить блюдо // ДОБАВИТЬ ПРОВЕРКУ!!!!!!!!!!!!!!!!!!!!!!!!
+    // Удалить блюдо
     void removeDish(Long id) {
 
-        Dish dish = dishRepository.getById(id);
+        Long newId = id;
 
-        dishRepository.delete(dish);
+        if(newId != null) {
+            Dish dish = dishRepository.getById(id);
+            dishRepository.delete(dish);
+        } else {
+            throw new NotFoundException(newId);
+        }
     }
 }

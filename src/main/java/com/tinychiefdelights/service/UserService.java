@@ -39,8 +39,10 @@ public class UserService implements UserDetailsService {
     //
     //
     public static User getCurrentUser() {
-        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal(); //
     }
+
+
 
     // Сменить пароль !!!!!!!!!!!!!!! РАЗОБРАТЬСЯ ЧТО ТАК А ЧТО НЕТ
     public void changePassword(String login, String newPass) {

@@ -48,6 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .cors().disable().csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/", "/home").permitAll()
                 .anyRequest().authenticated()
@@ -82,12 +83,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public static PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder(8);
-    }
-
-
-    // Возвращаем сервис пользовател для userDetService
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return userService;
     }
 }

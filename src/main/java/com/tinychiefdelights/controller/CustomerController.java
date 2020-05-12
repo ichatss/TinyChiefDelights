@@ -12,11 +12,13 @@ import javax.annotation.security.RolesAllowed;
 import java.util.Date;
 import java.util.List;
 
+import static com.tinychiefdelights.model.User.ROLE_CUSTOMER;
+
 
 @Api(value = "Работа с Заказчиком", tags = {"Заказчик"})
 @RestController
 @RequestMapping("/customer")
-@RolesAllowed("CUSTOMER")
+@RolesAllowed({ROLE_CUSTOMER})
 public class CustomerController {
 
     //Constructor

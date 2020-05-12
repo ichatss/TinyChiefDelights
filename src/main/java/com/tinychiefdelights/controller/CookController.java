@@ -11,11 +11,13 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
+import static com.tinychiefdelights.model.User.ROLE_COOK;
+
 
 @Api(value = "Работа с Поваром", tags = {"Повар"})
 @RestController
 @RequestMapping("/cook")
-@RolesAllowed("COOK")
+@RolesAllowed({ROLE_COOK})
 public class CookController {
 
     //Injects через конструктор

@@ -11,11 +11,13 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
+import static com.tinychiefdelights.model.User.ROLE_ADMIN;
+
 
 @Api(value = "Работа с Админом", tags = {"Администратор"})
 @RestController
 @RequestMapping("/admin")
-@RolesAllowed("ADMIN")
+@RolesAllowed({ROLE_ADMIN})
 public class AdminController {
 
     // Constructor
