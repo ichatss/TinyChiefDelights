@@ -28,8 +28,8 @@ public class CookService extends UserService {
     }
 
     @Autowired
-    public void setDishRepository(CookRepository cookRepository) {
-        this.cookRepository = cookRepository;
+    public void setDishRepository(DishRepository dishRepository) {
+        this.dishRepository = dishRepository;
     }
 
 
@@ -55,7 +55,7 @@ public class CookService extends UserService {
 
     // Изменить карту блюда
     public void editDish(Long id, String aboutDish, short cookingTime,
-                         List<Cook> cookList, String dishName, short weight, double dishCost) {
+                         /*List<Cook> cookList*/ String dishName, short weight, double dishCost) {
 
         Long newId = id;
 
@@ -66,7 +66,7 @@ public class CookService extends UserService {
             dish.setDishCost(dishCost);
             dish.setWeight(weight);
             dish.setCookingTime(cookingTime);
-            dish.setCookList(cookList);
+//            dish.setCookList(cookList);
             dish.setAboutDish(aboutDish);
 
             dishRepository.save(dish);

@@ -170,7 +170,7 @@ public class CustomerService extends UserService {
         User newUser = user;
         newUser.setRole("CUSTOMER");
         newUser.setLogin(login);
-        newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+        newUser.setPassword(password);
         newUser.setName(name);
         newUser.setLastName(lastName);
         Customer newCustomer = new Customer();

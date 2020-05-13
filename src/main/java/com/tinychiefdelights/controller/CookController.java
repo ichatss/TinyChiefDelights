@@ -45,8 +45,8 @@ public class CookController {
     //
     // Шеф-Повар создает блюдо для меню
     @PostMapping("/create/dish")
-    void createDish(Long id, String aboutDish, short cookingTime,
-                    String dishName, short weight, double dishCost){
+    void createDish(@RequestParam Long id, @RequestParam String aboutDish,@RequestParam short cookingTime,
+                    @RequestParam String dishName,@RequestParam short weight,@RequestParam double dishCost){
 
         cookService.createDish(id, aboutDish, cookingTime, dishName, weight, dishCost);
     }
@@ -63,10 +63,10 @@ public class CookController {
 
     // Изменить блюдо в меню
     @PutMapping("/edit/dish")
-    void editDish(Long id, String aboutDish, short cookingTime,
-                  List<Cook> cookList, String dishName, short weight, double dishCost){
+    void editDish(Long id, String aboutDish, short cookingTime
+                  /*List<Cook> cookList*/, String dishName, short weight, double dishCost){
 
-        cookService.editDish(id, aboutDish, cookingTime, cookList, dishName, weight, dishCost);
+        cookService.editDish(id, aboutDish, cookingTime, /*cookList*/ dishName, weight, dishCost);
     }
 
 
