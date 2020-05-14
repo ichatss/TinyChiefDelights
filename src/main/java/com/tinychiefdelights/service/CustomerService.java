@@ -76,7 +76,7 @@ public class CustomerService extends UserService {
     //
     // Внести деньги на счет
     public void depositMoney(Long id, double money) {
-        Customer customer = customerRepository.getByIdAndUserRole(id, "CUSTOMER");
+        Customer customer = customerRepository.findByIdAndUserRole(id, "CUSTOMER");
         try {
             customer.setWallet(customer.getWallet() + money);
             customerRepository.save(customer);
@@ -91,7 +91,7 @@ public class CustomerService extends UserService {
 
     // Вывести деньги со счета
     public void withdrawMoney(Long id, double money) {
-        Customer customer = customerRepository.getByIdAndUserRole(id, "CUSTOMER");
+        Customer customer = customerRepository.findByIdAndUserRole(id, "CUSTOMER");
         if (money <= customer.getWallet()) { // Делаем проверку, чтобы сумма указанная заказчиком была меньше кошелька
             customer.setWallet(customer.getWallet() - money);
             customerRepository.save(customer);
@@ -107,7 +107,7 @@ public class CustomerService extends UserService {
             Review review = new Review();
             review.setReview(text);
             review.setRate(rate);
-            review.setCook(cookRepository.getByIdAndUserRole(id, "COOK"));
+            review.setCook(cookRepository.findByIdAndUserRole(id, "COOK"));
             reviewRepository.save(review);
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException(e);
@@ -126,8 +126,8 @@ public class CustomerService extends UserService {
             order.setAddress(address);
             order.setDateOrder(date);
             order.setOrderStatus(true);
-            order.setCustomer(customerRepository.getByIdAndUserRole(customerId, "CUSTOMER"));
-            order.setCook(cookRepository.getByIdAndUserRole(cookId, "COOK"));
+            order.setCustomer(customerRepository.findByIdAndUserRole(customerId, "CUSTOMER"));
+            order.setCook(cookRepository.findByIdAndUserRole(cookId, "COOK"));
             /**Сделать через карзину**/
 //            for (Long a: dishListId) {
 //                dishList.add(dishRepository.getById(a));
@@ -142,7 +142,7 @@ public class CustomerService extends UserService {
 
     // Изменить карточку заказчика
     public Customer editCustomer(Long id, User user, double wallet) {
-        Customer customer = customerRepository.getByIdAndUserRole(id, "CUSTOMER");
+        Customer customer = customerRepository.findByIdAndUserRole(id, "CUSTOMER");
         try {
 
             customer.setUser(user);

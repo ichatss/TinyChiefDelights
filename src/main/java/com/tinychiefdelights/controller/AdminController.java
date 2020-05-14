@@ -1,5 +1,6 @@
 package com.tinychiefdelights.controller;
 
+import com.tinychiefdelights.exceptions.NotFoundException;
 import com.tinychiefdelights.model.*;
 import com.tinychiefdelights.repository.AdminRepository;
 import com.tinychiefdelights.service.AdminService;
@@ -54,7 +55,7 @@ public class AdminController {
     // Вывод информации по конкретному заказу по ID
     @GetMapping("/order/{id}")
     Order getOrderInfo(@PathVariable Long id) {
-        return adminService.getOrderInfo(id);
+            return adminService.getOrderInfo(id).orElseThrow(() -> new NotFoundException(id));
     }
 
 
@@ -68,13 +69,13 @@ public class AdminController {
     // Вывод Повара по ID
     @GetMapping("/cook/{id}")
     Cook getCook(@PathVariable Long id) {
-        return adminService.getCook(id);
+        return adminService.getCook(id).orElseThrow(() -> new NotFoundException(id));
     }
 
 
     // Вывод всех пользователей
     @GetMapping("/customers")
-    List<Customer> getAllCustomer() {
+    List<Customer> getAllCustomers() {
         return adminService.getAllCustomers();
     }
 
@@ -82,7 +83,7 @@ public class AdminController {
     // Вывод Заказчика по ID
     @GetMapping("/customer/{id}")
     Customer getCustomer(@PathVariable Long id) {
-        return adminService.getCustomer(id);
+        return adminService.getCustomer(id).orElseThrow(() -> new NotFoundException(id));
     }
 
 
@@ -100,8 +101,8 @@ public class AdminController {
 
     // Поменять пароль
     @PutMapping("/change/password")
-    void changePassword(@RequestParam String login, @RequestParam String newPass) {
-        userService.changePassword(login, newPass);
+    User changePassword(@RequestParam String login, @RequestParam String newPass) {
+        return userService.changePassword(login, newPass).orElseThrow(() -> new NullPointerException("Ошибка! Указанный Вами логин не существует!"));
     }
 
 

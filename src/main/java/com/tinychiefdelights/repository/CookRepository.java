@@ -4,6 +4,7 @@ import com.tinychiefdelights.model.Cook;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CookRepository extends JpaRepository<Cook, Long> { // Интерфейс для репозитория Cook
 
@@ -20,7 +21,10 @@ public interface CookRepository extends JpaRepository<Cook, Long> { // Инте�
     List<Cook> findByUserRoleAndId(String role, Long id);
 
     // Берем Повара ID + ROLE
-    Cook getByIdAndUserRole(Long id, String role);
+    Optional<Cook> getByIdAndUserRole(Long id, String role);
+
+    // Берем Повара ID + ROLE только без Optional<>
+    Cook findByIdAndUserRole(Long id, String role);
 
 //    List<Cook> getCookByIdList(Long id);
 }

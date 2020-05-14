@@ -38,7 +38,7 @@ public class User implements UserDetails {
     @Column(name = "login")
     private String login;
 
-    @Size(min = 5, max = 30)
+//    @Size(min = 5, max = 30)
     @Column(name = "password")
     private String password;
 
