@@ -1,14 +1,12 @@
 package com.tinychiefdelights.service;
 
 import com.tinychiefdelights.exceptions.NotFoundException;
-import com.tinychiefdelights.model.Cook;
 import com.tinychiefdelights.model.Dish;
 import com.tinychiefdelights.repository.CookRepository;
 import com.tinychiefdelights.repository.DishRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 @Service
 public class CookService extends UserService {
@@ -55,7 +53,7 @@ public class CookService extends UserService {
 
     // Изменить карту блюда
     public void editDish(Long id, String aboutDish, short cookingTime,
-                         /*List<Cook> cookList*/ String dishName, short weight, double dishCost) {
+            /*List<Cook> cookList*/ String dishName, short weight, double dishCost) {
 
         Long newId = id;
 
@@ -81,7 +79,7 @@ public class CookService extends UserService {
 
         Long newId = id;
 
-        if(newId != null) {
+        if (newId != null) {
             Dish dish = dishRepository.getById(id);
             dishRepository.delete(dish);
         } else {

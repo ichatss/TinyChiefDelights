@@ -1,6 +1,5 @@
 package com.tinychiefdelights.controller;
 
-import com.tinychiefdelights.model.Cook;
 import com.tinychiefdelights.repository.CookRepository;
 import com.tinychiefdelights.service.CookService;
 import com.tinychiefdelights.service.UserService;
@@ -9,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
-import java.util.List;
 
 import static com.tinychiefdelights.model.User.ROLE_COOK;
 
@@ -45,8 +43,8 @@ public class CookController {
     //
     // Шеф-Повар создает блюдо для меню
     @PostMapping("/create/dish")
-    void createDish(@RequestParam Long id, @RequestParam String aboutDish,@RequestParam short cookingTime,
-                    @RequestParam String dishName,@RequestParam short weight,@RequestParam double dishCost){
+    void createDish(@RequestParam Long id, @RequestParam String aboutDish, @RequestParam short cookingTime,
+                    @RequestParam String dishName, @RequestParam short weight, @RequestParam double dishCost) {
 
         cookService.createDish(id, aboutDish, cookingTime, dishName, weight, dishCost);
     }
@@ -64,7 +62,7 @@ public class CookController {
     // Изменить блюдо в меню
     @PutMapping("/edit/dish")
     void editDish(Long id, String aboutDish, short cookingTime
-                  /*List<Cook> cookList*/, String dishName, short weight, double dishCost){
+            /*List<Cook> cookList*/, String dishName, short weight, double dishCost) {
 
         cookService.editDish(id, aboutDish, cookingTime, /*cookList*/ dishName, weight, dishCost);
     }

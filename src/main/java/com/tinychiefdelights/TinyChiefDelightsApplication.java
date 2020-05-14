@@ -17,23 +17,34 @@ import java.sql.SQLException;
 @EnableSwagger2
 public class TinyChiefDelightsApplication {
 
+    // MAIN
     public static void main(String[] args) throws FileNotFoundException, SQLException {
         SpringApplication.run(TinyChiefDelightsApplication.class, args);
+
+        // Экземпляр класса для запуска методов
         TinyChiefDelightsApplication tinyChiefDelightsApplication = new TinyChiefDelightsApplication();
+
+        // Запускаем runningScripts
         tinyChiefDelightsApplication.runningScripts();
     }
 
-    public void runningScripts() throws SQLException, FileNotFoundException {
-        //Registering the Driver
-        //Getting the connection
+
+    // Script для инициализации БД
+    // Использована библиотека IBATIS
+    //
+    private void runningScripts() throws SQLException, FileNotFoundException {
+        // Тут подключаемся к БД
         String mysqlUrl = "jdbc:postgresql://localhost:8083/tinychiefdelights";
-        Connection con = DriverManager.getConnection(mysqlUrl, "postgres", "");
+        Connection con = DriverManager.getConnection(mysqlUrl, "postgres", "barca3508");
         System.out.println("Connection established......");
-        //Initialize the script runner
+        // Инициализируем ScriptRunner
         ScriptRunner sr = new ScriptRunner(con);
-        //Creating a reader object
-        Reader reader = new BufferedReader(new FileReader("D:\\JetBrainsProjects\\TinyChiefDelights/src/main/com/tinychiefdelights/database/databaseDatas.sql"));
-        //Running the script
+        System.out.println("Инициализируем базу данных PostgreSQL...");
+        // Создаем reader и передаем туда файл .sql
+        Reader reader = new BufferedReader(new FileReader
+                ("D:\\JetBrainsProjects\\TinyChiefDelights\\src\\main\\java\\com\\tinychiefdelights\\database\\initDataBase.sql"));
+        // Запускаем runner
         sr.runScript(reader);
+        System.out.println("База данных успешно проинициализированна!");
     }
 }
