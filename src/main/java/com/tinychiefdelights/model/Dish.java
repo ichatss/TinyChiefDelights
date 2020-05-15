@@ -35,7 +35,7 @@ public class Dish {
 
     // Поля
     private @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
     @Column(name = "name")
@@ -60,7 +60,7 @@ public class Dish {
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name = "cook_dish",
-            joinColumns = @JoinColumn(name = "dish_id"), // naoborot
+            joinColumns = @JoinColumn(name = "dish_id"),
             inverseJoinColumns = @JoinColumn(name = "cook_id"))
     @JsonIgnore // Таким образом я предотвратил рекурсию
     private List<Cook> cookList;

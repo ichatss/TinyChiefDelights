@@ -39,18 +39,25 @@ public class CookService extends UserService {
     //
     // Добавить блюдо
     ////////////////////////!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Проверку добавить
-    public void createDish(Long id, String aboutDish, short cookingTime,
-                           String dishName, short weight, double dishCost) {
+    public Dish createDish(Long id, String aboutDish, short cookingTime,
+                           List<Long> cooksId, String dishName, short weight, double dishCost) {
 
         Dish dish = new Dish();
+
         dish.setDishName(dishName);
         dish.setDishCost(dishCost);
         dish.setWeight(weight);
         dish.setCookingTime(cookingTime);
-//        dish.setCookList(cookRepository.getCookByIdList(id)); // ИСПРАВИТЬ!!!!
+        List<Cook> cookList = new ArrayList<>();
+
+        for (Long i : cooksId) {
+            cookList.add(cookRepository.getCookById(i));
+        }
+
+        dish.setCookList(cookList); // edit
         dish.setAboutDish(aboutDish);
 
-        dishRepository.save(dish);
+        return dishRepository.save(dish);
 
     }
 
