@@ -19,20 +19,6 @@ public class Dish {
     }
 
 
-//    @Override
-//    public String toString() {
-//        return "Dish{" +
-//                "id=" + id +
-//                ", dishName='" + dishName + '\'' +
-//                ", dishCost=" + dishCost +
-//                ", weight=" + weight +
-//                ", cookingTime=" + cookingTime +
-//                ", aboutDish='" + aboutDish + '\'' +
-//                ", cookList=" + cookList +
-//                ", ordersList=" + ordersList +
-//                '}';
-//    }
-
     // Поля
     private @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
