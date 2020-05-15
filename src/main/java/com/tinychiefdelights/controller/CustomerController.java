@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
+import javax.validation.constraints.Null;
 import java.util.Date;
 import java.util.List;
 
@@ -58,7 +59,16 @@ public class CustomerController {
 
     // Оставить отзыв
     @PostMapping("/set/review")
-    public void setReview(String text, int rate, Long id) {
+    public void setReview(String text, @RequestParam int rate, Long id){
+
+        if(text == null || id == null){
+            throw new RuntimeException("Заполните поля");
+        }
+
+        if(rate <= 0 || rate >= 5){
+            throw new RuntimeException("Рейтинг должен быть от 1 до 5");
+        }
+
         customerService.setReview(text, rate, id);
     }
 

@@ -74,6 +74,7 @@ public class CookService extends UserService {
             dish.setDishCost(dishCost);
             dish.setWeight(weight);
             dish.setCookingTime(cookingTime);
+
             List<Cook> cookList = new ArrayList<>();
 
             for (Long i : cooksId) {

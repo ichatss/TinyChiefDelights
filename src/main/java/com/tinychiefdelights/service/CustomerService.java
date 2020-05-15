@@ -112,6 +112,11 @@ public class CustomerService extends UserService {
 
     // Оставить Отзыв
     public void setReview(String text, int rate, Long id) {
+
+        if(cookRepository.findByIdAndUserRole(id, "COOK") == null){
+            throw new RuntimeException("Нет повара с " + id + " id");
+        }
+
         try {
             Review review = new Review();
             review.setReview(text);
