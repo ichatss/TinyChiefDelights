@@ -96,8 +96,8 @@ public class AdminController {
     //
     // Изменяем Повара по ID
     @PutMapping("/edit/cook/{id}")
-    void editCook(@PathVariable Long id, User user, float rating, String aboutCook) {
-        adminService.editCook(id, user, rating, aboutCook);
+    void editCook(@PathVariable Long id, String name, String lastName, float rating, String aboutCook) {
+        adminService.editCook(id, name, lastName, rating, aboutCook);
     }
 
 //    // Поменять пароль

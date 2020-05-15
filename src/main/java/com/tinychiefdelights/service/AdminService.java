@@ -73,15 +73,18 @@ public class AdminService extends UserService {
 
 
     // Изменить карту повара
-    public void editCook(Long id, User user, float rating, String aboutCook) {
+    public void editCook(Long id, String name, String lastName, float rating, String aboutCook) {
+
         Cook cook = cookRepository.findByIdAndUserRole(id, "COOK");
-        try {
-            cook.setUser(user);
+
+        if (cook != null) {
+
+            cook.getUser().setName(name);
+            cook.getUser().setLastName(lastName);
             cook.setRating(rating);
             cook.setAboutCook(aboutCook);
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException();
-        } catch (NotFoundException e) {
+            cookRepository.save(cook);
+        } else {
             throw new NotFoundException(id);
         }
     }
