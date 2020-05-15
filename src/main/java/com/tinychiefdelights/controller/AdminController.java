@@ -7,6 +7,7 @@ import com.tinychiefdelights.service.AdminService;
 import com.tinychiefdelights.service.UserService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
@@ -99,11 +100,11 @@ public class AdminController {
         adminService.editCook(id, user, rating, aboutCook);
     }
 
-    // Поменять пароль
-    @PutMapping("/change/password")
-    User changePassword(@RequestParam String login, @RequestParam String newPass) {
-        return userService.changePassword(login, newPass).orElseThrow(() -> new NullPointerException("Ошибка! Указанный Вами логин не существует!"));
-    }
+//    // Поменять пароль
+//    @PutMapping("/change/password")
+//    User changePassword(@RequestParam String login, @RequestParam String newPass) {
+//        return userService.changePassword(login, newPass);
+//    }
 
 
     // DELETE MAPPING

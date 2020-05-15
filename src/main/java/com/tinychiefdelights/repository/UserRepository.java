@@ -10,5 +10,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     // Найти пользователя по Login (логин универсален)
     User getByLogin(String login);
 
-    Optional<User> save();
+
 }

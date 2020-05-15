@@ -12,7 +12,7 @@ public interface CookRepository extends JpaRepository<Cook, Long> { // Инте�
     List<Cook> findByUserRole(String role);
 
     // Берем COOK через ID
-    Long getCookById(Long id);
+    Cook getCookById(Long id);
 
     // Удалить Повара Role + ID
     void deleteByUserRoleAndId(String role, Long id);
@@ -27,4 +27,5 @@ public interface CookRepository extends JpaRepository<Cook, Long> { // Инте�
     Cook findByIdAndUserRole(Long id, String role);
 
 //    List<Cook> getCookByIdList(Long id);
+
 }

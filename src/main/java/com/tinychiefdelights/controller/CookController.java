@@ -1,5 +1,6 @@
 package com.tinychiefdelights.controller;
 
+import com.tinychiefdelights.model.Cook;
 import com.tinychiefdelights.repository.CookRepository;
 import com.tinychiefdelights.service.CookService;
 import com.tinychiefdelights.service.UserService;
@@ -8,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
+
+import java.util.List;
 
 import static com.tinychiefdelights.model.User.ROLE_COOK;
 
@@ -52,19 +55,21 @@ public class CookController {
 
     // PUT MAPPING
     //
-    // Изменить свой пароль
-    @PutMapping("/change/password")
-    void changePassword(@RequestParam String login, @RequestParam String newPass) {
-        userService.changePassword(login, newPass);
-    }
+//    // Изменить свой пароль
+//    @PutMapping("/change/password")
+//    void changePassword(@RequestParam String login, @RequestParam String newPass) {
+//        userService.changePassword(login, newPass);
+//    }
+
+
 
 
     // Изменить блюдо в меню
-    @PutMapping("/edit/dish")
-    void editDish(Long id, String aboutDish, short cookingTime
-            /*List<Cook> cookList*/, String dishName, short weight, double dishCost) {
+    @PutMapping("/edit/dish/{id}")
+    void editDish(@PathVariable Long id, String aboutDish, short cookingTime,
+                  @RequestParam List<Long> cooksId, String dishName, short weight, double dishCost) {
 
-        cookService.editDish(id, aboutDish, cookingTime, /*cookList*/ dishName, weight, dishCost);
+        cookService.editDish(id, aboutDish, cookingTime, cooksId, dishName, weight, dishCost);
     }
 
 

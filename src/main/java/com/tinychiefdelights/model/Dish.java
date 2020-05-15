@@ -2,11 +2,14 @@ package com.tinychiefdelights.model;
 
 import com.fasterxml.jackson.annotation.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "dish", schema = "public")
 public class Dish {
@@ -15,6 +18,20 @@ public class Dish {
 
     }
 
+
+//    @Override
+//    public String toString() {
+//        return "Dish{" +
+//                "id=" + id +
+//                ", dishName='" + dishName + '\'' +
+//                ", dishCost=" + dishCost +
+//                ", weight=" + weight +
+//                ", cookingTime=" + cookingTime +
+//                ", aboutDish='" + aboutDish + '\'' +
+//                ", cookList=" + cookList +
+//                ", ordersList=" + ordersList +
+//                '}';
+//    }
 
     // Поля
     private @Id
@@ -43,8 +60,8 @@ public class Dish {
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name = "cook_dish",
-            joinColumns = @JoinColumn(name = "cook_id"),
-            inverseJoinColumns = @JoinColumn(name = "dish_id"))
+            joinColumns = @JoinColumn(name = "dish_id"), // naoborot
+            inverseJoinColumns = @JoinColumn(name = "cook_id"))
     @JsonIgnore // Таким образом я предотвратил рекурсию
     private List<Cook> cookList;
 

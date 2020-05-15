@@ -10,7 +10,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.Locale;
+
 
 @Service
 public class UserService implements UserDetailsService {
@@ -38,29 +39,22 @@ public class UserService implements UserDetailsService {
 
     // Методы
     //
-    // Сменить пароль !!!!!!!!!!!!!!! РАЗОБРАТЬСЯ ЧТО ТАК А ЧТО НЕТ
-    public Optional<User> changePassword(String login, String newPass) {
-        /**НПЕ из того что не находит юзера с таким логином**/
-        User user = userRepository.getByLogin(login);
+//    // Сменить пароль !!!!!!!!!!!!!!! РАЗОБРАТЬСЯ ЧТО ТАК А ЧТО НЕТ
+//    public User changePassword(String login, String newPass) throws UsernameNotFoundException {
+//        User user = getUserDataByLogin(login);
+//        if (user == null) {
+//            throw new UsernameNotFoundException("не нашли" + login);
+//        } else {
+//            user.setPassword(passwordEncoder.encode(newPass));
+//            return userRepository.save(user);
+//        }
+//    }
 
-        try {
-            user.setPassword(passwordEncoder.encode(newPass));
-//            userRepository.save(user);
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException();
-        }
-        return userRepository.save(user);
-    }
 
 
     private User getUserDataByLogin(String login) {
         User user = userRepository.getByLogin(login);
         return user;
-    }
-
-
-    public static User getCurrentUser() {
-        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
 
