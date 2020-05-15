@@ -41,13 +41,6 @@ public class CustomerController {
 
     private final UserService userService;
 
-
-    // GET MAPPING
-    //
-
-
-    // POST MAPPING
-    //
     // Сделать заказ
     @PostMapping("/make/order")
     public void makeOrder(String address, String phoneNumber, Long customerId,
@@ -69,8 +62,6 @@ public class CustomerController {
         customerService.setReview(text, rate, id);
     }
 
-    // PUT MAPPING
-    //
     // Заказчик может редактировать свою карточку (поиск по ID)
     @PutMapping("/edit/{id}")
     Customer editCustomer(@PathVariable Long id, User user, @RequestParam double wallet) {

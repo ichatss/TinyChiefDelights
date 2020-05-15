@@ -50,7 +50,6 @@ public class CustomerService extends UserService {
         this.cookRepository = cookRepository;
     }
 
-
     @Autowired
     public void setOrderRepository(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
@@ -91,7 +90,17 @@ public class CustomerService extends UserService {
 
     // Вывести деньги со счета
     public void withdrawMoney(Long id, double money) {
+
+        if(customerRepository.findByIdAndUserRole(id, "CUSTOMER") == null) {
+            throw new RuntimeException("Нет пользователя с " + id + " id");
+        }
+
         Customer customer = customerRepository.findByIdAndUserRole(id, "CUSTOMER");
+
+        if (money <= 0){
+            throw new RuntimeException("Не возможно вывести такую сумму");
+        }
+
         if (money <= customer.getWallet()) { // Делаем проверку, чтобы сумма указанная заказчиком была меньше кошелька
             customer.setWallet(customer.getWallet() - money);
             customerRepository.save(customer);
