@@ -41,7 +41,7 @@ public class Dish {
 
 
     //Relationships
-
+    //
     // Лист поваров
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(

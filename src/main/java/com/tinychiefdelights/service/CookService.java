@@ -38,69 +38,70 @@ public class CookService extends UserService {
     // Методы
     //
     // Добавить блюдо
-    ////////////////////////!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Проверку добавить
-    public Dish createDish(Long id, String aboutDish, short cookingTime,
-                           List<Long> cooksId, String dishName, short weight, double dishCost) {
+    public Dish createDish(Long id, String dishName, String aboutDish,
+                           short cookingTime, short weight, double dishCost, List<Long> cooksId) {
 
+        //Создаем новое блюдо
         Dish dish = new Dish();
 
+        // Ставим значения его полям
         dish.setDishName(dishName);
         dish.setDishCost(dishCost);
         dish.setWeight(weight);
         dish.setCookingTime(cookingTime);
+        // Создаем коллекцию, чтобы передать туда все принимаемые значения
         List<Cook> cookList = new ArrayList<>();
 
-        for (Long i : cooksId) {
+        for (Long i : cooksId) { // Добавляем в коллекцию принимаемых поваров
             cookList.add(cookRepository.getCookById(i));
         }
 
-        dish.setCookList(cookList); // edit
+        dish.setCookList(cookList); // С коллекциями проделывать такое BadPractise (для hibernate)
         dish.setAboutDish(aboutDish);
 
-        return dishRepository.save(dish);
+        return dishRepository.save(dish); // save
 
     }
 
 
     // Изменить карту блюда
-    public void editDish(Long id, String aboutDish, short cookingTime,
-                         List<Long> cooksId, String dishName, short weight, double dishCost) {
+    public void editDish(Long id, String dishName, String aboutDish, short cookingTime,
+                         short weight, double dishCost, List<Long> cooksId) {
 
-
+        // Мы забираем из БД нужное нам блюдо
         Dish dish = dishRepository.getById(id);
 
+        // Проверяем на NULL
         if (dish != null) {
-            dish.setDishName(dishName);
             dish.setDishCost(dishCost);
-            dish.setWeight(weight);
+            dish.setDishName(dishName);
             dish.setCookingTime(cookingTime);
-
+            dish.setWeight(weight);
+            // Создаем коллекцию, чтобы передать туда все принимаемые значения
             List<Cook> cookList = new ArrayList<>();
 
-            for (Long i : cooksId) {
+            for (Long i : cooksId) { // Добавляем в коллекцию принимаемых поваров
                 cookList.add(cookRepository.getCookById(i));
             }
 
-            dish.setCookList(cookList); // edit
+            dish.setCookList(cookList); // С коллекциями проделывать такое BadPractise (для hibernate)
             dish.setAboutDish(aboutDish);
 
-            dishRepository.save(dish);
-        } else {
+            dishRepository.save(dish); // Save edits
+        } else { // Если NULL, стреляем ошибкой notFound
             throw new NotFoundException(id);
         }
     }
 
 
     // Удалить блюдо
-    void removeDish(Long id) {
+    public void removeDish(Long id) {
 
-        Long newId = id;
-
-        if (newId != null) {
+        if (id != null) {
             Dish dish = dishRepository.getById(id);
             dishRepository.delete(dish);
         } else {
-            throw new NotFoundException(newId);
+            throw new NotFoundException(id);
         }
     }
 }

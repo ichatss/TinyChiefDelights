@@ -74,8 +74,10 @@ public class CustomerController {
 
     // Заказчик может редактировать свою карточку (поиск по ID)
     @PutMapping("/edit/{id}")
-    Customer editCustomer(@PathVariable Long id, User user, @RequestParam double wallet) {
-        return customerService.editCustomer(id, user, wallet);
+    Customer editCustomer(@PathVariable Long id, @RequestParam String login,
+                          @RequestParam String name, @RequestParam String lastName, @RequestParam double wallet) {
+
+        return customerService.editCustomer(id, login, name, lastName, wallet);
     }
 
 

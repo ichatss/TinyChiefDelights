@@ -1,6 +1,5 @@
 package com.tinychiefdelights.controller;
 
-import com.tinychiefdelights.model.Cook;
 import com.tinychiefdelights.repository.CookRepository;
 import com.tinychiefdelights.service.CookService;
 import com.tinychiefdelights.service.UserService;
@@ -46,10 +45,11 @@ public class CookController {
     //
     // Шеф-Повар создает блюдо для меню
     @PostMapping("/create/dish")
-    void createDish(@RequestParam Long id, @RequestParam String aboutDish, @RequestParam short cookingTime,
-                    @RequestParam List<Long> cookId, @RequestParam String dishName, @RequestParam short weight, @RequestParam double dishCost) {
+    void createDish(@RequestParam Long id, @RequestParam String dishName, @RequestParam String aboutDish,
+                    @RequestParam short cookingTime, @RequestParam short weight,
+                    @RequestParam double dishCost, @RequestParam List<Long> cooksId) {
 
-        cookService.createDish(id, aboutDish, cookingTime, cookId, dishName, weight, dishCost);
+        cookService.createDish(id, dishName, aboutDish, cookingTime, weight, dishCost, cooksId);
     }
 
 
@@ -62,18 +62,21 @@ public class CookController {
 //    }
 
 
-
-
     // Изменить блюдо в меню
     @PutMapping("/edit/dish/{id}")
-    void editDish(@PathVariable Long id, String aboutDish, short cookingTime,
-                  @RequestParam List<Long> cooksId, String dishName, short weight, double dishCost) {
+    void editDish(@PathVariable Long id, @RequestParam String dishName, @RequestParam String aboutDish,
+                  @RequestParam short cookingTime, @RequestParam short weight,
+                  @RequestParam double dishCost, @RequestParam List<Long> cooksId) {
 
-        cookService.editDish(id, aboutDish, cookingTime, cooksId, dishName, weight, dishCost);
+        cookService.editDish(id, dishName, aboutDish, cookingTime, weight, dishCost, cooksId);
     }
 
 
     // DELETE MAPPING
     //
-
+    // Удалить блюдо из меню
+    @DeleteMapping("/delete/dish/{id}")
+    void removeDish(@PathVariable Long id) {
+        cookService.removeDish(id);
+    }
 }

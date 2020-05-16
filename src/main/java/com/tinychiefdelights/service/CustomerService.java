@@ -155,11 +155,15 @@ public class CustomerService extends UserService {
 
 
     // Изменить карточку заказчика
-    public Customer editCustomer(Long id, User user, double wallet) {
-        Customer customer = customerRepository.findByIdAndUserRole(id, "CUSTOMER");
-        try {
+    public Customer editCustomer(Long id, String login, String name,
+                                 String lastName, double wallet) {
 
-            customer.setUser(user);
+        Customer customer = customerRepository.findByIdAndUserRole(id, "CUSTOMER");
+
+        try {
+            customer.getUser().setLogin(login);
+            customer.getUser().setName(name);
+            customer.getUser().setLastName(lastName);
             customer.setWallet(wallet);
             return customerRepository.save(customer);
 

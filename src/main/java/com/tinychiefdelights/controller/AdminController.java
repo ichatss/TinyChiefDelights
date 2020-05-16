@@ -7,7 +7,6 @@ import com.tinychiefdelights.service.AdminService;
 import com.tinychiefdelights.service.UserService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
@@ -53,7 +52,7 @@ public class AdminController {
     }
 
 
-    // Вывод информации по конкретному заказу по ID
+    // Вывод информации по заказу по ID
     @GetMapping("/order/{id}")
     Order getOrderInfo(@PathVariable Long id) {
             return adminService.getOrderInfo(id).orElseThrow(() -> new NotFoundException(id));
@@ -109,7 +108,7 @@ public class AdminController {
 
     // DELETE MAPPING
     //
-    // Удалить конкретного Повара по ID
+    // Удалить Повара по ID
     @DeleteMapping("/delete/cook/{id}")
     void removeCook(@PathVariable Long id) {
         adminService.deleteCook(id);
