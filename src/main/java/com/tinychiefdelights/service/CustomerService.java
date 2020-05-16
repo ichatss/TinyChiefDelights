@@ -3,10 +3,12 @@ package com.tinychiefdelights.service;
 import com.tinychiefdelights.exceptions.NotFoundException;
 import com.tinychiefdelights.model.*;
 import com.tinychiefdelights.repository.*;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -31,10 +33,18 @@ public class CustomerService extends UserService {
 
     private PasswordEncoder passwordEncoder;
 
+    private BasketRepository basketRepository;
+
 
     // SETTERS
     //
     // Injects into Setters
+
+    @Autowired
+    public void setBasketRepository(BasketRepository basketRepository){
+        this.basketRepository = basketRepository;
+    }
+
     @Autowired
     public void setReviewRepository(ReviewRepository reviewRepository) {
         this.reviewRepository = reviewRepository;
@@ -129,6 +139,18 @@ public class CustomerService extends UserService {
 
     }
 
+    //Заполнить карзину
+    public void setBasket(List<Long> dishListId){
+        Basket basket = new Basket();
+
+        List<Dish> dishList = new ArrayList<>();
+
+        for(Long i : dishListId){
+            dishList.add(dishRepository.getById(i));
+        }
+        basket.setDishList(dishList);
+        basketRepository.save(basket);
+    }
 
     // Сделать Заказ
     public void makeOrder(String address, String phoneNumber, Long customerId,

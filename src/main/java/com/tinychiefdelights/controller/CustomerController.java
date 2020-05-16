@@ -42,6 +42,12 @@ public class CustomerController {
 
     private final UserService userService;
 
+    //заполнить корзину
+    @PostMapping("/basket")
+    public void setBasket(@RequestParam List<Long> dishList){
+        customerService.setBasket(dishList);
+    }
+
     // Сделать заказ
     @PostMapping("/make/order")
     public void makeOrder(String address, String phoneNumber, Long customerId,
