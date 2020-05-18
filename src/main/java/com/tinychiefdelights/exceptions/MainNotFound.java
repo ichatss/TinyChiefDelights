@@ -1,8 +1,8 @@
 package com.tinychiefdelights.exceptions;
 
-public class NotFoundException extends RuntimeException {
+public class MainNotFound extends RuntimeException {
 
-    public NotFoundException(Long id) {
+    public MainNotFound(Long id) {
         super("Невозможно найти id: " + id);
     }
 }

@@ -1,6 +1,6 @@
 package com.tinychiefdelights.service;
 
-import com.tinychiefdelights.exceptions.NotFoundException;
+import com.tinychiefdelights.exceptions.MainNotFound;
 import com.tinychiefdelights.model.*;
 import com.tinychiefdelights.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,7 +85,7 @@ public class AdminService extends UserService {
             cook.setAboutCook(aboutCook);
             cookRepository.save(cook);
         } else {
-            throw new NotFoundException(id);
+            throw new MainNotFound(id);
         }
     }
 
@@ -102,7 +102,7 @@ public class AdminService extends UserService {
         try {
             cookRepository.delete(cook);
         } catch (Exception e) {
-            throw new NotFoundException(id);
+            throw new MainNotFound(id);
         }
     }
 

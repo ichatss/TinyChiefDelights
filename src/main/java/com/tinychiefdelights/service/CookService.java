@@ -1,6 +1,6 @@
 package com.tinychiefdelights.service;
 
-import com.tinychiefdelights.exceptions.NotFoundException;
+import com.tinychiefdelights.exceptions.MainNotFound;
 import com.tinychiefdelights.model.Cook;
 import com.tinychiefdelights.model.Dish;
 import com.tinychiefdelights.repository.CookRepository;
@@ -89,7 +89,7 @@ public class CookService extends UserService {
 
             dishRepository.save(dish); // Save edits
         } else { // Если NULL, стреляем ошибкой notFound
-            throw new NotFoundException(id);
+            throw new MainNotFound(id);
         }
     }
 
@@ -101,7 +101,7 @@ public class CookService extends UserService {
             Dish dish = dishRepository.getById(id);
             dishRepository.delete(dish);
         } else {
-            throw new NotFoundException(id);
+            throw new MainNotFound(id);
         }
     }
 }

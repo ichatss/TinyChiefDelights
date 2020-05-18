@@ -11,27 +11,27 @@ public class ExceptionAdvice {
 
     // NotFoundException
     @ResponseBody
-    @ExceptionHandler(NotFoundException.class)
+    @ExceptionHandler(MainNotFound.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String NotFoundHandler(NotFoundException ex) {
+    String NotFoundHandler(MainNotFound ex) {
         return ex.getMessage();
     }
 
 
     // IllegalArgumentException
     @ResponseBody
-    @ExceptionHandler(IllegalArgumentException.class)
+    @ExceptionHandler(MainIllegalArgument.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    String IllegalArgumentHandler(IllegalArgumentException ex) {
+    String IllegalArgumentHandler(MainIllegalArgument ex) {
         return ex.getMessage();
     }
 
 
     // NullPointerException
     @ResponseBody
-    @ExceptionHandler(NullPointerException.class)
+    @ExceptionHandler(MainNullPointer.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    String NullPointerHandler(NullPointerException ex) {
+    String NullPointerHandler(MainNullPointer ex) {
         return ex.getMessage();
     }
 }

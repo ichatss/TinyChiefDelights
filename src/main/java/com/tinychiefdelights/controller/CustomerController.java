@@ -94,11 +94,11 @@ public class CustomerController {
     }
 
 
-//    // Изменить свой пароль
-//    @PutMapping("/change/password")
-//    void changePassword(@RequestParam String login, @RequestParam String newPass) {
-//        userService.changePassword(login, newPass);
-//    }
+    // Изменить свой пароль
+    @PutMapping("/change/password")
+    void changePassword(@RequestParam String login, @RequestParam String newPass) {
+        userService.changePassword(login, newPass);
+    }
 
 
     // Внести деньги на счет (Заказчик)

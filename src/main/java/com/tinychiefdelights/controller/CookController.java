@@ -5,6 +5,7 @@ import com.tinychiefdelights.service.CookService;
 import com.tinychiefdelights.service.UserService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
@@ -55,13 +56,14 @@ public class CookController {
 
     // PUT MAPPING
     //
-//    // Изменить свой пароль
-//    @PutMapping("/change/password")
-//    void changePassword(@RequestParam String login, @RequestParam String newPass) {
-//        userService.changePassword(login, newPass);
-//    }
+    // Изменить свой пароль
+    @PutMapping("/change/password")
+    void changePassword(@RequestParam String login, @RequestParam String newPass) {
+        userService.changePassword(login, newPass);
+    }
 
 
+//    @PostAuthorize("cookRepository.getByIdAndUserRole(#id, 'COOK').get().cookType == 'CHEF'")
     // Изменить блюдо в меню
     @PutMapping("/edit/dish/{id}")
     void editDish(@PathVariable Long id, @RequestParam String dishName, @RequestParam String aboutDish,

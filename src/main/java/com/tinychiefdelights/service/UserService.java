@@ -1,5 +1,7 @@
 package com.tinychiefdelights.service;
 
+import com.tinychiefdelights.exceptions.MainIllegalArgument;
+import com.tinychiefdelights.exceptions.MainNullPointer;
 import com.tinychiefdelights.model.User;
 import com.tinychiefdelights.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,17 +41,20 @@ public class UserService implements UserDetailsService {
 
     // Методы
     //
-//    // Сменить пароль !!!!!!!!!!!!!!! РАЗОБРАТЬСЯ ЧТО ТАК А ЧТО НЕТ
-//    public User changePassword(String login, String newPass) throws UsernameNotFoundException {
-//        User user = getUserDataByLogin(login);
-//        if (user == null) {
-//            throw new UsernameNotFoundException("не нашли" + login);
-//        } else {
-//            user.setPassword(passwordEncoder.encode(newPass));
-//            return userRepository.save(user);
-//        }
-//    }
+    // Сменить пароль
+    public User changePassword(String login, String newPass) {
 
+        try {
+
+            User user = userRepository.getByLogin(login);
+
+
+            user.setPassword(passwordEncoder.encode(newPass));
+            return userRepository.save(user);
+        } catch (NullPointerException e) {
+            throw new MainNullPointer();
+        }
+    }
 
 
     private User getUserDataByLogin(String login) {

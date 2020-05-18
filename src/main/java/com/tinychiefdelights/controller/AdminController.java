@@ -1,6 +1,6 @@
 package com.tinychiefdelights.controller;
 
-import com.tinychiefdelights.exceptions.NotFoundException;
+import com.tinychiefdelights.exceptions.MainNotFound;
 import com.tinychiefdelights.model.*;
 import com.tinychiefdelights.repository.AdminRepository;
 import com.tinychiefdelights.service.AdminService;
@@ -55,7 +55,7 @@ public class AdminController {
     // Вывод информации по заказу по ID
     @GetMapping("/order/{id}")
     Order getOrderInfo(@PathVariable Long id) {
-            return adminService.getOrderInfo(id).orElseThrow(() -> new NotFoundException(id));
+            return adminService.getOrderInfo(id).orElseThrow(() -> new MainNotFound(id));
     }
 
 
@@ -69,7 +69,7 @@ public class AdminController {
     // Вывод Повара по ID
     @GetMapping("/cook/{id}")
     Cook getCook(@PathVariable Long id) {
-        return adminService.getCook(id).orElseThrow(() -> new NotFoundException(id));
+        return adminService.getCook(id).orElseThrow(() -> new MainNotFound(id));
     }
 
 
@@ -83,7 +83,7 @@ public class AdminController {
     // Вывод Заказчика по ID
     @GetMapping("/customer/{id}")
     Customer getCustomer(@PathVariable Long id) {
-        return adminService.getCustomer(id).orElseThrow(() -> new NotFoundException(id));
+        return adminService.getCustomer(id).orElseThrow(() -> new MainNotFound(id));
     }
 
 
@@ -99,11 +99,11 @@ public class AdminController {
         adminService.editCook(id, name, lastName, rating, aboutCook);
     }
 
-//    // Поменять пароль
-//    @PutMapping("/change/password")
-//    User changePassword(@RequestParam String login, @RequestParam String newPass) {
-//        return userService.changePassword(login, newPass);
-//    }
+    // Поменять пароль
+    @PutMapping("/change/password")
+    User changePassword(@RequestParam String login, @RequestParam String newPass) {
+        return userService.changePassword(login, newPass);
+    }
 
 
     // DELETE MAPPING

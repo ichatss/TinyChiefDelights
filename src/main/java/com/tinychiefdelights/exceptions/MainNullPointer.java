@@ -1,8 +1,8 @@
 package com.tinychiefdelights.exceptions;
 
-public class NullPointerException extends RuntimeException {
+public class MainNullPointer extends RuntimeException {
 
-    public NullPointerException() {
+    public MainNullPointer() {
         super("Ошибка! Проверьте заполненные поля на корректность!");
     }
 }

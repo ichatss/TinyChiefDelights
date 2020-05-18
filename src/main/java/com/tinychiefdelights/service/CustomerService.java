@@ -1,16 +1,22 @@
 package com.tinychiefdelights.service;
 
-import com.tinychiefdelights.exceptions.NotFoundException;
+import com.tinychiefdelights.exceptions.MainIllegalArgument;
+import com.tinychiefdelights.exceptions.MainNotFound;
+import com.tinychiefdelights.exceptions.MainNullPointer;
 import com.tinychiefdelights.model.*;
 import com.tinychiefdelights.repository.*;
+import javassist.NotFoundException;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -41,7 +47,7 @@ public class CustomerService extends UserService {
     // Injects into Setters
 
     @Autowired
-    public void setBasketRepository(BasketRepository basketRepository){
+    public void setBasketRepository(BasketRepository basketRepository) {
         this.basketRepository = basketRepository;
     }
 
@@ -85,37 +91,44 @@ public class CustomerService extends UserService {
     //
     // Внести деньги на счет
     public void depositMoney(Long id, double money) {
-        Customer customer = customerRepository.findByIdAndUserRole(id, "CUSTOMER");
+
         try {
+            Customer customer = customerRepository.findByIdAndUserRole(id, "CUSTOMER");
+
             customer.setWallet(customer.getWallet() + money);
             customerRepository.save(customer);
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException();
-        } catch (NotFoundException e) {
-            throw new NotFoundException(id);
-        }
 
+            if (money <= 0) { // Делаем проверку на входной параметр (чтобы не была отрицательной)
+                throw new MainIllegalArgument();
+            }
+
+        } catch (NullPointerException e) {
+            throw new MainNullPointer();
+        }
     }
 
 
     // Вывести деньги со счета
     public void withdrawMoney(Long id, double money) {
 
-        if(customerRepository.findByIdAndUserRole(id, "CUSTOMER") == null) {
-            throw new RuntimeException("Нет пользователя с " + id + " id");
-        }
+        try {
 
-        Customer customer = customerRepository.findByIdAndUserRole(id, "CUSTOMER");
+            Customer customer = customerRepository.findByIdAndUserRole(id, "CUSTOMER");
 
-        if (money <= 0){
-            throw new RuntimeException("Не возможно вывести такую сумму");
-        }
+            if (money <= customer.getWallet()) { // Делаем проверку, чтобы сумма указанная заказчиком была меньше кошелька
+                customer.setWallet(customer.getWallet() - money);
+                customerRepository.save(customer);
+            } else {
 
-        if (money <= customer.getWallet()) { // Делаем проверку, чтобы сумма указанная заказчиком была меньше кошелька
-            customer.setWallet(customer.getWallet() - money);
-            customerRepository.save(customer);
-        } else {
-            throw new RuntimeException("Введенная Вами сумма превышает остаток на счете!");
+                throw new MainIllegalArgument("Введенная Вами сумма превшает остаток на счете!");
+            }
+
+            if (money <= 0) {
+                throw new MainIllegalArgument();
+            }
+
+        } catch (NullPointerException e) {
+            throw new MainNullPointer();
         }
     }
 
@@ -123,7 +136,7 @@ public class CustomerService extends UserService {
     // Оставить Отзыв
     public void setReview(String text, int rate, Long id) {
 
-        if(cookRepository.findByIdAndUserRole(id, "COOK") == null){
+        if (cookRepository.findByIdAndUserRole(id, "COOK") == null) {
             throw new RuntimeException("Нет повара с " + id + " id");
         }
 
@@ -140,12 +153,12 @@ public class CustomerService extends UserService {
     }
 
     //Заполнить карзину
-    public void setBasket(List<Long> dishListId){
+    public void setBasket(List<Long> dishListId) {
         Basket basket = new Basket();
 
         List<Dish> dishList = new ArrayList<>();
 
-        for(Long i : dishListId){
+        for (Long i : dishListId) {
             dishList.add(dishRepository.getById(i));
         }
         basket.setDishList(dishList);
@@ -191,8 +204,8 @@ public class CustomerService extends UserService {
 
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException();
-        } catch (Exception e) {
-            throw new NotFoundException(id);
+        } catch (Exception e) { // Специально делал
+            throw new MainNotFound(id);
         }
     }
 
