@@ -81,16 +81,21 @@ public class CookService extends UserService {
                 // Создаем коллекцию, чтобы передать туда все принимаемые значения
                 List<Cook> cookList = new ArrayList<>();
 
-                for (Long i : cooksId) { // Добавляем в коллекцию принимаемых поваров
-                    cookList.add(cookRepository.getCookById(i));
+                try {
+                    for (Long i : cooksId) { // Добавляем в коллекцию принимаемых поваров
+                        cookList.add(cookRepository.getCookById(i));
+                    }
+                } catch (NullPointerException ex) {
+                    throw new MainNullPointer("Повар не найден!");
                 }
 
-                dish.setCookList(cookList); // С коллекциями проделывать такое BadPractise (для hibernate)
-                dish.setAboutDish(aboutDish);
 
-                dishRepository.save(dish); // Save edits
+            dish.setCookList(cookList); // С коллекциями проделывать такое BadPractise (для hibernate)
+            dish.setAboutDish(aboutDish);
 
-        }catch (NullPointerException ex) {
+            dishRepository.save(dish); // Save edits
+
+        } catch (NullPointerException ex) {
             throw new MainNullPointer("Блюдо с таким ID не найдено!");
         }
     }
@@ -99,11 +104,11 @@ public class CookService extends UserService {
     // Удалить блюдо
     public void removeDish(Long id) {
 
-        if (id != null) {
+        try {
             Dish dish = dishRepository.getById(id);
             dishRepository.delete(dish);
-        } else {
-            throw new MainNotFound(id);
+        } catch (NullPointerException ex){
+            throw new MainNullPointer("Блюдо с таким ID не найдено!");
         }
     }
 }

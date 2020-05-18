@@ -21,6 +21,7 @@ public class User implements UserDetails {
     public static final String ROLE_ADMIN = "ADMIN";
     public static final String ROLE_CUSTOMER = "CUSTOMER";
     public static final String ROLE_COOK = "COOK";
+    public static final String ROLE_CHEF = "CHEF";
     //
 
 

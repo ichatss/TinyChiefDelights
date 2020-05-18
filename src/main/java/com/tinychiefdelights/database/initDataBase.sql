@@ -27,7 +27,7 @@ values ('garry1212', 'potter32', 'Гарри', 'Поттер', 'CUSTOMER');
 insert into public.pg_user(login, password, name, last_name, role)
 values ('parker1989', 'parker43', 'Питтер', 'Паркер', 'CUSTOMER');
 insert into public.pg_user(login, password, name, last_name, role)
-values ('zurab2020', 'reksoft2020', 'Зураб', 'Белый', 'COOK');
+values ('zurab2020', 'reksoft2020', 'Зураб', 'Белый', 'CHEF');
 insert into public.pg_user(login, password, name, last_name, role)
 values ('tomhardi@icloud.com', 'hardtomy123', 'Том', 'Харди', 'COOK');
 insert into public.pg_user(login, password, name, last_name, role)

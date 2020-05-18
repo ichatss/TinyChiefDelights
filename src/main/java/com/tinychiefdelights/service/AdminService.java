@@ -5,6 +5,7 @@ import com.tinychiefdelights.model.*;
 import com.tinychiefdelights.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -97,13 +98,11 @@ public class AdminService extends UserService {
 
 
     // Удалить Повара
+    @Transactional
     public void deleteCook(Long id) {
-        Cook cook = cookRepository.findByIdAndUserRole(id, "COOK");
-        try {
-            cookRepository.delete(cook);
-        } catch (Exception e) {
-            throw new MainNotFound(id);
-        }
+
+        cookRepository.deleteByUserRoleAndId("COOK", id);
+
     }
 
 

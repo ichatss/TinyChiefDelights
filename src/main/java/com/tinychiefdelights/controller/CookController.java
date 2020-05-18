@@ -5,21 +5,20 @@ import com.tinychiefdelights.service.CookService;
 import com.tinychiefdelights.service.UserService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PostAuthorize;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
 
 import java.util.List;
 
+import static com.tinychiefdelights.model.User.ROLE_CHEF;
 import static com.tinychiefdelights.model.User.ROLE_COOK;
 
 
 @Api(value = "Работа с Поваром", tags = {"Повар"})
 @RestController
 @RequestMapping("/cook")
-@RolesAllowed({ROLE_COOK})
+@RolesAllowed({ROLE_COOK, ROLE_CHEF})
 public class CookController {
 
     //Injects через конструктор
@@ -46,6 +45,7 @@ public class CookController {
     // POST MAPPING
     //
     // Шеф-Повар создает блюдо для меню
+    @RolesAllowed({ROLE_CHEF})
     @PostMapping("/create/dish")
     void createDish(@RequestParam Long id, @RequestParam String dishName, @RequestParam String aboutDish,
                     @RequestParam short cookingTime, @RequestParam short weight,
@@ -65,7 +65,7 @@ public class CookController {
 
 
     // Изменить блюдо в меню
-//    @PreAuthorize("#cookRepository.getByIdAndUserRole(#id, 'COOK').get().cookType == 'CHEF'")
+    @RolesAllowed({ROLE_CHEF})
     @PutMapping("/edit/dish/{id}")
     void editDish(@PathVariable Long id, @RequestParam String dishName, @RequestParam String aboutDish,
                   @RequestParam short cookingTime, @RequestParam short weight,
@@ -78,6 +78,7 @@ public class CookController {
     // DELETE MAPPING
     //
     // Удалить блюдо из меню
+    @RolesAllowed({ROLE_CHEF})
     @DeleteMapping("/delete/dish/{id}")
     void removeDish(@PathVariable Long id) {
         cookService.removeDish(id);
