@@ -6,6 +6,7 @@ import com.tinychiefdelights.service.UserService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
@@ -63,8 +64,8 @@ public class CookController {
     }
 
 
-//    @PostAuthorize("cookRepository.getByIdAndUserRole(#id, 'COOK').get().cookType == 'CHEF'")
     // Изменить блюдо в меню
+//    @PreAuthorize("#cookRepository.getByIdAndUserRole(#id, 'COOK').get().cookType == 'CHEF'")
     @PutMapping("/edit/dish/{id}")
     void editDish(@PathVariable Long id, @RequestParam String dishName, @RequestParam String aboutDish,
                   @RequestParam short cookingTime, @RequestParam short weight,

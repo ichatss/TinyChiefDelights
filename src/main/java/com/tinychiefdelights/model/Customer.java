@@ -23,7 +23,7 @@ public class Customer {
     // name, lastName, login, password берем от класса User через связи;
 
     private @Id
-    @GeneratedValue
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
     Long id;
 
     @Column(name = "wallet")

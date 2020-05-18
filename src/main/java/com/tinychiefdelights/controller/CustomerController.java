@@ -56,13 +56,6 @@ public class CustomerController {
     }
 
 
-    // Регистрация
-    @PostMapping("/registration")
-    public void registration(User user, String login, String password, String name, String lastName) {
-        customerService.registration(user, login, password, name, lastName);
-    }
-
-
     // Оставить отзыв
     @PostMapping("/set/review")
     public void setReview(String text, @RequestParam int rate, Long id){

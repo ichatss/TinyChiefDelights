@@ -39,7 +39,8 @@ public class Order {
     //
     // Заказчик
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonIgnore // Таким образом я предотвратил рекурсию
+    // Проблема в том, что объекты загружаются лениво, и сериализация происходит до того, как они будут загружены полностью.
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Customer customer;
 
     // Лист блюд
@@ -48,11 +49,11 @@ public class Order {
             name = "order_dish",
             joinColumns = @JoinColumn(name = "dish_id"),
             inverseJoinColumns = @JoinColumn(name = "order_id"))
-    @JsonIgnore // Таким образом я предотвратил рекурсию
     private List<Dish> dishes;
 
     // Повар
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonIgnore // Таким образом я предотвратил рекурсию
+    // Проблема в том, что объекты загружаются лениво, и сериализация происходит до того, как они будут загружены полностью.
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Cook cook;
 }

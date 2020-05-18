@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
@@ -30,7 +31,7 @@ public class User implements UserDetails {
 
     // Поля
     private @Id
-    @GeneratedValue
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
     Long id;
 
     @Column(name = "login")
@@ -52,6 +53,11 @@ public class User implements UserDetails {
 
     // Методы
     //
+
+    public static User getCurrentUser() {
+        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal(); //
+    }
+
     // GrantedAuthority
     @JsonIgnore
     @Override

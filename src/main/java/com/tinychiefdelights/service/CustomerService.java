@@ -3,20 +3,16 @@ package com.tinychiefdelights.service;
 import com.tinychiefdelights.exceptions.MainIllegalArgument;
 import com.tinychiefdelights.exceptions.MainNotFound;
 import com.tinychiefdelights.exceptions.MainNullPointer;
+import com.tinychiefdelights.messages.Messages;
 import com.tinychiefdelights.model.*;
 import com.tinychiefdelights.repository.*;
-import javassist.NotFoundException;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
@@ -40,6 +36,8 @@ public class CustomerService extends UserService {
     private PasswordEncoder passwordEncoder;
 
     private BasketRepository basketRepository;
+
+    private Messages messages = new Messages();
 
 
     // SETTERS
@@ -81,10 +79,15 @@ public class CustomerService extends UserService {
         this.customerRepository = customerRepository;
     }
 
-    @Override
+    @Autowired
     public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
+
+//    @Autowired
+//    public void setMessages(Messages messages) {
+//        this.messages = messages;
+//    }
 
 
     // Методы
@@ -167,7 +170,7 @@ public class CustomerService extends UserService {
 
     // Сделать Заказ
     public void makeOrder(String address, String phoneNumber, Long customerId,
-                          Long cookId, List<Long> dishListId, Date date) { // Сделать заказ ()
+                          Long cookId, List<Long> dishListId, Date date) {
 
         try {
             Order order = new Order();
@@ -204,7 +207,7 @@ public class CustomerService extends UserService {
 
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException();
-        } catch (Exception e) { // Специально делал
+        } catch (Exception e) { // Тут добавлен Exception специально
             throw new MainNotFound(id);
         }
     }
@@ -212,23 +215,30 @@ public class CustomerService extends UserService {
 
     // Отменить заказ
     public void cancelOrder(Long id) {
-        Order order = orderRepository.getById(id);
-        order.setOrderStatus(false); // Добавим сообщение !!!!!!!!!!!!!!!
-        orderRepository.save(order);
+        try {
+            Order order = orderRepository.getById(id);
+            order.setOrderStatus(false);
+            orderRepository.save(order);
+        } catch (NullPointerException ex) {
+            throw new MainNullPointer("Заказ с таким ID отсутствует!");
+        }
     }
 
 
     // Регистрация
-    public Customer registration(User user, String login, String password, String name, String lastName) {
-        User newUser = user;
+    public Customer registration(String name, String lastName, String login, String password) {
+
+        User newUser = new User();
+
         newUser.setRole("CUSTOMER");
-        newUser.setLogin(login);
-        newUser.setPassword(password);
         newUser.setName(name);
         newUser.setLastName(lastName);
+        newUser.setLogin(login);
+        newUser.setPassword(passwordEncoder.encode(password));
         Customer newCustomer = new Customer();
         newCustomer.setUser(newUser);
         newCustomer.setWallet(0);
+
         userRepository.save(newUser);
 
         return customerRepository.save(newCustomer);

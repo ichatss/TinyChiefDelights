@@ -15,7 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(jsr250Enabled = true)
+@EnableGlobalMethodSecurity(jsr250Enabled = true, prePostEnabled = true) // Включаем @RolesAllowed and @Post
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
@@ -45,9 +45,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .cors().disable().csrf().disable()
+                .cors().disable().csrf().disable() // Обеспечивает мне доступность к функционалу после авторизации
                 .authorizeRequests()
-                .antMatchers("/", "/home").permitAll()
+                .antMatchers("/", "home").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

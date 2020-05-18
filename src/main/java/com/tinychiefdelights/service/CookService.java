@@ -1,6 +1,7 @@
 package com.tinychiefdelights.service;
 
 import com.tinychiefdelights.exceptions.MainNotFound;
+import com.tinychiefdelights.exceptions.MainNullPointer;
 import com.tinychiefdelights.model.Cook;
 import com.tinychiefdelights.model.Dish;
 import com.tinychiefdelights.repository.CookRepository;
@@ -68,28 +69,29 @@ public class CookService extends UserService {
     public void editDish(Long id, String dishName, String aboutDish, short cookingTime,
                          short weight, double dishCost, List<Long> cooksId) {
 
-        // Мы забираем из БД нужное нам блюдо
-        Dish dish = dishRepository.getById(id);
+        try {
 
-        // Проверяем на NULL
-        if (dish != null) {
-            dish.setDishCost(dishCost);
-            dish.setDishName(dishName);
-            dish.setCookingTime(cookingTime);
-            dish.setWeight(weight);
-            // Создаем коллекцию, чтобы передать туда все принимаемые значения
-            List<Cook> cookList = new ArrayList<>();
+            // Мы забираем из БД нужное нам блюдо
+            Dish dish = dishRepository.getById(id);
 
-            for (Long i : cooksId) { // Добавляем в коллекцию принимаемых поваров
-                cookList.add(cookRepository.getCookById(i));
-            }
+                dish.setDishCost(dishCost);
+                dish.setDishName(dishName);
+                dish.setCookingTime(cookingTime);
+                dish.setWeight(weight);
+                // Создаем коллекцию, чтобы передать туда все принимаемые значения
+                List<Cook> cookList = new ArrayList<>();
 
-            dish.setCookList(cookList); // С коллекциями проделывать такое BadPractise (для hibernate)
-            dish.setAboutDish(aboutDish);
+                for (Long i : cooksId) { // Добавляем в коллекцию принимаемых поваров
+                    cookList.add(cookRepository.getCookById(i));
+                }
 
-            dishRepository.save(dish); // Save edits
-        } else { // Если NULL, стреляем ошибкой notFound
-            throw new MainNotFound(id);
+                dish.setCookList(cookList); // С коллекциями проделывать такое BadPractise (для hibernate)
+                dish.setAboutDish(aboutDish);
+
+                dishRepository.save(dish); // Save edits
+
+        }catch (NullPointerException ex) {
+            throw new MainNullPointer("Блюдо с таким ID не найдено!");
         }
     }
 
