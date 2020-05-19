@@ -169,7 +169,7 @@ public class CustomerService extends UserService {
 
         int coast = calculateCoast(basketId);
         if (coast > customerRepository
-                .findByIdAndUserRole(customerId, "CUSTOMER")
+                .findByIdAndUserRole(customerId, User.ROLE_CUSTOMER)
                 .getWallet()) {
             throw new RuntimeException("Недостаточно средств, пополните счет");
         }
@@ -191,13 +191,17 @@ public class CustomerService extends UserService {
     }
 
 
-    // Изменить карточку заказчика
+    // Изменить свои данные
     public Customer editCustomer(String login, String name, String lastName) {
 
         Customer customer = customerRepository
                 .findByIdAndUserRole(User.getCurrentUser().getId(), User.ROLE_CUSTOMER);
 
-        customer.getUser().setLogin(login);
+        if (userRepository.getByLogin(login) == null) {
+            customer.getUser().setLogin(login);
+        } else {
+            throw new MainIllegalArgument("Данный логин уже занят!");
+        }
         customer.getUser().setName(name);
         customer.getUser().setLastName(lastName);
         return customerRepository.save(customer);
@@ -206,10 +210,13 @@ public class CustomerService extends UserService {
 
     // Отменить заказ
     public void cancelOrder(Long id) {
+
         try {
+
             Order order = orderRepository.getById(id);
             order.setOrderStatus(false);
             orderRepository.save(order);
+
         } catch (NullPointerException ex) {
             throw new MainNullPointer("Заказ с таким ID отсутствует!");
         }

@@ -96,15 +96,29 @@ public class AdminController {
     //
     // Изменяем Повара по ID
     @PutMapping("/edit/cook/{id}")
-    void editCook(@PathVariable Long id, String name, String lastName, float rating, String aboutCook) {
+    void editCook(@PathVariable Long id, String name,
+                  String lastName, float rating, String aboutCook) {
+
         adminService.editCook(id, name, lastName, rating, aboutCook);
     }
+
 
     // Поменять пароль
     @PutMapping("/change/password")
     User changePassword(@RequestParam String login, @RequestParam String newPass) {
+
         return userService.changePassword(login, newPass);
     }
+
+
+    // Поменять свои данные
+    @PutMapping("/edit")
+    Admin editAdmin(@RequestParam String login,
+                    @RequestParam String name, @RequestParam String lastName) {
+
+        return adminService.editAdmin(login, name, lastName);
+    }
+
 
 
     // DELETE MAPPING

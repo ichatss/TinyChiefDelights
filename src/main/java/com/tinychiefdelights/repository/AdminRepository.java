@@ -1,6 +1,7 @@
 package com.tinychiefdelights.repository;
 
 import com.tinychiefdelights.model.Admin;
+import com.tinychiefdelights.model.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -16,4 +17,7 @@ public interface AdminRepository extends JpaRepository<Admin, Long> { // Инт�
 
     // Удалить из БД Администратора ID + Role
     void deleteByUserRoleAndId(String role, Long id);
+
+    Admin findByIdAndUserRole(Long id, String role);
+
 }

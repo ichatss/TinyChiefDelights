@@ -1,5 +1,6 @@
 package com.tinychiefdelights.service;
 
+import com.tinychiefdelights.exceptions.MainIllegalArgument;
 import com.tinychiefdelights.exceptions.MainNotFound;
 import com.tinychiefdelights.model.*;
 import com.tinychiefdelights.repository.*;
@@ -24,6 +25,10 @@ public class AdminService extends UserService {
 
     private CustomerRepository customerRepository; // Заказчик
 
+    private UserRepository userRepository; // Общий пользователь
+
+
+
 
     // Getters and Setters
     //
@@ -32,7 +37,6 @@ public class AdminService extends UserService {
     public void setAdminRepository(AdminRepository adminRepository) {
         this.adminRepository = adminRepository;
     }
-
     @Autowired
     public void setOrderRepository(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
@@ -41,6 +45,11 @@ public class AdminService extends UserService {
     @Autowired
     public void setCookRepository(CookRepository cookRepository) {
         this.cookRepository = cookRepository;
+    }
+
+    @Override
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Autowired
@@ -88,6 +97,23 @@ public class AdminService extends UserService {
         } else {
             throw new MainNotFound(id);
         }
+    }
+
+
+    // Изменить свой данные
+    public Admin editAdmin(String login, String name, String lastName) {
+
+        Admin admin = adminRepository
+                .findByIdAndUserRole(User.getCurrentUser().getId(), User.ROLE_ADMIN);
+
+        if (userRepository.getByLogin(login) == null) {
+            admin.getUser().setLogin(login);
+        } else {
+            throw new MainIllegalArgument("Данный логин уже занят!");
+        }
+        admin.getUser().setName(name);
+        admin.getUser().setLastName(lastName);
+        return adminRepository.save(admin);
     }
 
 

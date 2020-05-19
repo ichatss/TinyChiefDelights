@@ -64,6 +64,7 @@ public class UserService implements UserDetailsService {
     }
 
 
+    // Тут берем пользователя по лоину
     private User getUserDataByLogin(String login) {
         User user = userRepository.getByLogin(login);
         return user;
