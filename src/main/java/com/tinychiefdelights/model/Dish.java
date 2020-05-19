@@ -59,4 +59,13 @@ public class Dish {
             inverseJoinColumns = @JoinColumn(name = "dish_id"))
     @JsonIgnore // Таким образом я предотвратил рекурсию
     private List<Order> ordersList;
+
+    // Лист корзин, куда добавляются блюда
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "basket_dish",
+            joinColumns = @JoinColumn(name = "basket_id"),
+            inverseJoinColumns = @JoinColumn(name = "dish_id"))
+    @JsonIgnore // Таким образом я предотвратил рекурсию
+    private List<Basket> basketList;
 }
