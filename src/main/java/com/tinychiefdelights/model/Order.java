@@ -51,9 +51,12 @@ public class Order {
             inverseJoinColumns = @JoinColumn(name = "order_id"))
     private List<Dish> dishes;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "basket_id", referencedColumnName = "id") // Join without Cook in User class
+    private Basket basket;
 
-    @Column(name = "basket_id")
-    private Long basketId;
+//    @Column(name = "basket_id")
+//    private Long basketId;
 
     // Повар
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

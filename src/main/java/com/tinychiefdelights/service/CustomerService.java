@@ -201,7 +201,7 @@ public class CustomerService extends UserService {
             order.setOrderStatus(true);
             order.setCustomer(customerRepository.findByIdAndUserRole(customerId, "CUSTOMER"));
             order.setCook(cookRepository.findByIdAndUserRole(cookId, "COOK"));
-            order.setBasketId(basketId);
+            order.setBasket(basketRepository.getById(basketId));
             orderRepository.save(order);
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException(e);
