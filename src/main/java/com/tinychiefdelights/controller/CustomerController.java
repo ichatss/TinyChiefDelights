@@ -7,12 +7,9 @@ import com.tinychiefdelights.service.UserService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
-import javax.validation.constraints.Null;
-import java.util.Date;
 import java.util.List;
 
 import static com.tinychiefdelights.model.User.ROLE_CUSTOMER;
@@ -31,6 +28,7 @@ public class CustomerController {
     public CustomerController(CustomerRepository customerRepository,
                               CustomerService customerService,
                               UserService userService) {
+
         this.customerRepository = customerRepository;
         this.customerService = customerService;
         this.userService = userService;
@@ -46,11 +44,16 @@ public class CustomerController {
 
     private final UserService userService;
 
-    //заполнить корзину
+
+
+    // POST
+    //
+    // Заполнить корзину
     @PostMapping("/basket")
     public void setBasket(@RequestParam List<Long> dishList){
         customerService.setBasket(dishList);
     }
+
 
     // Сделать заказ
     @PostMapping("/make/order")
@@ -79,19 +82,23 @@ public class CustomerController {
         customerService.setReview(text, rate, id);
     }
 
-    // Заказчик может редактировать свою карточку (поиск по ID)
-    @PutMapping("/edit/{id}")
-    Customer editCustomer(@PathVariable Long id, @RequestParam String login,
-                          @RequestParam String name, @RequestParam String lastName, @RequestParam double wallet) {
 
-        return customerService.editCustomer(id, login, name, lastName, wallet);
+
+    // PUT
+    //
+    // Заказчик может редактировать свою карточку (поиск по ID)
+    @PutMapping("/edit")
+    Customer editCustomer(@RequestParam String login,
+                          @RequestParam String name, @RequestParam String lastName) {
+
+        return customerService.editCustomer(login, name, lastName);
     }
 
 
     // Снять деньги со своего депозита (Заказчик)
-    @PutMapping("/{id}/withdraw/{money}")
-    void withdrawMoney(@PathVariable Long id, @RequestParam double money) {
-        customerService.withdrawMoney(id, money);
+    @PutMapping("/withdraw/{money}")
+    void withdrawMoney(@RequestParam double money) {
+        customerService.withdrawMoney(money);
     }
 
 
@@ -103,9 +110,9 @@ public class CustomerController {
 
 
     // Внести деньги на счет (Заказчик)
-    @PutMapping("/{id}/deposit/money")
-    public void depositMoney(@PathVariable Long id, @RequestParam double money) {
-        customerService.depositMoney(id, money);
+    @PutMapping("/deposit/money")
+    public void depositMoney(@RequestParam double money) {
+        customerService.depositMoney(money);
     }
 
 

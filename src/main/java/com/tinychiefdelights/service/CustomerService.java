@@ -3,7 +3,6 @@ package com.tinychiefdelights.service;
 import com.tinychiefdelights.exceptions.MainIllegalArgument;
 import com.tinychiefdelights.exceptions.MainNotFound;
 import com.tinychiefdelights.exceptions.MainNullPointer;
-import com.tinychiefdelights.messages.Messages;
 import com.tinychiefdelights.model.*;
 import com.tinychiefdelights.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +35,6 @@ public class CustomerService extends UserService {
     private PasswordEncoder passwordEncoder;
 
     private BasketRepository basketRepository;
-
-    private Messages messages = new Messages();
 
 
     // SETTERS
@@ -84,54 +81,39 @@ public class CustomerService extends UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-//    @Autowired
-//    public void setMessages(Messages messages) {
-//        this.messages = messages;
-//    }
-
 
     // Методы
     //
     // Внести деньги на счет
-    public void depositMoney(Long id, double money) {
+    public void depositMoney(double money) {
 
-        try {
-            Customer customer = customerRepository.findByIdAndUserRole(id, "CUSTOMER");
+        Customer customer = customerRepository
+                .findByIdAndUserRole(User.getCurrentUser().getId(), User.ROLE_CUSTOMER);
 
-            customer.setWallet(customer.getWallet() + money);
-            customerRepository.save(customer);
+        customer.setWallet(customer.getWallet() + money);
+        customerRepository.save(customer);
 
-            if (money <= 0) { // Делаем проверку на входной параметр (чтобы не была отрицательной)
-                throw new MainIllegalArgument();
-            }
-
-        } catch (NullPointerException e) {
-            throw new MainNullPointer();
+        if (money <= 0) { // Делаем проверку на входной параметр (чтобы не была отрицательной)
+            throw new MainIllegalArgument();
         }
     }
 
 
     // Вывести деньги со счета
-    public void withdrawMoney(Long id, double money) {
+    public void withdrawMoney(double money) {
 
-        try {
+        Customer customer = customerRepository
+                .findByIdAndUserRole(User.getCurrentUser().getId(), User.ROLE_CUSTOMER);
 
-            Customer customer = customerRepository.findByIdAndUserRole(id, "CUSTOMER");
+        if (money <= customer.getWallet()) { // Делаем проверку, чтобы сумма указанная заказчиком была меньше кошелька
+            customer.setWallet(customer.getWallet() - money);
+            customerRepository.save(customer);
+        } else {
+            throw new MainIllegalArgument("Введенная Вами сумма превшает остаток на счете!");
+        }
 
-            if (money <= customer.getWallet()) { // Делаем проверку, чтобы сумма указанная заказчиком была меньше кошелька
-                customer.setWallet(customer.getWallet() - money);
-                customerRepository.save(customer);
-            } else {
-
-                throw new MainIllegalArgument("Введенная Вами сумма превшает остаток на счете!");
-            }
-
-            if (money <= 0) {
-                throw new MainIllegalArgument();
-            }
-
-        } catch (NullPointerException e) {
-            throw new MainNullPointer();
+        if (money <= 0) { // Делаем проверку на входной параметр (чтобы не была отрицательной)
+            throw new MainIllegalArgument();
         }
     }
 
@@ -155,7 +137,7 @@ public class CustomerService extends UserService {
 
     }
 
-    //Заполнить карзину
+    // Заполнить карзину
     public void setBasket(List<Long> dishListId) {
         Basket basket = new Basket();
 
@@ -168,13 +150,13 @@ public class CustomerService extends UserService {
         basketRepository.save(basket);
     }
 
-    //подсчет цены
-    public int calculateCoast(Long basketId){
+    // Подсчет цены
+    public int calculateCoast(Long basketId) {
 
         Basket basket = basketRepository.getById(basketId);
 
         int coast = 0;
-        for (Dish i: basket.getDishList()) {
+        for (Dish i : basket.getDishList()) {
             coast += i.getDishCost();
         }
 
@@ -185,10 +167,10 @@ public class CustomerService extends UserService {
     public void makeOrder(String address, String phoneNumber, Long customerId,
                           Long cookId, Long basketId) {
 
-          int coast = calculateCoast(basketId);
-        if(coast > customerRepository
-                    .findByIdAndUserRole(customerId, "CUSTOMER")
-                    .getWallet()){
+        int coast = calculateCoast(basketId);
+        if (coast > customerRepository
+                .findByIdAndUserRole(customerId, "CUSTOMER")
+                .getWallet()) {
             throw new RuntimeException("Недостаточно средств, пополните счет");
         }
 
@@ -206,30 +188,19 @@ public class CustomerService extends UserService {
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException(e);
         }
-
-//        Customer customer = customerRepository.findByIdAndUserRole(customerId, "CUSTOMER");
-//        customer.setWallet(customer.getWallet() - coast);
     }
 
 
     // Изменить карточку заказчика
-    public Customer editCustomer(Long id, String login, String name,
-                                 String lastName, double wallet) {
+    public Customer editCustomer(String login, String name, String lastName) {
 
-        Customer customer = customerRepository.findByIdAndUserRole(id, "CUSTOMER");
+        Customer customer = customerRepository
+                .findByIdAndUserRole(User.getCurrentUser().getId(), User.ROLE_CUSTOMER);
 
-        try {
-            customer.getUser().setLogin(login);
-            customer.getUser().setName(name);
-            customer.getUser().setLastName(lastName);
-            customer.setWallet(wallet);
-            return customerRepository.save(customer);
-
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException();
-        } catch (Exception e) { // Тут добавлен Exception специально
-            throw new MainNotFound(id);
-        }
+        customer.getUser().setLogin(login);
+        customer.getUser().setName(name);
+        customer.getUser().setLastName(lastName);
+        return customerRepository.save(customer);
     }
 
 
@@ -250,7 +221,7 @@ public class CustomerService extends UserService {
 
         User newUser = new User();
 
-        newUser.setRole("CUSTOMER");
+        newUser.setRole(User.ROLE_CUSTOMER);
         newUser.setName(name);
         newUser.setLastName(lastName);
         newUser.setLogin(login);

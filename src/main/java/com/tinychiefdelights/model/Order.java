@@ -43,13 +43,13 @@ public class Order {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Customer customer;
 
-    // Лист блюд
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "order_dish",
-            joinColumns = @JoinColumn(name = "dish_id"),
-            inverseJoinColumns = @JoinColumn(name = "order_id"))
-    private List<Dish> dishes;
+//    // Лист блюд
+//    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @JoinTable(
+//            name = "order_dish",
+//            joinColumns = @JoinColumn(name = "dish_id"),
+//            inverseJoinColumns = @JoinColumn(name = "order_id"))
+//    private List<Dish> dishes;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "basket_id", referencedColumnName = "id") // Join without Cook in User class
