@@ -168,27 +168,47 @@ public class CustomerService extends UserService {
         basketRepository.save(basket);
     }
 
+    //подсчет цены
+    public int calculateCoast(Long basketId){
+
+        Basket basket = basketRepository.getById(basketId);
+
+        int coast = 0;
+        for (Dish i: basket.getDishList()) {
+            coast += i.getDishCost();
+        }
+
+        return coast;
+    }
+
     // Сделать Заказ
     public void makeOrder(String address, String phoneNumber, Long customerId,
-                          Long cookId, List<Long> dishListId, Date date) {
+                          Long cookId, Long basketId) {
+
+          int coast = calculateCoast(basketId);
+        if(coast > customerRepository
+                    .findByIdAndUserRole(customerId, "CUSTOMER")
+                    .getWallet()){
+            throw new RuntimeException("Недостаточно средств, пополните счет");
+        }
 
         try {
             Order order = new Order();
             order.setPhoneNumber(phoneNumber);
             order.setAddress(address);
+            Date date = new Date();
             order.setDateOrder(date);
             order.setOrderStatus(true);
             order.setCustomer(customerRepository.findByIdAndUserRole(customerId, "CUSTOMER"));
             order.setCook(cookRepository.findByIdAndUserRole(cookId, "COOK"));
-            /**Сделать через карзину**/
-//            for (Long a: dishListId) {
-//                dishList.add(dishRepository.getById(a));
-//            }
-//            order.setDishes(dishList);
+            order.setBasketId(basketId);
             orderRepository.save(order);
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException(e);
         }
+
+//        Customer customer = customerRepository.findByIdAndUserRole(customerId, "CUSTOMER");
+//        customer.setWallet(customer.getWallet() - coast);
     }
 
 

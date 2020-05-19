@@ -44,12 +44,14 @@ public class Order {
     private Customer customer;
 
     // Лист блюд
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "order_dish",
-            joinColumns = @JoinColumn(name = "dish_id"),
-            inverseJoinColumns = @JoinColumn(name = "order_id"))
-    private List<Dish> dishes;
+//    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @JoinTable(
+//            name = "order_dish",
+//            joinColumns = @JoinColumn(name = "dish_id"),
+//            inverseJoinColumns = @JoinColumn(name = "order_id"))
+//    private List<Dish> dishes;
+    @Column(name = "basket_id")
+    private Long basketId;
 
     // Повар
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

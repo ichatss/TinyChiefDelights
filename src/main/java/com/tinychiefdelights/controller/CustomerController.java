@@ -6,6 +6,8 @@ import com.tinychiefdelights.service.CustomerService;
 import com.tinychiefdelights.service.UserService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
@@ -26,7 +28,9 @@ public class CustomerController {
     //
     // Injects через конструктор
     @Autowired
-    public CustomerController(CustomerRepository customerRepository, CustomerService customerService, UserService userService) {
+    public CustomerController(CustomerRepository customerRepository,
+                              CustomerService customerService,
+                              UserService userService) {
         this.customerRepository = customerRepository;
         this.customerService = customerService;
         this.userService = userService;
@@ -50,9 +54,13 @@ public class CustomerController {
 
     // Сделать заказ
     @PostMapping("/make/order")
-    public void makeOrder(String address, String phoneNumber, Long customerId,
-                          Long cookId, @RequestParam List<Long> dishList, Date date) {
-        customerService.makeOrder(address, phoneNumber, customerId, cookId, dishList, date);
+    public void makeOrder(String address, String phoneNumber,
+                          Long cookId, Long basketId) {
+        //id текущего залогиненого пользователя
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long customerId = (user.getId());
+
+        customerService.makeOrder(address, phoneNumber, customerId, cookId, basketId);
     }
 
 
