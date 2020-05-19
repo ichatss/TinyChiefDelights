@@ -39,7 +39,7 @@ public class CookService extends UserService {
     // Методы
     //
     // Добавить блюдо
-    public Dish createDish(Long id, String dishName, String aboutDish,
+    public Dish createDish(String dishName, String aboutDish,
                            short cookingTime, short weight, double dishCost, List<Long> cooksId) {
 
         //Создаем новое блюдо
@@ -53,10 +53,13 @@ public class CookService extends UserService {
         // Создаем коллекцию, чтобы передать туда все принимаемые значения
         List<Cook> cookList = new ArrayList<>();
 
-        for (Long i : cooksId) { // Добавляем в коллекцию принимаемых поваров
-            cookList.add(cookRepository.getCookById(i));
+        try {
+            for (Long i : cooksId) { // Добавляем в коллекцию принимаемых поваров
+                cookList.add(cookRepository.getCookById(i));
+            }
+        } catch (NullPointerException ex){
+            throw new MainNullPointer("Повара с таким id нет!");
         }
-
         dish.setCookList(cookList); // С коллекциями проделывать такое BadPractise (для hibernate)
         dish.setAboutDish(aboutDish);
 
@@ -105,8 +108,7 @@ public class CookService extends UserService {
     public void removeDish(Long id) {
 
         try {
-            Dish dish = dishRepository.getById(id);
-            dishRepository.delete(dish);
+            dishRepository.deleteById(id);
         } catch (NullPointerException ex){
             throw new MainNullPointer("Блюдо с таким ID не найдено!");
         }

@@ -58,7 +58,7 @@ public class CustomerController {
 
     // Оставить отзыв
     @PostMapping("/set/review")
-    public void setReview(String text, @RequestParam int rate, Long id){
+    public void setReview(@RequestParam String text, @RequestParam int rate, @RequestParam Long id){
 
         if(text == null || id == null){
             throw new RuntimeException("Заполните поля");

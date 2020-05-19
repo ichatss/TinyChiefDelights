@@ -47,11 +47,11 @@ public class CookController {
     // Шеф-Повар создает блюдо для меню
     @RolesAllowed({ROLE_CHEF})
     @PostMapping("/create/dish")
-    void createDish(@RequestParam Long id, @RequestParam String dishName, @RequestParam String aboutDish,
+    void createDish(@RequestParam String dishName, @RequestParam String aboutDish,
                     @RequestParam short cookingTime, @RequestParam short weight,
                     @RequestParam double dishCost, @RequestParam List<Long> cooksId) {
 
-        cookService.createDish(id, dishName, aboutDish, cookingTime, weight, dishCost, cooksId);
+        cookService.createDish(dishName, aboutDish, cookingTime, weight, dishCost, cooksId);
     }
 
 

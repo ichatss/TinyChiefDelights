@@ -1,6 +1,7 @@
 package com.tinychiefdelights.service;
 
 import com.tinychiefdelights.exceptions.MainIllegalArgument;
+import com.tinychiefdelights.exceptions.MainNotFound;
 import com.tinychiefdelights.exceptions.MainNullPointer;
 import com.tinychiefdelights.model.User;
 import com.tinychiefdelights.repository.UserRepository;
@@ -48,10 +49,16 @@ public class UserService implements UserDetailsService {
         try {
 
             User user = userRepository.getByLogin(login);
+            // Тут мы проверяем, чтобы пользователь ввел свой логин, а не чужой
+            if (user.getLogin() == User.getCurrentUser().getLogin()) {
 
-            user.setPassword(passwordEncoder.encode(newPass));
-            return userRepository.save(user);
-        } catch (NullPointerException e) {
+                user.setPassword(passwordEncoder.encode(newPass));
+                return userRepository.save(user);
+            } else {
+                // Иначе стреляем ошибкой IllegalArgument
+                throw new MainIllegalArgument("Вы ввели неверный логин!");
+            }
+        } catch (NullPointerException e) { // try{} catch() нужен всего лишь для того, чтобы обрабоать nullPoint при инициализации user
             throw new MainNullPointer();
         }
     }
