@@ -2,6 +2,7 @@ package com.tinychiefdelights.model;
 
 import com.fasterxml.jackson.annotation.*;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -39,7 +40,8 @@ public class Order {
     //
     // Заказчик
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    // Проблема в том, что объекты загружаются лениво, и сериализация происходит до того, как они будут загружены полностью.
+    // Проблема в том, что объекты загружаются лениво, и сериализация происходит до того,
+    // как они будут загружены полностью.
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Customer customer;
 
@@ -60,7 +62,8 @@ public class Order {
 
     // Повар
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    // Проблема в том, что объекты загружаются лениво, и сериализация происходит до того, как они будут загружены полностью.
+    // Проблема в том, что объекты загружаются лениво, и сериализация происходит до того,
+    // как они будут загружены полностью.
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Cook cook;
 }

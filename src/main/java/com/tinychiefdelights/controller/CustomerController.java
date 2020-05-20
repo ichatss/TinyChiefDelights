@@ -6,10 +6,10 @@ import com.tinychiefdelights.service.CustomerService;
 import com.tinychiefdelights.service.UserService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
+import java.util.Date;
 import java.util.List;
 
 import static com.tinychiefdelights.model.User.ROLE_CUSTOMER;
@@ -58,26 +58,15 @@ public class CustomerController {
     // Сделать заказ
     @PostMapping("/make/order")
     public void makeOrder(String address, String phoneNumber,
-                          Long cookId, Long basketId) {
-        //id текущего залогиненого пользователя
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Long customerId = (user.getId());
+                          Long cookId, Long basketId, Date date) {
 
-        customerService.makeOrder(address, phoneNumber, customerId, cookId, basketId);
+        customerService.makeOrder(address, phoneNumber, cookId, basketId, date);
     }
 
 
     // Оставить отзыв
     @PostMapping("/set/review")
     public void setReview(@RequestParam String text, @RequestParam int rate, @RequestParam Long id){
-
-        if(text == null || id == null){
-            throw new RuntimeException("Заполните поля");
-        }
-
-        if(rate <= 0 || rate >= 5){
-            throw new RuntimeException("Рейтинг должен быть от 1 до 5");
-        }
 
         customerService.setReview(text, rate, id);
     }

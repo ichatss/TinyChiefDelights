@@ -157,41 +157,37 @@ public class CustomerService extends UserService {
 
         double coast = 0;
         for (Dish i : basket.getDishList()) {
-            coast = coast + i.getDishCost();
+            coast += i.getDishCost();
         }
-        System.out.println(coast);
         return coast;
     }
 
     // Сделать Заказ
-    public void makeOrder(String address, String phoneNumber, Long customerId,
-                          Long cookId, Long basketId) {
+    public void makeOrder(String address, String phoneNumber,
+                          Long cookId, Long basketId, Date date) {
 
         double coast = calculateCoast(basketId);
+
         Customer customer = customerRepository
-                            .findByIdAndUserRole(customerId, User.ROLE_CUSTOMER);
+                .findByIdAndUserRole(User.getCurrentUser().getId(), User.ROLE_CUSTOMER);
 
         if (coast <= customer.getWallet()) {
             customer.setWallet(customer.getWallet() - coast);
-        }else{
-            throw new RuntimeException("Недостаточно средств");
+        } else {
+            throw new MainIllegalArgument("На счете недостаточно средств!");
         }
 
-        try {
-            Order order = new Order();
-            order.setPhoneNumber(phoneNumber);
-            order.setAddress(address);
-            Date date = new Date();
-            order.setDateOrder(date);
-            order.setOrderStatus(true);
-            order.setCustomer(customerRepository.findByIdAndUserRole(customerId, "CUSTOMER"));
-            order.setCook(cookRepository.findByIdAndUserRole(cookId, "COOK"));
-            order.setBasket(basketRepository.getById(basketId));
-            orderRepository.save(order);
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException(e);
-        }
+        Order order = new Order();
+        order.setPhoneNumber(phoneNumber);
+        order.setAddress(address);
+        order.setDateOrder(date);
+        order.setOrderStatus(true);
+        order.setCustomer(customerRepository.findByIdAndUserRole(User.getCurrentUser().getId(), User.ROLE_CUSTOMER));
+        order.setCook(cookRepository.findByIdAndUserRole(cookId, "COOK"));
+        order.setBasket(basketRepository.getById(basketId));
+        orderRepository.save(order);
     }
+
 
 
     // Изменить свои данные
