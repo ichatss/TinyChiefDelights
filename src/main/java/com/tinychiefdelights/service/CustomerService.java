@@ -151,15 +151,15 @@ public class CustomerService extends UserService {
     }
 
     // Подсчет цены
-    public int calculateCoast(Long basketId) {
+    public double calculateCoast(Long basketId) {
 
         Basket basket = basketRepository.getById(basketId);
 
-        int coast = 0;
+        double coast = 0;
         for (Dish i : basket.getDishList()) {
-            coast += i.getDishCost();
+            coast = coast + i.getDishCost();
         }
-
+        System.out.println(coast);
         return coast;
     }
 
@@ -167,11 +167,14 @@ public class CustomerService extends UserService {
     public void makeOrder(String address, String phoneNumber, Long customerId,
                           Long cookId, Long basketId) {
 
-        int coast = calculateCoast(basketId);
-        if (coast > customerRepository
-                .findByIdAndUserRole(customerId, User.ROLE_CUSTOMER)
-                .getWallet()) {
-            throw new RuntimeException("Недостаточно средств, пополните счет");
+        double coast = calculateCoast(basketId);
+        Customer customer = customerRepository
+                            .findByIdAndUserRole(customerId, User.ROLE_CUSTOMER);
+
+        if (coast <= customer.getWallet()) {
+            customer.setWallet(customer.getWallet() - coast);
+        }else{
+            throw new RuntimeException("Недостаточно средств");
         }
 
         try {
