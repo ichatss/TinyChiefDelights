@@ -5,6 +5,7 @@ import com.tinychiefdelights.exceptions.MainNotFound;
 import com.tinychiefdelights.model.*;
 import com.tinychiefdelights.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,8 +28,13 @@ public class AdminService extends UserService {
 
     private UserRepository userRepository; // Общий пользователь
 
+    private PasswordEncoder passwordEncoder;
 
-
+    @Autowired
+//    @Override
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
     // Getters and Setters
     //
@@ -37,6 +43,7 @@ public class AdminService extends UserService {
     public void setAdminRepository(AdminRepository adminRepository) {
         this.adminRepository = adminRepository;
     }
+
     @Autowired
     public void setOrderRepository(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
@@ -47,7 +54,7 @@ public class AdminService extends UserService {
         this.cookRepository = cookRepository;
     }
 
-    @Override
+    //    @Override
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -68,7 +75,7 @@ public class AdminService extends UserService {
 
     // Вывод информации по конкретному заказу
     public Optional<Order> getOrderInfo(Long id) {
-            return orderRepository.findById(id);
+        return orderRepository.findById(id);
     }
 
 

@@ -38,5 +38,3 @@ public class MainPageController {
         customerService.registration(name, lastName, login, password);
     }
 }
-
-

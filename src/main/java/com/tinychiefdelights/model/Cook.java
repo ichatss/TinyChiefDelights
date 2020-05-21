@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 import java.util.List;
 
 @Setter
@@ -29,6 +30,7 @@ public class Cook {
     @Column(name = "type")
     private CookType cookType;
 
+    @Pattern(regexp = "^")
     @Column(name = "rating")
     private float rating;
 
@@ -56,7 +58,7 @@ public class Cook {
     private List<Order> orderList;
 
     // Лист блюд
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "cook_dish",
             joinColumns = @JoinColumn(name = "dish_id"),

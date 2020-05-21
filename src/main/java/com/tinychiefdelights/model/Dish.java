@@ -43,7 +43,7 @@ public class Dish {
     //Relationships
     //
     // Лист поваров
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "cook_dish",
             joinColumns = @JoinColumn(name = "dish_id"),
@@ -51,14 +51,6 @@ public class Dish {
     @JsonIgnore // Таким образом я предотвратил рекурсию
     private List<Cook> cookList;
 
- //    Лист Заказов в которых находятся блюда
-//    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    @JoinTable(
-//            name = "order_dish",
-//            joinColumns = @JoinColumn(name = "order_id"),
-//            inverseJoinColumns = @JoinColumn(name = "dish_id"))
-//    @JsonIgnore // Таким образом я предотвратил рекурсию
-//    private List<Order> ordersList;
 
     // Лист корзин, куда добавляются блюда
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

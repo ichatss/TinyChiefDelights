@@ -6,9 +6,11 @@ import com.tinychiefdelights.service.CustomerService;
 import com.tinychiefdelights.service.UserService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
+import java.time.OffsetDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -58,9 +60,10 @@ public class CustomerController {
     // Сделать заказ
     @PostMapping("/make/order")
     public void makeOrder(String address, String phoneNumber,
-                          Long cookId, Long basketId, Date date) {
+                          Long cookId, Long basketId, @RequestParam("dateInput")
+                              @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date dateInput) {
 
-        customerService.makeOrder(address, phoneNumber, cookId, basketId, date);
+        customerService.makeOrder(address, phoneNumber, cookId, basketId, dateInput);
     }
 
 

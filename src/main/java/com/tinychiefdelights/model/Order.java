@@ -2,11 +2,9 @@ package com.tinychiefdelights.model;
 
 import com.fasterxml.jackson.annotation.*;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 
 @Data
 @Entity
@@ -29,6 +27,7 @@ public class Order {
     @Column(name = "phone_number")
     private String phoneNumber;
 
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "date_order")
     private Date dateOrder;
 
@@ -45,20 +44,11 @@ public class Order {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Customer customer;
 
-//    // Лист блюд
-//    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    @JoinTable(
-//            name = "order_dish",
-//            joinColumns = @JoinColumn(name = "dish_id"),
-//            inverseJoinColumns = @JoinColumn(name = "order_id"))
-//    private List<Dish> dishes;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "basket_id", referencedColumnName = "id") // Join without Cook in User class
     private Basket basket;
 
-//    @Column(name = "basket_id")
-//    private Long basketId;
 
     // Повар
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
