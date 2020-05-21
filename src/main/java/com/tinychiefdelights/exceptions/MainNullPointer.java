@@ -7,6 +7,6 @@ public class MainNullPointer extends RuntimeException {
     }
 
     public MainNullPointer(String s) {
-        super("Ошибка!" + s);
+        super("Ошибка! " + s);
     }
 }

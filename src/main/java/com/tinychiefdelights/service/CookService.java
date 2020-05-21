@@ -1,6 +1,5 @@
 package com.tinychiefdelights.service;
 
-import com.tinychiefdelights.exceptions.MainNotFound;
 import com.tinychiefdelights.exceptions.MainNullPointer;
 import com.tinychiefdelights.model.Cook;
 import com.tinychiefdelights.model.Dish;
@@ -57,7 +56,7 @@ public class CookService extends UserService {
             for (Long i : cooksId) { // Добавляем в коллекцию принимаемых поваров
                 cookList.add(cookRepository.getCookById(i));
             }
-        } catch (NullPointerException ex){
+        } catch (NullPointerException ex) {
             throw new MainNullPointer("Повара с таким id нет!");
         }
         dish.setCookList(cookList); // С коллекциями проделывать такое BadPractise (для hibernate)
@@ -77,20 +76,20 @@ public class CookService extends UserService {
             // Мы забираем из БД нужное нам блюдо
             Dish dish = dishRepository.getById(id);
 
-                dish.setDishCost(dishCost);
-                dish.setDishName(dishName);
-                dish.setCookingTime(cookingTime);
-                dish.setWeight(weight);
-                // Создаем коллекцию, чтобы передать туда все принимаемые значения
-                List<Cook> cookList = new ArrayList<>();
+            dish.setDishCost(dishCost);
+            dish.setDishName(dishName);
+            dish.setCookingTime(cookingTime);
+            dish.setWeight(weight);
+            // Создаем коллекцию, чтобы передать туда все принимаемые значения
+            List<Cook> cookList = new ArrayList<>();
 
-                try {
-                    for (Long i : cooksId) { // Добавляем в коллекцию принимаемых поваров
-                        cookList.add(cookRepository.getCookById(i));
-                    }
-                } catch (NullPointerException ex) {
-                    throw new MainNullPointer("Повар не найден!");
+            try {
+                for (Long i : cooksId) { // Добавляем в коллекцию принимаемых поваров
+                    cookList.add(cookRepository.getCookById(i));
                 }
+            } catch (NullPointerException ex) {
+                throw new MainNullPointer("Повар не найден!");
+            }
 
 
             dish.setCookList(cookList); // С коллекциями проделывать такое BadPractise (для hibernate)
@@ -109,7 +108,7 @@ public class CookService extends UserService {
 
         try {
             dishRepository.deleteById(id);
-        } catch (NullPointerException ex){
+        } catch (NullPointerException ex) {
             throw new MainNullPointer("Блюдо с таким ID не найдено!");
         }
     }

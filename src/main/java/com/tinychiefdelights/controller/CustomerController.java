@@ -10,7 +10,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
-import java.time.OffsetDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -47,12 +46,11 @@ public class CustomerController {
     private final UserService userService;
 
 
-
     // POST
     //
     // Заполнить корзину
     @PostMapping("/basket")
-    public void setBasket(@RequestParam List<Long> dishList){
+    public void setBasket(@RequestParam List<Long> dishList) {
         customerService.setBasket(dishList);
     }
 
@@ -61,7 +59,7 @@ public class CustomerController {
     @PostMapping("/make/order")
     public void makeOrder(String address, String phoneNumber,
                           Long cookId, Long basketId, @RequestParam("dateInput")
-                              @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date dateInput) {
+                          @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date dateInput) {
 
         customerService.makeOrder(address, phoneNumber, cookId, basketId, dateInput);
     }
@@ -69,11 +67,10 @@ public class CustomerController {
 
     // Оставить отзыв
     @PostMapping("/set/review")
-    public void setReview(@RequestParam String text, @RequestParam int rate, @RequestParam Long id){
+    public void setReview(@RequestParam String text, @RequestParam int rate, @RequestParam Long id) {
 
         customerService.setReview(text, rate, id);
     }
-
 
 
     // PUT

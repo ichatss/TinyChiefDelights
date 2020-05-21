@@ -1,7 +1,6 @@
 package com.tinychiefdelights.model;
 
 import com.fasterxml.jackson.annotation.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

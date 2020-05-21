@@ -8,5 +8,4 @@ public interface OrderRepository extends JpaRepository<Order, Long> { // Инт�
 
     // Берем ORDER через ID
     Order getById(Long id);
-
 }

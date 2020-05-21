@@ -1,7 +1,6 @@
 package com.tinychiefdelights.model;
 
 import com.fasterxml.jackson.annotation.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.NotFound;
@@ -26,7 +25,7 @@ public class Customer {
     // name, lastName, login, password берем от класса User через связи;
 
     private @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
     @Column(name = "wallet")

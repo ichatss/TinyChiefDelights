@@ -7,7 +7,6 @@ import com.tinychiefdelights.service.AdminService;
 import com.tinychiefdelights.service.UserService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
@@ -56,7 +55,7 @@ public class AdminController {
     // Вывод информации по заказу по ID
     @GetMapping("/order/{id}")
     Order getOrderInfo(@PathVariable Long id) {
-            return adminService.getOrderInfo(id).orElseThrow(() -> new MainNotFound(id));
+        return adminService.getOrderInfo(id).orElseThrow(() -> new MainNotFound(id));
     }
 
 
@@ -118,7 +117,6 @@ public class AdminController {
 
         return adminService.editAdmin(login, name, lastName);
     }
-
 
 
     // DELETE MAPPING

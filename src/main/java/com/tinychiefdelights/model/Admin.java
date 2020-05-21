@@ -1,6 +1,5 @@
 package com.tinychiefdelights.model;
 
-
 import lombok.Data;
 
 import javax.persistence.*;

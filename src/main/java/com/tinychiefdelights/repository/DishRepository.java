@@ -8,5 +8,4 @@ public interface DishRepository extends JpaRepository<Dish, Long> { // Инте�
 
     // Берем Блюдо по ID
     Dish getById(Long id);
-
 }

@@ -10,5 +10,4 @@ public enum CookType {
     // Общие поля на все ENUM
     //
     double startSalary; // Начальная ставка
-
 }

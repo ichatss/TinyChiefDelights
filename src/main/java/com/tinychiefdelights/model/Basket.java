@@ -13,7 +13,7 @@ import java.util.List;
 @Table(name = "basket", schema = "public")
 public class Basket {
 
-    public Basket(){ // Пустой конструктор для Hibernate
+    public Basket() { // Пустой конструктор для Hibernate
 
     }
 
@@ -28,5 +28,4 @@ public class Basket {
             inverseJoinColumns = @JoinColumn(name = "dish_id"))
     @JsonIgnore // Таким образом я предотвратил рекурсию
     private List<Dish> dishList;
-
 }

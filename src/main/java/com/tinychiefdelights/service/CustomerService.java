@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -139,16 +138,23 @@ public class CustomerService extends UserService {
 
     // Заполнить карзину
     public void setBasket(List<Long> dishListId) {
+
         Basket basket = new Basket();
 
         List<Dish> dishList = new ArrayList<>();
 
         for (Long i : dishListId) {
             dishList.add(dishRepository.getById(i));
+
+            // Делаем проверку, если блюда нет в меню
+            if (dishRepository.getById(i) == null) {
+                throw new MainNullPointer("Блюдо ИД: " + i + " не найдено!");
+            }
         }
         basket.setDishList(dishList);
         basketRepository.save(basket);
     }
+
 
     // Подсчет цены
     public double calculateCoast(Long basketId) {
