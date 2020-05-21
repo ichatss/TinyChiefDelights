@@ -45,21 +45,23 @@ public class UserService implements UserDetailsService {
 
             User user = userRepository.getByLogin(login);
             // Тут мы проверяем, чтобы пользователь ввел свой логин, а не чужой
-            if (user.getLogin() == User.getCurrentUser().getLogin()) {
+            if (user.getLogin().equals(User.getCurrentUser().getLogin())) {
 
                 user.setPassword(passwordEncoder.encode(newPass));
                 return userRepository.save(user);
+
             } else {
                 // Иначе стреляем ошибкой IllegalArgument
                 throw new MainIllegalArgument("Вы ввели неверный логин!");
             }
-        } catch (NullPointerException e) { // try{} catch() нужен всего лишь для того, чтобы обрабоать nullPoint при инициализации user
+        } catch (NullPointerException e) { // try{} catch() нужен всего лишь для того,
+                                            // чтобы обрабоать nullPoint при инициализации user
             throw new MainNullPointer();
         }
     }
 
 
-    // Тут берем пользователя по лоину
+    // Тут берем пользователя по логину
     private User getUserDataByLogin(String login) {
         User user = userRepository.getByLogin(login);
         return user;
