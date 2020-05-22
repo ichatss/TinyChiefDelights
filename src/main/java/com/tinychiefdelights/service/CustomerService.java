@@ -171,7 +171,7 @@ public class CustomerService extends UserService {
 
 
     // Подсчет цены
-    public double calculateCoast(Long basketId, List<Cook> cooks) {
+    public double calculateCoast(Long basketId, List<Cook> cooks, double bonus) {
 
         Basket basket = basketRepository.getById(basketId);
 
@@ -183,6 +183,9 @@ public class CustomerService extends UserService {
             coast += i.getStartSalary();
 
         }
+
+        coast += bonus;
+
         return coast;
     }
 
@@ -265,11 +268,13 @@ public class CustomerService extends UserService {
     public void makeOrder(String address, String phoneNumber, Long basketId, Date date, List<Long> cooksId) {
 
         List<Cook> cooks = new ArrayList<>();
+        double bonus = 0;
 
         //сдесь происходит выбор стратегии в зависимоси от того есть ли на входе назначенные повора
         if(cooksId != null){
             for (Long i : cooksId) {
                 cooks.add(cookRepository.findByIdAndUserRole(i, "COOK"));
+                bonus = 200;
             }
         }else {
             cooks = cooksAuto(basketId);
@@ -281,7 +286,7 @@ public class CustomerService extends UserService {
             cookRepository.save(i);
         }
 
-        double coast = calculateCoast(basketId, cooks);
+        double coast = calculateCoast(basketId, cooks, bonus);
 
         Customer customer = customerRepository
                 .findByIdAndUserRole(User.getCurrentUser().getId(), User.ROLE_CUSTOMER);
