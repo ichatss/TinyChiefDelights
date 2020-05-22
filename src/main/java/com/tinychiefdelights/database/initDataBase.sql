@@ -5,6 +5,7 @@ truncate table public.pg_user cascade;
 truncate table public.customer cascade;
 truncate table public.dish cascade;
 truncate table public.review cascade;
+truncate table public.basket cascade;
 
 
 -- Тут перезапускаем счетчик последовательности id в секвенции
@@ -15,6 +16,7 @@ alter sequence hibernate_sequence restart;
 alter sequence pg_order_id_seq restart;
 alter sequence pg_user_id_seq restart;
 alter sequence review_id_seq restart;
+alter sequence basket_basket_id_seq restart WITH 6;
 
 
 -- Создаем новых пользователей
@@ -100,7 +102,7 @@ values (3, true, 'Повар с 3 летним стажем работы. Раб
 
 -- Создаем новых заказчиков
 insert into public.customer(wallet, user_id)
-VALUES (5000, 1);
+VALUES (50000, 1);
 
 insert into public.customer(wallet, user_id)
 VALUES (100, 2);
@@ -113,60 +115,111 @@ VALUES (867, 4);
 
 
 -- Заполняем таблицу блюд
-insert into public.dish(name, dish_cost, weight, cooking_time, about_dish)
+insert into public.dish(name, dish_cost, weight, cooking_time, about_dish, type)
 VALUES ('Хинкали', 105, 60, 20,
         'Хинка́ли — блюдо грузинской кухни из горных областей Пшави, Мтиулети и Хевсурети Грузии, ' ||
         'далее блюдо распространилось в другие районы Кавказа и по всему бывшему СССР. ' ||
-        'Кусок сочного мясо помещается в центр теста и сворачивается концом в комок.');
+        'Кусок сочного мясо помещается в центр теста и сворачивается концом в комок.', 'MEAT');
 
-insert into public.dish(name, dish_cost, weight, cooking_time, about_dish)
+insert into public.dish(name, dish_cost, weight, cooking_time, about_dish, type)
 VALUES ('Чакапули', 600, 400, 45,
         'Чакапули — национальное грузинское блюдо, представляющее собой молодое мясо, тушённое с зеленью и специями. ' ||
         'Чаще всего используют баранину, а для праздничного варианта — ягнятину. ' ||
-        'Особую пикантность блюду добавляет свежий эстрагон, также часто для приготовления используют ткемали.');
+        'Особую пикантность блюду добавляет свежий эстрагон, также часто для приготовления используют ткемали.', 'MEAT');
 
-insert into public.dish(name, dish_cost, weight, cooking_time, about_dish)
+insert into public.dish(name, dish_cost, weight, cooking_time, about_dish, type)
 VALUES ('Сациви', 750, 530, 60, 'Сациви — соус грузинской кухни. ' ||
                                 'Также по названию соуса может называться готовое блюдо.' ||
                                 ' Наибольшее распространение из блюд с данным соусом получила домашняя птица, ' ||
-                                'в основном курица под соусом сациви, называемая просто «сациви». ');
+                                'в основном курица под соусом сациви, называемая просто «сациви». ', 'MEAT');
 
-insert into public.dish(name, dish_cost, weight, cooking_time, about_dish)
+insert into public.dish(name, dish_cost, weight, cooking_time, about_dish, type)
 VALUES ('Шашлык', 700, 300, 30, 'Шашлы́к — изначально блюдо из баранины мелкой нарезки, ' ||
-                                'нанизанное на шампур и запеченное на древесном угле в мангале, при этом возможно применение маринада на Ваш вкус!');
+                                'нанизанное на шампур и запеченное на древесном угле в мангале, при этом возможно применение маринада на Ваш вкус!', 'MEAT');
 
-insert into public.dish(name, dish_cost, weight, cooking_time, about_dish)
+insert into public.dish(name, dish_cost, weight, cooking_time, about_dish, type)
 VALUES ('Хачапури', 1000, 460, 45, 'Хачапу́ри — блюдо грузинской кухни, ' ||
                                    'грузинское национальное мучное изделие, ' ||
-                                   'закрытый пирожок с начинкой из сыра и яйца.');
+                                   'закрытый пирожок с начинкой из сыра и яйца.', 'CONFECTIONERY');
 
-insert into public.dish(name, dish_cost, weight, cooking_time, about_dish)
-VALUES ('Лобиани', 800, 360, 30, 'Лобиани — традиционные грузинские пироги с начинкой из варёной фасоли.');
+insert into public.dish(name, dish_cost, weight, cooking_time, about_dish, type)
+VALUES ('Лобиани', 800, 360, 30, 'Лобиани — традиционные грузинские пироги с начинкой из варёной фасоли.', 'CONFECTIONERY');
 
-insert into public.dish(name, dish_cost, weight, cooking_time, about_dish)
+insert into public.dish(name, dish_cost, weight, cooking_time, about_dish, type)
 VALUES ('Сациви из рыбы', 990, 470, 45,
-        'Сациви из рыбы — традиционное грузинское блюдо. Рыба с начинкой из соуса под сациви.');
+        'Сациви из рыбы — традиционное грузинское блюдо. Рыба с начинкой из соуса под сациви.', 'FISH');
 
-insert into public.dish(name, dish_cost, weight, cooking_time, about_dish)
+insert into public.dish(name, dish_cost, weight, cooking_time, about_dish, type)
 VALUES ('Осетр по-Царски', 2000, 500, 20, 'Осетр по-Царски — блюдо царей. ' ||
-                                          'Красная тушка рыбки, покрытая лимонным соусом и вкуснейшими специями.');
+                                          'Красная тушка рыбки, покрытая лимонным соусом и вкуснейшими специями.', 'FISH');
 
-insert into public.dish(name, dish_cost, weight, cooking_time, about_dish)
+insert into public.dish(name, dish_cost, weight, cooking_time, about_dish, type)
 VALUES ('Окунь с овощами', 1490, 420, 35, 'Окунь с овощами - блюдо для любителей морской кухнки.' ||
-                                          ' Цельный окунь обжаренный с обоих сторон нежно подается с варенной картошкой и ломтиами морвки с луком.');
+                                          ' Цельный окунь обжаренный с обоих сторон нежно подается с варенной картошкой и ломтиами морвки с луком.', 'FISH');
 
+--Заполняем таблицу бакетов
+insert into public.basket(id)
+values (1);
+insert into public.basket(id)
+values (2);
+insert into public.basket(id)
+values (3);
+insert into public.basket(id)
+values (4);
+insert into public.basket(id)
+values (5);
+
+--Заполняем кросс-таблицу бакет диш
+insert into basket_dish(basket_id, dish_id)
+values (1, 1);
+insert into basket_dish(basket_id, dish_id)
+values (1, 1);
+insert into basket_dish(basket_id, dish_id)
+values (1, 7);
+insert into basket_dish(basket_id, dish_id)
+values (1, 5);
+insert into basket_dish(basket_id, dish_id)
+values (1, 4);
+insert into basket_dish(basket_id, dish_id)
+values (1, 4);
+insert into basket_dish(basket_id, dish_id)
+values (2, 1);
+insert into basket_dish(basket_id, dish_id)
+values (2, 9);
+insert into basket_dish(basket_id, dish_id)
+values (3, 4);
+insert into basket_dish(basket_id, dish_id)
+values (3, 4);
+insert into basket_dish(basket_id, dish_id)
+values (3, 1);
+insert into basket_dish(basket_id, dish_id)
+values (4, 3);
+insert into basket_dish(basket_id, dish_id)
+values (5, 6);
+insert into basket_dish(basket_id, dish_id)
+values (5, 6);
+insert into basket_dish(basket_id, dish_id)
+values (5, 8);
+insert into basket_dish(basket_id, dish_id)
+values (5, 9);
+insert into basket_dish(basket_id, dish_id)
+values (5, 9);
+insert into basket_dish(basket_id, dish_id)
+values (5, 2);
+insert into basket_dish(basket_id, dish_id)
+values (5, 2);
 
 -- Заполняем таблицу заказов
-insert into pg_order(address, phone_number, date_order, order_status, customer_id, cook_id)
+insert into pg_order(address, phone_number, date_order, order_status, customer_id, basket_id)
 VALUES ('г.Воронеж, ул.Владимира Невского 45Д, кв.2', +79805421578, '03.03.2020 20:00', true, 1, 1);
 
-insert into pg_order(address, phone_number, date_order, order_status, customer_id, cook_id)
+insert into pg_order(address, phone_number, date_order, order_status, customer_id, basket_id)
 VALUES ('г.Воронеж, ул.Ленина 5А, кв.55', +79805561578, '08.04.2020 22:00', true, 2, 2);
 
-insert into pg_order(address, phone_number, date_order, order_status, customer_id, cook_id)
+insert into pg_order(address, phone_number, date_order, order_status, customer_id, basket_id)
 VALUES ('г.Воронеж, ул.Владимира Невского 2', +74504521778, '22.01.2020 14:00', true, 3, 3);
 
-insert into pg_order(address, phone_number, date_order, order_status, customer_id, cook_id)
+insert into pg_order(address, phone_number, date_order, order_status, customer_id, basket_id)
 VALUES ('г.Воронеж, пл.Космонавтов 12, кв.34', +79764561478, '11.03.2020 12:25', true, 1, 4);
 
 
@@ -252,19 +305,16 @@ VALUES (8, 3);
 insert into cook_dish(cook_id, dish_id)
 VALUES (8, 4);
 
-
--- Заполняем кросс-таблицу order_dish
-insert into order_dish(order_id, dish_id)
-VALUES (1, 1);
-insert into order_dish(order_id, dish_id)
-VALUES (1, 4);
-insert into order_dish(order_id, dish_id)
-VALUES (2, 3);
-insert into order_dish(order_id, dish_id)
-VALUES (2, 1);
-insert into order_dish(order_id, dish_id)
-VALUES (3, 6);
-insert into order_dish(order_id, dish_id)
-VALUES (4, 8);
-insert into order_dish(order_id, dish_id)
-VALUES (4, 9);
+--Заполняем кросс-таблицу ордер кук
+insert into order_cook(order_id, cook_id)
+values (1,6);
+insert into order_cook(order_id, cook_id)
+values (1,7);
+insert into order_cook(order_id, cook_id)
+values (2,8);
+insert into order_cook(order_id, cook_id)
+values (3,1);
+insert into order_cook(order_id, cook_id)
+values (3,3);
+insert into order_cook(order_id, cook_id)
+values (3,5);

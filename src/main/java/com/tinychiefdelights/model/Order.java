@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Entity
@@ -51,9 +52,17 @@ public class Order {
 
 
     // Повар
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    // Проблема в том, что объекты загружаются лениво, и сериализация происходит до того,
-    // как они будут загружены полностью.
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    private Cook cook;
+//    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    // Проблема в том, что объекты загружаются лениво, и сериализация происходит до того,
+//    // как они будут загружены полностью.
+//    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+//    private Cook cook;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "order_cook",
+            joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "cook_id"))
+    @JsonIgnore
+    private List<Cook> cookList;
 }

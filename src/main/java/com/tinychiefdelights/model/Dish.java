@@ -38,6 +38,10 @@ public class Dish {
     @Column(name = "about_dish")
     private String aboutDish;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type")
+    private DishType dishType;
+
 
     //Relationships
     //

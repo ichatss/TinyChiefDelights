@@ -22,4 +22,8 @@ public interface CookRepository extends JpaRepository<Cook, Long> { // Инте�
 
     // Берем Повара ID + ROLE только без Optional<>
     Cook findByIdAndUserRole(Long id, String role);
+
+    List<Cook> findByUserRoleAndCookStatus(String role, boolean status);
+
+    //List<Cook> findAllByCookStatusAndCookType(boolean status, String type);
 }

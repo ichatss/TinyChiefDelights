@@ -2,6 +2,7 @@ package com.tinychiefdelights.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -30,7 +31,6 @@ public class Cook {
     @Column(name = "type")
     private CookType cookType;
 
-    @Pattern(regexp = "^")
     @Column(name = "rating")
     private float rating;
 
@@ -53,9 +53,9 @@ public class Cook {
     private List<Review> reviewList;
 
     // Лист поваров
-    @OneToMany(mappedBy = "cook", cascade = CascadeType.ALL)
-    @JsonIgnore // Таким образом я предотвратил рекурсию
-    private List<Order> orderList;
+//    @OneToMany(mappedBy = "cook", cascade = CascadeType.ALL)
+//    @JsonIgnore // Таким образом я предотвратил рекурсию
+//    private List<Order> orderList;
 
     // Лист блюд
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
@@ -65,4 +65,12 @@ public class Cook {
             inverseJoinColumns = @JoinColumn(name = "cook_id"))
     @JsonIgnore // Таким образом я предотвратил рекурсию
     private List<Dish> dish;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "order_cook",
+            joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "cook_id"))
+    @JsonIgnore
+    private List<Order> orderList;
 }

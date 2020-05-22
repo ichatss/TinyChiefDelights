@@ -157,7 +157,7 @@ public class CustomerService extends UserService {
 
 
     // Подсчет цены
-    public double calculateCoast(Long basketId) {
+    public double calculateCoast(Long basketId, List<Cook> cooks) {
 
         Basket basket = basketRepository.getById(basketId);
 
@@ -165,14 +165,80 @@ public class CustomerService extends UserService {
         for (Dish i : basket.getDishList()) {
             coast += i.getDishCost();
         }
+        for (Cook i: cooks) {
+            //coast += i.getCookType()
+
+        }
         return coast;
     }
 
     // Сделать Заказ
-    public void makeOrder(String address, String phoneNumber,
-                          Long cookId, Long basketId, Date date) {
+    public void makeOrder(String address, String phoneNumber, Long basketId, Date date) {
 
-        double coast = calculateCoast(basketId);
+        List<Dish> dishes = basketRepository.getById(basketId).getDishList();
+        boolean[] flag = new boolean[3];
+        flag[0] = false;
+        flag[1] = false;
+        flag[2] = false;
+
+        for (Dish i : dishes) {
+            if(i.getDishType() == DishType.CONFECTIONERY){
+                flag[0] = true;
+               // break;
+            }
+            if(i.getDishType() == DishType.FISH){
+                flag[1] = true;
+               // break;
+            }
+            if(i.getDishType() == DishType.MEAT){
+                flag[2] = true;
+               // break;
+            }
+        }
+
+        List<Cook> cooks = new ArrayList<>();
+        {
+            List<Cook> c = new ArrayList<>();
+            c = cookRepository.findByUserRoleAndCookStatus("COOK", true);
+            if (flag[0]) {
+                for (Cook i : c) {
+                    if(i.getCookType() == CookType.CONFECTIONER){
+                        cooks.add(i);
+                        c.remove(i);
+                        i.setCookStatus(false);
+                        cookRepository.save(i);
+                        break;
+                    }
+                }
+                //cooks.add(cookRepository.findAllByCookStatusAndCookType(true, CookType.CONFECTIONER.toString()).get(0));
+            }
+            if (flag[1]) {
+                for (Cook i : c) {
+                    if(i.getCookType() == CookType.FISH_COOK){
+                        cooks.add(i);
+                        c.remove(i);
+                        i.setCookStatus(false);
+                        cookRepository.save(i);
+                        break;
+                    }
+                }
+                //cooks.add(cookRepository.findAllByCookStatusAndCookType(true, CookType.FISH_COOK.toString()).get(0));
+            }
+            if (flag[2]) {
+                for (Cook i : c) {
+                    if(i.getCookType() == CookType.MEAT_COOK){
+                        cooks.add(i);
+                        c.remove(i);
+                        i.setCookStatus(false);
+                        cookRepository.save(i);
+                        break;
+                    }
+                }
+                //cooks.add(cookRepository.findAllByCookStatusAndCookType(true, CookType.MEAT_COOK.toString()).get(0));
+            }
+        }
+
+        double coast = calculateCoast(basketId, cooks);
 
         Customer customer = customerRepository
                 .findByIdAndUserRole(User.getCurrentUser().getId(), User.ROLE_CUSTOMER);
@@ -189,7 +255,7 @@ public class CustomerService extends UserService {
         order.setDateOrder(date);
         order.setOrderStatus(true);
         order.setCustomer(customerRepository.findByIdAndUserRole(User.getCurrentUser().getId(), User.ROLE_CUSTOMER));
-        order.setCook(cookRepository.findByIdAndUserRole(cookId, "COOK"));
+        order.setCookList(cooks);
         order.setBasket(basketRepository.getById(basketId));
         orderRepository.save(order);
     }

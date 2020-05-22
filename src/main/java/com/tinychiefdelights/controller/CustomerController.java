@@ -57,11 +57,10 @@ public class CustomerController {
 
     // Сделать заказ
     @PostMapping("/make/order")
-    public void makeOrder(String address, String phoneNumber,
-                          Long cookId, Long basketId, @RequestParam("dateInput")
+    public void makeOrder(String address, String phoneNumber, Long basketId, @RequestParam("dateInput")
                           @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date dateInput) {
 
-        customerService.makeOrder(address, phoneNumber, cookId, basketId, dateInput);
+        customerService.makeOrder(address, phoneNumber, basketId, dateInput);
     }
 
 
