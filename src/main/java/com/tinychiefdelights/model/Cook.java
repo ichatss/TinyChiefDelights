@@ -40,6 +40,9 @@ public class Cook {
     @Column(name = "about_cook")
     private String aboutCook;
 
+    @Column(name = "start_salary")
+    private float startSalary;
+
 
     //Relationships
     //

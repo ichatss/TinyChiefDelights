@@ -59,45 +59,45 @@ set password = crypt(password, gen_salt('bf', 8));
 
 
 -- Созлаем новых поваров
-insert into public.cook(rating, cook_status, about_cook, user_id, type)
+insert into public.cook(rating, cook_status, about_cook, user_id, type, start_salary)
 values (4.7, true, 'Повар с 10 летним стажем работы. Работал в таких городах как Москва, Рим и Мадрид. ' ||
                    'Является побеителем конкурса поваров 2010 в Стамбуле',
-        5, 'CHEF');
+        5, 'CHEF', 150);
 
-insert into public.cook(rating, cook_status, about_cook, user_id, type)
+insert into public.cook(rating, cook_status, about_cook, user_id, type, start_salary)
 values (3.4, true, 'Повар с 5 летним стажем работы. Работал в таких городах как Воронеж и Краснодар. ' ||
                    'Окончил кулинарный колледж с золотой медалью. Является победителем конкурса "Лучший мясник ВРН 2018"',
-        6, 'MEAT_COOK');
+        6, 'MEAT_COOK' , 100);
 
-insert into public.cook(rating, cook_status, about_cook, user_id, type)
+insert into public.cook(rating, cook_status, about_cook, user_id, type, start_salary)
 values (4.2, true, 'Повар с 7 летним стажем работы. Работал в таких городах как Сочи и Стамбул. ' ||
                    'Является лучшим кондитером в городе. Победителем конкурса "Лучший мясник ВРН 2010, 2011, 2014"',
-        7, 'CONFECTIONER');
+        7, 'CONFECTIONER', 70);
 
-insert into public.cook(rating, cook_status, about_cook, user_id, type)
+insert into public.cook(rating, cook_status, about_cook, user_id, type, start_salary)
 values (2.5, true, 'Повар-стажер. Общий опыт работы 1 год в ресторане "Tiny Chief". ' ||
                    'Отлично разделывает рыбу и владеет грамотной подачей блюд.',
-        8, 'FISH_COOK');
+        8, 'FISH_COOK', 90);
 
-insert into public.cook(rating, cook_status, about_cook, user_id, type)
+insert into public.cook(rating, cook_status, about_cook, user_id, type, start_salary)
 values (4.1, true, 'Повар с опытом работы более 8 лет. Является лучшим рыбником города. ' ||
                    'Сделает для Вас самую вкусную форель под сливками.',
-        9, 'FISH_COOK');
+        9, 'FISH_COOK', 90);
 
-insert into public.cook(rating, cook_status, about_cook, user_id, type)
+insert into public.cook(rating, cook_status, about_cook, user_id, type, start_salary)
 values (4, true, 'Повар с 9 летним стажем работы. Работал в крупных ресторанах Москвы и Санкт-Питербурга. ' ||
                  'Мясные стейки, люля-кебаб и шашлыки самых разных видов. Является победителем конкурса "Лучший мясник ВРН 2013"',
-        10, 'MEAT_COOK');
+        10, 'MEAT_COOK', 100);
 
-insert into public.cook(rating, cook_status, about_cook, user_id, type)
+insert into public.cook(rating, cook_status, about_cook, user_id, type, start_salary)
 values (2.7, true, 'Повар с 4 летним стажем работы. Работал в самых разных кондитерских города. ' ||
                    'Фирменный хачапури и мороженные самых разных видов - вот, что Вас удивит.',
-        11, 'CONFECTIONER');
+        11, 'CONFECTIONER', 70);
 
-insert into public.cook(rating, cook_status, about_cook, user_id, type)
+insert into public.cook(rating, cook_status, about_cook, user_id, type, start_salary)
 values (3, true, 'Повар с 3 летним стажем работы. Работал в самых разных ресторанах города. ' ||
                  'Может порадовать Вас абсолютно лбыми видами мясных блюд!',
-        12, 'MEAT_COOK');
+        12, 'MEAT_COOK', 100);
 
 
 -- Создаем новых заказчиков

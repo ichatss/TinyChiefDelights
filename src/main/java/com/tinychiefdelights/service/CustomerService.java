@@ -166,7 +166,7 @@ public class CustomerService extends UserService {
             coast += i.getDishCost();
         }
         for (Cook i: cooks) {
-            //coast += i.getCookType()
+            coast += i.getStartSalary();
 
         }
         return coast;
