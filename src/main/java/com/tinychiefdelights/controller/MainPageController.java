@@ -10,7 +10,7 @@ import javax.annotation.security.RolesAllowed;
 @Api(value = "Главная страница", tags = {"Главное"})
 @RestController
 @RequestMapping("/tinychief")
-@RolesAllowed({})
+//@RolesAllowed({})
 public class MainPageController {
 
     // Fields

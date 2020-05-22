@@ -47,7 +47,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .cors().disable().csrf().disable() // Обеспечивает мне доступность к функционалу после авторизации
                 .authorizeRequests()
-                .antMatchers("/", "home").permitAll()
+                .antMatchers("/", "home", "/tinychief/registration").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
