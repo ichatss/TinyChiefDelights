@@ -83,6 +83,12 @@ public class CustomerService extends UserService {
 
     // Методы
     //
+    // Посмотреть меню
+    public List<Dish> getMenu(){
+        return dishRepository.findAll();
+    }
+
+
     // Внести деньги на счет
     public void depositMoney(double money) {
 
@@ -195,6 +201,8 @@ public class CustomerService extends UserService {
                // break;
             }
         }
+
+
 
         List<Cook> cooks = new ArrayList<>();
         {

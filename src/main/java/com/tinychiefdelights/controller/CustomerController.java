@@ -46,6 +46,15 @@ public class CustomerController {
     private final UserService userService;
 
 
+    // GET
+    //
+    // Посмотреть меню
+    @GetMapping("/menu")
+    List<Dish> getMenu(){
+        return customerService.getMenu();
+    }
+
+
     // POST
     //
     // Заполнить корзину

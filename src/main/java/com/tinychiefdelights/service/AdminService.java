@@ -28,7 +28,9 @@ public class AdminService extends UserService {
 
     private UserRepository userRepository; // Общий пользователь
 
-    private PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder; // для шифра пароля
+
+    private DishRepository dishRepository; // Блюдо
 
     @Autowired
 //    @Override
@@ -67,6 +69,12 @@ public class AdminService extends UserService {
 
     // Методы
     //
+    // Выести блюдо по ID (метод есть только у админа)
+    public Optional<Dish> getDish(Long id){
+        return dishRepository.findById(id);
+    }
+
+
     // Вывод списка всех заказов
     public List<Order> getAllOrders() {
         return orderRepository.findAll();

@@ -4,6 +4,7 @@ import com.tinychiefdelights.exceptions.MainNotFound;
 import com.tinychiefdelights.model.*;
 import com.tinychiefdelights.repository.AdminRepository;
 import com.tinychiefdelights.service.AdminService;
+import com.tinychiefdelights.service.CustomerService;
 import com.tinychiefdelights.service.UserService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +26,12 @@ public class AdminController {
     //
     // Inject через конструктор
     @Autowired
-    public AdminController(AdminRepository adminRepository, AdminService adminService, UserService userService) {
+    public AdminController(AdminRepository adminRepository, AdminService adminService,
+                           UserService userService, CustomerService customerService) {
         this.adminRepository = adminRepository;
         this.adminService = adminService;
         this.userService = userService;
+        this.customerService = customerService;
     }
 
 
@@ -40,11 +43,24 @@ public class AdminController {
 
     private final UserService userService;
 
+    private final CustomerService customerService;
+
 
     // Методы
     //
     // GET MAPPING
     //
+    // Показать меню
+    @GetMapping("/menu")
+    List<Dish> getMenu(){
+        return customerService.getMenu();
+    }
+
+    @GetMapping("/dish/{id}")
+    Dish getDish(@PathVariable Long id){
+        return adminService.getDish(id).orElseThrow(() -> new MainNotFound(id));
+    }
+
     // Вывод списка всех заказов
     @GetMapping("/orders")
     List<Order> getAllOrders() {
