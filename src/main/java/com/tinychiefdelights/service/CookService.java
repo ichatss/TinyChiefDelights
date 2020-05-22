@@ -3,6 +3,7 @@ package com.tinychiefdelights.service;
 import com.tinychiefdelights.exceptions.MainNullPointer;
 import com.tinychiefdelights.model.Cook;
 import com.tinychiefdelights.model.Dish;
+import com.tinychiefdelights.model.DishType;
 import com.tinychiefdelights.repository.CookRepository;
 import com.tinychiefdelights.repository.DishRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,7 @@ public class CookService extends UserService {
     // Методы
     //
     // Добавить блюдо
-    public Dish createDish(String dishName, String aboutDish,
+    public Dish createDish(String dishName, String aboutDish, DishType dishType,
                            short cookingTime, short weight, double dishCost, List<Long> cooksId) {
 
         //Создаем новое блюдо
@@ -49,6 +50,7 @@ public class CookService extends UserService {
         dish.setDishCost(dishCost);
         dish.setWeight(weight);
         dish.setCookingTime(cookingTime);
+        dish.setDishType(dishType);
         // Создаем коллекцию, чтобы передать туда все принимаемые значения
         List<Cook> cookList = new ArrayList<>();
 
@@ -69,7 +71,7 @@ public class CookService extends UserService {
 
     // Изменить карту блюда
     public void editDish(Long id, String dishName, String aboutDish, short cookingTime,
-                         short weight, double dishCost, List<Long> cooksId) {
+                         short weight, double dishCost, List<Long> cooksId, DishType dishType) {
 
         try {
 
@@ -80,6 +82,7 @@ public class CookService extends UserService {
             dish.setDishName(dishName);
             dish.setCookingTime(cookingTime);
             dish.setWeight(weight);
+            dish.setDishType(dishType);
             // Создаем коллекцию, чтобы передать туда все принимаемые значения
             List<Cook> cookList = new ArrayList<>();
 
