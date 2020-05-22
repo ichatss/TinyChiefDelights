@@ -63,13 +63,34 @@ public class CustomerController {
         customerService.setBasket(dishList);
     }
 
+    @GetMapping("/cooks")
+    public List<Cook> getFreeCooks(){
+        return customerService.getFreeCooks();
+        //Ты как-то делал чтоб некотрые поля игнорировались при отправке на страницу,
+        // но я забыл и в коде не нашел, завтра обсудим
+    }
+
+    //Возвращаем пользователю информацию о том каких поваров ему нужно назначить
+    @GetMapping("types")
+    public String getTypes(Long basketId){
+        boolean[] flags = customerService.generateFlags(basketId);
+        return "CONFECTIONER- " + flags[0] + ", FISH_COOK- " + flags[1] + ", MEAT_COOK- " + flags[2];
+    }
+
+    //Оформление заказа с самостоятельным добавлением поваров
+    @PostMapping("/make/order/")
+    public void makeOrder(String address, String phoneNumber, Long basketId, @RequestParam List<Long> cooksId, @RequestParam("dateInput")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date dateInput) {
+
+        customerService.makeOrder(address, phoneNumber, basketId, dateInput, cooksId);
+    }
 
     // Сделать заказ
-    @PostMapping("/make/order")
-    public void makeOrder(String address, String phoneNumber, Long basketId, @RequestParam("dateInput")
+    @PostMapping("/make/order/auto")
+    public void makeOrderAuto(String address, String phoneNumber, Long basketId, @RequestParam("dateInput")
                           @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date dateInput) {
 
-        customerService.makeOrder(address, phoneNumber, basketId, dateInput);
+        customerService.makeOrder(address, phoneNumber, basketId, dateInput, null);
     }
 
 

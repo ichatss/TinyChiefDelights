@@ -126,14 +126,22 @@ public class CustomerService extends UserService {
     // Оставить Отзыв
     public void setReview(String text, int rate, Long id) {
 
-        if (cookRepository.findByIdAndUserRole(id, "COOK") == null) {
-            throw new RuntimeException("Нет повара с " + id + " id");
+//        if (cookRepository.findByIdAndUserRole(id, "COOK") == null) {
+//            throw new RuntimeException("Нет повара с " + id + " id");
+//        }
+
+        if (orderRepository.getById(id) == null) {
+            throw new RuntimeException("Нет заказа с " + id + " id");
         }
 
         try {
             Review review = new Review();
             review.setReview(text);
             review.setRate(rate);
+
+            for (Cook cook: orderRepository.getById(id).getCookList()) {
+
+            }
             review.setCook(cookRepository.findByIdAndUserRole(id, "COOK"));
             reviewRepository.save(review);
         } catch (IllegalArgumentException e) {
@@ -178,9 +186,8 @@ public class CustomerService extends UserService {
         return coast;
     }
 
-    // Сделать Заказ
-    public void makeOrder(String address, String phoneNumber, Long basketId, Date date) {
-
+    //Создание массива флагов
+    public boolean[] generateFlags(Long basketId){
         List<Dish> dishes = basketRepository.getById(basketId).getDishList();
         boolean[] flag = new boolean[3];
         flag[0] = false;
@@ -188,21 +195,27 @@ public class CustomerService extends UserService {
         flag[2] = false;
 
         for (Dish i : dishes) {
-            if(i.getDishType() == DishType.CONFECTIONERY){
+            if (i.getDishType() == DishType.CONFECTIONERY) {
                 flag[0] = true;
-               // break;
+                // break;
             }
-            if(i.getDishType() == DishType.FISH){
+            if (i.getDishType() == DishType.FISH) {
                 flag[1] = true;
-               // break;
+                // break;
             }
-            if(i.getDishType() == DishType.MEAT){
+            if (i.getDishType() == DishType.MEAT) {
                 flag[2] = true;
-               // break;
+                // break;
             }
         }
 
+        return flag;
+    }
 
+    //Автоматическое назначение поворов
+    public List<Cook> cooksAuto(Long basketId) {
+
+        boolean[] flag = generateFlags(basketId);
 
         List<Cook> cooks = new ArrayList<>();
         {
@@ -210,11 +223,9 @@ public class CustomerService extends UserService {
             c = cookRepository.findByUserRoleAndCookStatus("COOK", true);
             if (flag[0]) {
                 for (Cook i : c) {
-                    if(i.getCookType() == CookType.CONFECTIONER){
+                    if (i.getCookType() == CookType.CONFECTIONER) {
                         cooks.add(i);
                         c.remove(i);
-                        i.setCookStatus(false);
-                        cookRepository.save(i);
                         break;
                     }
                 }
@@ -222,11 +233,9 @@ public class CustomerService extends UserService {
             }
             if (flag[1]) {
                 for (Cook i : c) {
-                    if(i.getCookType() == CookType.FISH_COOK){
+                    if (i.getCookType() == CookType.FISH_COOK) {
                         cooks.add(i);
                         c.remove(i);
-                        i.setCookStatus(false);
-                        cookRepository.save(i);
                         break;
                     }
                 }
@@ -234,16 +243,42 @@ public class CustomerService extends UserService {
             }
             if (flag[2]) {
                 for (Cook i : c) {
-                    if(i.getCookType() == CookType.MEAT_COOK){
+                    if (i.getCookType() == CookType.MEAT_COOK) {
                         cooks.add(i);
                         c.remove(i);
-                        i.setCookStatus(false);
-                        cookRepository.save(i);
                         break;
                     }
                 }
                 //cooks.add(cookRepository.findAllByCookStatusAndCookType(true, CookType.MEAT_COOK.toString()).get(0));
             }
+        }
+        return cooks;
+    }
+
+    //Получение списка свободных поворов
+    public List<Cook> getFreeCooks(){
+        List<Cook> freeCooks = cookRepository.findByUserRoleAndCookStatus("COOK", true);
+        return freeCooks;
+    }
+
+    // Сделать Заказ
+    public void makeOrder(String address, String phoneNumber, Long basketId, Date date, List<Long> cooksId) {
+
+        List<Cook> cooks = new ArrayList<>();
+
+        //сдесь происходит выбор стратегии в зависимоси от того есть ли на входе назначенные повора
+        if(cooksId != null){
+            for (Long i : cooksId) {
+                cooks.add(cookRepository.findByIdAndUserRole(i, "COOK"));
+            }
+        }else {
+            cooks = cooksAuto(basketId);
+        }
+
+        //меняем статус, назначенным поварам
+        for (Cook i: cooks) {
+            i.setCookStatus(false);
+            cookRepository.save(i);
         }
 
         double coast = calculateCoast(basketId, cooks);
