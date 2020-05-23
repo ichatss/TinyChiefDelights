@@ -127,31 +127,54 @@ public class CustomerService extends UserService {
     public void setReview(Long id, byte rate, String review) {
 
         try {
-            // Указываем ID заказа - к которому хотим оставить отзыв
 
             Customer customer = customerRepository
                     .findByIdAndUserRole(User.getCurrentUser().getId(), User.ROLE_CUSTOMER);
-
+            // Беру блюдо если и у заказчика оно имеется
             Order order = orderRepository.getOrderByIdAndCustomerId(id, customer.getId());
+            // Позволяем оставлять отзыв если только отзыва еще нет и заказ завершен
+            if (order.getReview() == null && !order.isOrderStatus()) {
 
-                if (order.getReview() == null && !order.isOrderStatus()) {
+                Review rev = new Review();
+                rev.setReview(review);
+                rev.setRate(rate);
 
-                    Review rev = new Review();
-                    rev.setReview(review);
-                    rev.setRate(rate);
+                order.setReview(rev);
 
-                    order.setReview(rev);
+                reviewRepository.save(rev);
 
-                    reviewRepository.save(rev);
+                orderRepository.save(order);
 
-                    orderRepository.save(order);
-                } else {
-                    throw new MainIllegalArgument("Заказ еще не завершен или отзыв уже оставлен!");
-                }
+                calculateCookRate(order.getCookList(), id);
+            } else {
+                throw new MainIllegalArgument("Заказ еще не завершен или отзыв уже оставлен!");
+            }
         } catch (NullPointerException ex) {
             throw new MainNullPointer("Заказ с ИД: " + id + " не найден!");
         }
     }
+
+
+    private void calculateCookRate(List<Cook> cookList, Long orderId) {
+
+        List<Cook> cooks = new ArrayList<>(cookList);
+
+        Review review = reviewRepository.findReviewByOrderId(orderId);
+
+        byte rate = review.getRate();
+
+        for (Cook k :
+                cooks) {
+            k.setRating(k.getRating() + rate / 2);
+        }
+    }
+
+
+
+
+
+
+
 
 
     // Заполнить карзину
@@ -384,4 +407,7 @@ public class CustomerService extends UserService {
 
         return customerRepository.save(newCustomer);
     }
+
+
+
 }

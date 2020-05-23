@@ -16,7 +16,7 @@ alter sequence hibernate_sequence restart;
 alter sequence pg_order_id_seq restart;
 alter sequence pg_user_id_seq restart;
 alter sequence review_id_seq restart;
-alter sequence basket_id_seq restart;
+alter sequence basket_id_seq restart with 6;
 
 
 -- Создаем новых пользователей
