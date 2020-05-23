@@ -25,7 +25,7 @@ public class Review {  // Отзыв
     private String review;
 
     @Column(name = "rate")
-    private float rate;
+    private byte rate;
 
 
 //    // Relationships
