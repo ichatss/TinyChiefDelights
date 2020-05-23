@@ -124,16 +124,22 @@ public class CustomerService extends UserService {
 
 
     // Оставить Отзыв
-    public void setReview(Long id, float rate, String review) {
+    public Review setReview(Long id, float rate, String review) {
 
         // Указываем ID заказа - к которому хотим оставить отзыв
         Order order = orderRepository.getById(id);
 
-        order.getReview().setRate(rate);
-        order.getReview().setReview(review);
+        Review review1 = new Review();
 
+        review1.setReview(review);
+        review1.setRate(rate);
 
+        order.getReview().setRate(review1.getRate());
+        order.getReview().setReview(review1.getReview());
 
+        orderRepository.save(order);
+
+        return reviewRepository.save(review1);
     }
 
     // Заполнить карзину
