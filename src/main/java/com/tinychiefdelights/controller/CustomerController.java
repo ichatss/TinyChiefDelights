@@ -96,7 +96,7 @@ public class CustomerController {
 
     // Оставить отзыв
     @PostMapping("/set/{id}/review/")
-    public void setReview(@PathVariable Long id, @RequestParam String text, @RequestParam int rate) {
+    public void setReview(@PathVariable Long id, @RequestParam String text, @RequestParam byte rate) {
 
         customerService.setReview(id, rate, text);
     }

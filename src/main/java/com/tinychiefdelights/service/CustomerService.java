@@ -124,26 +124,30 @@ public class CustomerService extends UserService {
 
 
     // Оставить Отзыв
-    public void setReview(Long id, float rate, String review) {
+    public void setReview(Long id, byte rate, String review) {
 
         try {
             // Указываем ID заказа - к которому хотим оставить отзыв
-            Order order = orderRepository.getById(id);
 
-            if (order.getReview() == null && !order.isOrderStatus()){
+            Customer customer = customerRepository
+                    .findByIdAndUserRole(User.getCurrentUser().getId(), User.ROLE_CUSTOMER);
 
-            Review rev = new Review();
-            rev.setReview(review);
-            rev.setRate(rate);
+            Order order = orderRepository.getOrderByIdAndCustomerId(id, customer.getId());
 
-            order.setReview(rev);
+                if (order.getReview() == null && !order.isOrderStatus()) {
 
-            reviewRepository.save(rev);
+                    Review rev = new Review();
+                    rev.setReview(review);
+                    rev.setRate(rate);
 
-            orderRepository.save(order);
-            } else {
-                throw new MainIllegalArgument("Заказ еще не завершен или отзыв уже оставлен!");
-            }
+                    order.setReview(rev);
+
+                    reviewRepository.save(rev);
+
+                    orderRepository.save(order);
+                } else {
+                    throw new MainIllegalArgument("Заказ еще не завершен или отзыв уже оставлен!");
+                }
         } catch (NullPointerException ex) {
             throw new MainNullPointer("Заказ с ИД: " + id + " не найден!");
         }
