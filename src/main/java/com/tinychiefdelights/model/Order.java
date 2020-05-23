@@ -47,16 +47,9 @@ public class Order {
 
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "basket_id", referencedColumnName = "id") // Join without Cook in User class
+    @JoinColumn(name = "basket_id", referencedColumnName = "id")
     private Basket basket;
 
-
-    // Повар
-//    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    // Проблема в том, что объекты загружаются лениво, и сериализация происходит до того,
-//    // как они будут загружены полностью.
-//    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-//    private Cook cook;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
@@ -65,4 +58,8 @@ public class Order {
             inverseJoinColumns = @JoinColumn(name = "cook_id"))
     @JsonIgnore
     private List<Cook> cookList;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "review_id", referencedColumnName = "id") // Join without Cook in User class
+    private Review review;
 }

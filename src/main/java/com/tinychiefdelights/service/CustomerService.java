@@ -84,7 +84,7 @@ public class CustomerService extends UserService {
     // Методы
     //
     // Посмотреть меню
-    public List<Dish> getMenu(){
+    public List<Dish> getMenu() {
         return dishRepository.findAll();
     }
 
@@ -124,29 +124,15 @@ public class CustomerService extends UserService {
 
 
     // Оставить Отзыв
-    public void setReview(String text, int rate, Long id) {
+    public void setReview(Long id, float rate, String review) {
 
-//        if (cookRepository.findByIdAndUserRole(id, "COOK") == null) {
-//            throw new RuntimeException("Нет повара с " + id + " id");
-//        }
+        // Указываем ID заказа - к которому хотим оставить отзыв
+        Order order = orderRepository.getById(id);
 
-        if (orderRepository.getById(id) == null) {
-            throw new RuntimeException("Нет заказа с " + id + " id");
-        }
+        order.getReview().setRate(rate);
+        order.getReview().setReview(review);
 
-        try {
-            Review review = new Review();
-            review.setReview(text);
-            review.setRate(rate);
 
-            for (Cook cook: orderRepository.getById(id).getCookList()) {
-
-            }
-            review.setCook(cookRepository.findByIdAndUserRole(id, "COOK"));
-            reviewRepository.save(review);
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException(e);
-        }
 
     }
 
@@ -179,7 +165,7 @@ public class CustomerService extends UserService {
         for (Dish i : basket.getDishList()) {
             coast += i.getDishCost();
         }
-        for (Cook i: cooks) {
+        for (Cook i : cooks) {
             coast += i.getStartSalary();
 
         }
@@ -190,8 +176,10 @@ public class CustomerService extends UserService {
     }
 
     //Создание массива флагов
-    public boolean[] generateFlags(Long basketId){
+    public boolean[] generateFlags(Long basketId) {
+
         List<Dish> dishes = basketRepository.getById(basketId).getDishList();
+
         boolean[] flag = new boolean[3];
         flag[0] = false;
         flag[1] = false;
@@ -200,30 +188,27 @@ public class CustomerService extends UserService {
         for (Dish i : dishes) {
             if (i.getDishType() == DishType.CONFECTIONERY) {
                 flag[0] = true;
-                // break;
             }
             if (i.getDishType() == DishType.FISH) {
                 flag[1] = true;
-                // break;
             }
             if (i.getDishType() == DishType.MEAT) {
                 flag[2] = true;
-                // break;
             }
         }
-
         return flag;
     }
 
-    //Автоматическое назначение поворов
+
+    // Автоматическое назначение поворов
     public List<Cook> cooksAuto(Long basketId) {
 
         boolean[] flag = generateFlags(basketId);
 
         List<Cook> cooks = new ArrayList<>();
         {
-            List<Cook> c = new ArrayList<>();
-            c = cookRepository.findByUserRoleAndCookStatus("COOK", true);
+            List<Cook> c;
+            c = cookRepository.findByUserRoleAndCookStatus(User.ROLE_COOK, true);
             if (flag[0]) {
                 for (Cook i : c) {
                     if (i.getCookType() == CookType.CONFECTIONER) {
@@ -232,7 +217,6 @@ public class CustomerService extends UserService {
                         break;
                     }
                 }
-                //cooks.add(cookRepository.findAllByCookStatusAndCookType(true, CookType.CONFECTIONER.toString()).get(0));
             }
             if (flag[1]) {
                 for (Cook i : c) {
@@ -242,7 +226,6 @@ public class CustomerService extends UserService {
                         break;
                     }
                 }
-                //cooks.add(cookRepository.findAllByCookStatusAndCookType(true, CookType.FISH_COOK.toString()).get(0));
             }
             if (flag[2]) {
                 for (Cook i : c) {
@@ -252,15 +235,15 @@ public class CustomerService extends UserService {
                         break;
                     }
                 }
-                //cooks.add(cookRepository.findAllByCookStatusAndCookType(true, CookType.MEAT_COOK.toString()).get(0));
             }
         }
         return cooks;
     }
 
+
     //Получение списка свободных поворов
-    public List<Cook> getFreeCooks(){
-        List<Cook> freeCooks = cookRepository.findByUserRoleAndCookStatus("COOK", true);
+    public List<Cook> getFreeCooks() {
+        List<Cook> freeCooks = cookRepository.findByUserRoleAndCookStatus(User.ROLE_COOK, true);
         return freeCooks;
     }
 
@@ -271,17 +254,17 @@ public class CustomerService extends UserService {
         double bonus = 0;
 
         //сдесь происходит выбор стратегии в зависимоси от того есть ли на входе назначенные повора
-        if(cooksId != null){
+        if (cooksId != null) {
             for (Long i : cooksId) {
-                cooks.add(cookRepository.findByIdAndUserRole(i, "COOK"));
+                cooks.add(cookRepository.findByIdAndUserRole(i, User.ROLE_COOK));
                 bonus = 200;
             }
-        }else {
+        } else {
             cooks = cooksAuto(basketId);
         }
 
         //меняем статус, назначенным поварам
-        for (Cook i: cooks) {
+        for (Cook i : cooks) {
             i.setCookStatus(false);
             cookRepository.save(i);
         }
