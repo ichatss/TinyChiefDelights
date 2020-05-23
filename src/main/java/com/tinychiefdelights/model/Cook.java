@@ -50,10 +50,10 @@ public class Cook {
     @JoinColumn(name = "user_id", referencedColumnName = "id") // Join without Cook in User class
     private User user;
 
-    // Лист отзывов
-    @OneToMany(mappedBy = "cook", cascade = CascadeType.ALL)
-    @JsonIgnore // Таким образом я предотвратил рекурсию
-    private List<Review> reviewList;
+//    // Лист отзывов
+//    @OneToMany(mappedBy = "cook", cascade = CascadeType.ALL)
+//    @JsonIgnore // Таким образом я предотвратил рекурсию
+//    private List<Review> reviewList;
 
     // Лист поваров
 //    @OneToMany(mappedBy = "cook", cascade = CascadeType.ALL)

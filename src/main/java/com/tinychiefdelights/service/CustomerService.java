@@ -124,23 +124,31 @@ public class CustomerService extends UserService {
 
 
     // Оставить Отзыв
-    public Review setReview(Long id, float rate, String review) {
+    public void setReview(Long id, float rate, String review) {
 
-        // Указываем ID заказа - к которому хотим оставить отзыв
-        Order order = orderRepository.getById(id);
+        try {
+            // Указываем ID заказа - к которому хотим оставить отзыв
+            Order order = orderRepository.getById(id);
 
-        Review review1 = new Review();
+            if (order.getReview() == null && !order.isOrderStatus()){
 
-        review1.setReview(review);
-        review1.setRate(rate);
+            Review rev = new Review();
+            rev.setReview(review);
+            rev.setRate(rate);
 
-        order.getReview().setRate(review1.getRate());
-        order.getReview().setReview(review1.getReview());
+            order.setReview(rev);
 
-        orderRepository.save(order);
+            reviewRepository.save(rev);
 
-        return reviewRepository.save(review1);
+            orderRepository.save(order);
+            } else {
+                throw new MainIllegalArgument("Заказ еще не завершен или отзыв уже оставлен!");
+            }
+        } catch (NullPointerException ex) {
+            throw new MainNullPointer("Заказ с ИД: " + id + " не найден!");
+        }
     }
+
 
     // Заполнить карзину
     public void setBasket(List<Long> dishListId) {
@@ -181,7 +189,7 @@ public class CustomerService extends UserService {
         return coast;
     }
 
-    //Создание массива флагов
+    // Создание массива флагов для makeOrder
     public boolean[] generateFlags(Long basketId) {
 
         List<Dish> dishes = basketRepository.getById(basketId).getDishList();

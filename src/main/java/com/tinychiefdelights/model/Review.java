@@ -28,9 +28,9 @@ public class Review {  // Отзыв
     private float rate;
 
 
-    // Relationships
-    // Повар
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JsonIgnore
-    private Cook cook;
+//    // Relationships
+//    // Повар
+//    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    @JsonIgnore
+//    private Cook cook;
 }
