@@ -253,6 +253,26 @@ public class CustomerService extends UserService {
         return freeCooks;
     }
 
+    public boolean cooksIsCorrect(List<Cook> cooks, Long basketId){
+
+        boolean[] f1 = generateFlags(basketId);
+        boolean[] f2 = {false, false, false};
+
+        for (Cook i : cooks) {
+            if(i.getCookType() == CookType.CONFECTIONER){
+                f2[0] = true;
+            }
+            if(i.getCookType() == CookType.CONFECTIONER){
+                f2[1] = true;
+            }
+            if(i.getCookType() == CookType.CONFECTIONER){
+                f2[2] = true;
+            }
+        }
+
+        return f1 == f2;
+    }
+
     // Сделать Заказ
     public void makeOrder(String address, String phoneNumber, Long basketId, Date date, List<Long> cooksId) {
 
@@ -267,6 +287,10 @@ public class CustomerService extends UserService {
             }
         } else {
             cooks = cooksAuto(basketId);
+        }
+
+        if(!cooksIsCorrect(cooks, basketId)){
+            throw new RuntimeException("Не соответсвие типов поваров с типами блюд в корзине");
         }
 
         //меняем статус, назначенным поварам
