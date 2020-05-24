@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -93,20 +96,24 @@ public class CustomerService extends UserService {
     // Внести деньги на счет
     public void depositMoney(double money) {
 
+        if (money <= 0) { // Делаем проверку на входной параметр (чтобы не была отрицательной)
+            throw new MainIllegalArgument();
+        }
+
         Customer customer = customerRepository
                 .findByIdAndUserRole(User.getCurrentUser().getId(), User.ROLE_CUSTOMER);
 
         customer.setWallet(customer.getWallet() + money);
         customerRepository.save(customer);
-
-        if (money <= 0) { // Делаем проверку на входной параметр (чтобы не была отрицательной)
-            throw new MainIllegalArgument();
-        }
     }
 
 
     // Вывести деньги со счета
     public void withdrawMoney(double money) {
+
+        if (money <= 0) { // Делаем проверку на входной параметр (чтобы не была отрицательной)
+            throw new MainIllegalArgument();
+        }
 
         Customer customer = customerRepository
                 .findByIdAndUserRole(User.getCurrentUser().getId(), User.ROLE_CUSTOMER);
@@ -117,43 +124,43 @@ public class CustomerService extends UserService {
         } else {
             throw new MainIllegalArgument("Введенная Вами сумма превшает остаток на счете!");
         }
-
-        if (money <= 0) { // Делаем проверку на входной параметр (чтобы не была отрицательной)
-            throw new MainIllegalArgument();
-        }
     }
 
 
     // Оставить Отзыв
     public void setReview(Long id, byte rate, String review) {
 
-        try {
+        //try {
 
             Customer customer = customerRepository
                     .findByIdAndUserRole(User.getCurrentUser().getId(), User.ROLE_CUSTOMER);
             // Беру блюдо если и у заказчика оно имеется
             Order order = orderRepository.getOrderByIdAndCustomerId(id, customer.getId());
+            if(order == null){
+                throw new MainNullPointer("Заказ с ИД: " + id + " не найден!");
+            }
             // Позволяем оставлять отзыв если только отзыва еще нет и заказ завершен
             if (order.getReview() == null && !order.isOrderStatus()) {
 
                 Review rev = new Review();
                 rev.setReview(review);
                 rev.setRate(rate);
+                rev.setOrder(order);
 
                 order.setReview(rev);
 
-                reviewRepository.save(rev);
+               // reviewRepository.save(rev);
 
                 orderRepository.save(order);
-
+                reviewRepository.save(rev);
                 calculateCookRate(order.getCookList(), id);
             } else {
                 throw new MainIllegalArgument("Заказ еще не завершен или отзыв уже оставлен!");
             }
-        } catch (NullPointerException ex) {
-            throw new MainNullPointer("Заказ с ИД: " + id + " не найден!");
-        }
-    }
+        } //catch (NullPointerException ex) {
+           // throw new MainNullPointer("Заказ с ИД: " + id + " не найден!");
+        //}
+   // }
 
 
     private void calculateCookRate(List<Cook> cookList, Long orderId) {
@@ -166,16 +173,19 @@ public class CustomerService extends UserService {
 
         for (Cook k :
                 cooks) {
-            k.setRating(k.getRating() + rate / 2);
+            DecimalFormat df = new DecimalFormat("###.###");
+            double value = (k.getRating() + rate) / 2;
+            k.setRating(round(value, 1));
         }
     }
+    //метод для округления
+    private double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
 
-
-
-
-
-
-
+        BigDecimal bd = new BigDecimal(Double.toString(value));
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
+    }
 
 
     // Заполнить карзину
@@ -372,7 +382,7 @@ public class CustomerService extends UserService {
         order.setPhoneNumber(phoneNumber);
         order.setAddress(address);
         order.setDateOrder(date);
-        order.setOrderStatus(false);
+        order.setOrderStatus(true);
         order.setCustomer(customerRepository.findByIdAndUserRole(User.getCurrentUser().getId(), User.ROLE_CUSTOMER));
         order.setCookList(cooks);
         order.setBasket(basketRepository.getById(basketId));
@@ -400,6 +410,10 @@ public class CustomerService extends UserService {
 
     // Отменить заказ
     public void cancelOrder(Long id) {
+
+        if(id != User.getCurrentUser().getId()){
+            throw new MainIllegalArgument("Вы можете отменить только свой заказ");
+        }
 
         try {
 
