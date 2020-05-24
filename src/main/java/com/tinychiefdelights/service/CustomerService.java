@@ -394,6 +394,10 @@ public class CustomerService extends UserService {
     // Отменить заказ
     public void cancelOrder(Long id) {
 
+        if(id != User.getCurrentUser().getId()){
+            throw new MainIllegalArgument("Вы можете отменить только свой заказ");
+        }
+
         try {
 
             Order order = orderRepository.getById(id);
