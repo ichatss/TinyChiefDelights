@@ -327,15 +327,23 @@ public class CustomerService extends UserService {
     // Сделать Заказ
     public void makeOrder(String address, String phoneNumber, Long basketId, Date date, List<Long> cooksId) {
 
+        if(basketRepository.findById(basketId) == null){
+            throw new MainNotFound(basketId);
+        }
+
         List<Cook> cooks = new ArrayList<>();
         double bonus = 0;
 
-        //сдесь происходит выбор стратегии в зависимоси от того есть ли на входе назначенные повора
+        //здесь происходит выбор стратегии в зависимоси от того есть ли на входе назначенные повора
         if (cooksId != null) {
             for (Long i : cooksId) {
+                if(cookRepository.findByIdAndUserRole(i, User.ROLE_COOK) == null){
+                    throw new MainNotFound(i);
+                }else{
                 cooks.add(cookRepository.findByIdAndUserRole(i, User.ROLE_COOK));
-                bonus = 200;
+                }
             }
+            bonus = 200;
             if(!cooksIsCorrect(cooks, basketId)){
                 throw new MainIllegalArgument("Не соответсвие типов поваров с типами блюд в корзине");
             }
