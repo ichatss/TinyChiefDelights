@@ -1,6 +1,7 @@
 package com.tinychiefdelights.service;
 
 import com.tinychiefdelights.exceptions.MainIllegalArgument;
+import com.tinychiefdelights.exceptions.MainNotFound;
 import com.tinychiefdelights.exceptions.MainNullPointer;
 import com.tinychiefdelights.model.*;
 import com.tinychiefdelights.repository.*;
@@ -189,7 +190,7 @@ public class CustomerService extends UserService {
 
             // Делаем проверку, если блюда нет в меню
             if (dishRepository.getById(i) == null) {
-                throw new MainNullPointer("Блюдо ИД: " + i + " не найдено!");
+                throw new MainNotFound(i);
             }
         }
         basket.setDishList(dishList);
@@ -328,7 +329,7 @@ public class CustomerService extends UserService {
                 bonus = 200;
             }
             if(!cooksIsCorrect(cooks, basketId)){
-                throw new RuntimeException("Не соответсвие типов поваров с типами блюд в корзине");
+                throw new MainIllegalArgument("Не соответсвие типов поваров с типами блюд в корзине");
             }
         } else {
             cooks = cooksAuto(basketId);
