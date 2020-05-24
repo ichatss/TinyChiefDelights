@@ -221,10 +221,7 @@ public class CustomerService extends UserService {
 
         List<Dish> dishes = basketRepository.getById(basketId).getDishList();
 
-        boolean[] flag = new boolean[3];
-        flag[0] = false;
-        flag[1] = false;
-        flag[2] = false;
+        boolean[] flag = {false, false, false};
 
         for (Dish i : dishes) {
             if (i.getDishType() == DishType.CONFECTIONERY) {
@@ -252,7 +249,7 @@ public class CustomerService extends UserService {
             c = cookRepository.findByUserRoleAndCookStatus(User.ROLE_COOK, true);
             if (flag[0]) {
                 for (Cook i : c) {
-                    if (i.getCookType() == CookType.CONFECTIONER) {
+                    if (i.getCookType() == CookType.CONFECTIONER || i.getCookType() == CookType.CHEF) {
                         cooks.add(i);
                         c.remove(i);
                         break;
@@ -261,7 +258,7 @@ public class CustomerService extends UserService {
             }
             if (flag[1]) {
                 for (Cook i : c) {
-                    if (i.getCookType() == CookType.FISH_COOK) {
+                    if (i.getCookType() == CookType.FISH_COOK || i.getCookType() == CookType.CHEF) {
                         cooks.add(i);
                         c.remove(i);
                         break;
@@ -270,7 +267,7 @@ public class CustomerService extends UserService {
             }
             if (flag[2]) {
                 for (Cook i : c) {
-                    if (i.getCookType() == CookType.MEAT_COOK) {
+                    if (i.getCookType() == CookType.MEAT_COOK || i.getCookType() == CookType.CHEF) {
                         cooks.add(i);
                         c.remove(i);
                         break;
@@ -294,18 +291,28 @@ public class CustomerService extends UserService {
         boolean[] f2 = {false, false, false};
 
         for (Cook i : cooks) {
-            if(i.getCookType() == CookType.CONFECTIONER){
+            if(i.getCookType() == CookType.CONFECTIONER || i.getCookType() == CookType.CHEF){
                 f2[0] = true;
+                continue;
             }
-            if(i.getCookType() == CookType.CONFECTIONER){
+            if(i.getCookType() == CookType.FISH_COOK || i.getCookType() == CookType.CHEF){
                 f2[1] = true;
+                continue;
             }
-            if(i.getCookType() == CookType.CONFECTIONER){
+            if(i.getCookType() == CookType.MEAT_COOK || i.getCookType() == CookType.CHEF){
                 f2[2] = true;
+                continue;
             }
         }
+        boolean flag = true;
+        for (int i = 0; i < 3; i++) {
+            if(f1[i] != f2[i]){
+                flag = false;
+                break;
+            }
 
-        return f1 == f2;
+        }
+        return flag;
     }
 
     // Сделать Заказ
@@ -320,12 +327,11 @@ public class CustomerService extends UserService {
                 cooks.add(cookRepository.findByIdAndUserRole(i, User.ROLE_COOK));
                 bonus = 200;
             }
+            if(!cooksIsCorrect(cooks, basketId)){
+                throw new RuntimeException("Не соответсвие типов поваров с типами блюд в корзине");
+            }
         } else {
             cooks = cooksAuto(basketId);
-        }
-
-        if(!cooksIsCorrect(cooks, basketId)){
-            throw new RuntimeException("Не соответсвие типов поваров с типами блюд в корзине");
         }
 
         //меняем статус, назначенным поварам
