@@ -1,5 +1,6 @@
 package com.tinychiefdelights.service;
 
+import com.tinychiefdelights.exceptions.MainNotFound;
 import com.tinychiefdelights.exceptions.MainNullPointer;
 import com.tinychiefdelights.model.Cook;
 import com.tinychiefdelights.model.Dish;
@@ -91,7 +92,7 @@ public class CookService extends UserService {
                     cookList.add(cookRepository.getCookById(i));
                 }
             } catch (NullPointerException ex) {
-                throw new MainNullPointer("Повар не найден!");
+                throw new MainNotFound(id);
             }
 
 
