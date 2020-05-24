@@ -32,7 +32,7 @@ public class Cook {
     private CookType cookType;
 
     @Column(name = "rating")
-    private float rating;
+    private double rating;
 
     @Column(name = "cook_status")
     private boolean cookStatus;
