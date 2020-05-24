@@ -8,6 +8,7 @@ import com.tinychiefdelights.model.DishType;
 import com.tinychiefdelights.repository.CookRepository;
 import com.tinychiefdelights.repository.DishRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -113,8 +114,8 @@ public class CookService extends UserService {
 
         try {
             dishRepository.deleteById(id);
-        } catch (NullPointerException ex) {
-            throw new MainNullPointer("Блюдо с таким ID не найдено!");
+        } catch (EmptyResultDataAccessException ex) {
+            throw new MainNotFound(id);
         }
     }
 }

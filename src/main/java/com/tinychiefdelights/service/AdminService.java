@@ -90,7 +90,7 @@ public class AdminService extends UserService {
     // Вывод Повара по ID
     public Optional<Cook> getCook(Long id) {
         try {
-            return cookRepository.getByIdAndUserRole(id, "COOK");
+            return cookRepository.getCookAndChefById(id);
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException();
         }
