@@ -411,17 +411,21 @@ public class CustomerService extends UserService {
     // Отменить заказ
     public void cancelOrder(Long id) {
 
-        if(id != User.getCurrentUser().getId()){
-            throw new MainIllegalArgument("Вы можете отменить только свой заказ");
+        Customer customer = customerRepository.findByIdAndUserRole(User.getCurrentUser().getId(), User.ROLE_CUSTOMER);
+
+        List<Order> orderList = customer.getOrderList(); // Перекинул все orders в orderList для удобства
+
+        List<Long> orderIds = new ArrayList<>(); // Создал новую коллекцию для хранения всех ИД заказов пользователя
+
+        for (Order o : orderList) { // Кидаю все ИД заказов в коллекицю
+            orderIds.add(o.getId());
         }
 
-        try {
-
+        if (orderIds.contains(id)) {
             Order order = orderRepository.getById(id);
             order.setOrderStatus(false);
             orderRepository.save(order);
-
-        } catch (NullPointerException ex) {
+        } else {
             throw new MainNullPointer("Заказ с таким ID отсутствует!");
         }
     }
