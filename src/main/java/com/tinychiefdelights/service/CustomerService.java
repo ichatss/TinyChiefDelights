@@ -1,6 +1,7 @@
 package com.tinychiefdelights.service;
 
 import com.tinychiefdelights.exceptions.MainIllegalArgument;
+import com.tinychiefdelights.exceptions.MainNotFound;
 import com.tinychiefdelights.exceptions.MainNullPointer;
 import com.tinychiefdelights.model.*;
 import com.tinychiefdelights.repository.*;
@@ -219,22 +220,27 @@ public class CustomerService extends UserService {
     // Создание массива флагов для makeOrder
     public boolean[] generateFlags(Long basketId) {
 
-        List<Dish> dishes = basketRepository.getById(basketId).getDishList();
+        try {
+            List<Dish> dishes = basketRepository.getById(basketId).getDishList();
 
-        boolean[] flag = {false, false, false};
+            boolean[] flag = {false, false, false};
 
-        for (Dish i : dishes) {
-            if (i.getDishType() == DishType.CONFECTIONERY) {
-                flag[0] = true;
+            for (Dish i : dishes) {
+                if (i.getDishType() == DishType.CONFECTIONERY) {
+                    flag[0] = true;
+                }
+                if (i.getDishType() == DishType.FISH) {
+                    flag[1] = true;
+                }
+                if (i.getDishType() == DishType.MEAT) {
+                    flag[2] = true;
+                }
             }
-            if (i.getDishType() == DishType.FISH) {
-                flag[1] = true;
-            }
-            if (i.getDishType() == DishType.MEAT) {
-                flag[2] = true;
-            }
+            return flag;
+
+        } catch (NullPointerException ex) {
+            throw new MainNotFound(basketId);
         }
-        return flag;
     }
 
 
@@ -315,6 +321,8 @@ public class CustomerService extends UserService {
         return flag;
     }
 
+
+
     // Сделать Заказ
     public void makeOrder(String address, String phoneNumber, Long basketId, Date date, List<Long> cooksId) {
 
@@ -355,12 +363,13 @@ public class CustomerService extends UserService {
         order.setPhoneNumber(phoneNumber);
         order.setAddress(address);
         order.setDateOrder(date);
-        order.setOrderStatus(true);
+        order.setOrderStatus(false);
         order.setCustomer(customerRepository.findByIdAndUserRole(User.getCurrentUser().getId(), User.ROLE_CUSTOMER));
         order.setCookList(cooks);
         order.setBasket(basketRepository.getById(basketId));
         orderRepository.save(order);
     }
+
 
 
     // Изменить свои данные
@@ -413,7 +422,4 @@ public class CustomerService extends UserService {
 
         return customerRepository.save(newCustomer);
     }
-
-
-
 }
