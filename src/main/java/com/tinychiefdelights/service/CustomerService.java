@@ -217,6 +217,7 @@ public class CustomerService extends UserService {
         return coast;
     }
 
+
     // Создание массива флагов для makeOrder
     public boolean[] generateFlags(Long basketId) {
 
