@@ -93,20 +93,24 @@ public class CustomerService extends UserService {
     // Внести деньги на счет
     public void depositMoney(double money) {
 
+        if (money <= 0) { // Делаем проверку на входной параметр (чтобы не была отрицательной)
+            throw new MainIllegalArgument();
+        }
+
         Customer customer = customerRepository
                 .findByIdAndUserRole(User.getCurrentUser().getId(), User.ROLE_CUSTOMER);
 
         customer.setWallet(customer.getWallet() + money);
         customerRepository.save(customer);
-
-        if (money <= 0) { // Делаем проверку на входной параметр (чтобы не была отрицательной)
-            throw new MainIllegalArgument();
-        }
     }
 
 
     // Вывести деньги со счета
     public void withdrawMoney(double money) {
+
+        if (money <= 0) { // Делаем проверку на входной параметр (чтобы не была отрицательной)
+            throw new MainIllegalArgument();
+        }
 
         Customer customer = customerRepository
                 .findByIdAndUserRole(User.getCurrentUser().getId(), User.ROLE_CUSTOMER);
@@ -116,10 +120,6 @@ public class CustomerService extends UserService {
             customerRepository.save(customer);
         } else {
             throw new MainIllegalArgument("Введенная Вами сумма превшает остаток на счете!");
-        }
-
-        if (money <= 0) { // Делаем проверку на входной параметр (чтобы не была отрицательной)
-            throw new MainIllegalArgument();
         }
     }
 
@@ -169,13 +169,6 @@ public class CustomerService extends UserService {
             k.setRating(k.getRating() + rate / 2);
         }
     }
-
-
-
-
-
-
-
 
 
     // Заполнить карзину
