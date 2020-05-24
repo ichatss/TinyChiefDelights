@@ -63,7 +63,8 @@ public class AdminService extends UserService {
         this.dishRepository = dishRepository;
     }
 
-    //    @Override
+    @Autowired
+    @Override
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
     }

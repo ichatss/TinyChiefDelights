@@ -40,7 +40,7 @@ public class User implements UserDetails {
     @Column(name = "login")
     private String login;
 
-    @Size(min = 5, max = 18, message = "Длина пароля должна быть от 5 до 18")
+//    @Size(min = 5, max = 18, message = "Длина пароля должна быть от 5 до 18")
     @JsonIgnore
     @Column(name = "password")
     private String password;
