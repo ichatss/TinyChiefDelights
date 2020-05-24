@@ -5,6 +5,7 @@ import com.tinychiefdelights.exceptions.MainNotFound;
 import com.tinychiefdelights.model.*;
 import com.tinychiefdelights.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +33,7 @@ public class AdminService extends UserService {
 
     private DishRepository dishRepository; // Блюдо
 
+
     @Autowired
 //    @Override
     public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
@@ -54,6 +56,11 @@ public class AdminService extends UserService {
     @Autowired
     public void setCookRepository(CookRepository cookRepository) {
         this.cookRepository = cookRepository;
+    }
+
+    @Autowired
+    public void setDishRepository(DishRepository dishRepository) {
+        this.dishRepository = dishRepository;
     }
 
     //    @Override
@@ -135,7 +142,7 @@ public class AdminService extends UserService {
 
     // Вывод всех поваров
     public List<Cook> getAllCooks() {
-        return cookRepository.findByUserRole("COOK");
+        return cookRepository.findAll();
     }
 
 
@@ -143,7 +150,11 @@ public class AdminService extends UserService {
     @Transactional
     public void deleteCook(Long id) {
 
-        cookRepository.deleteByUserRoleAndId("COOK", id);
+        try {
+            cookRepository.deleteById(id);
+        } catch (EmptyResultDataAccessException ex) {
+            throw new MainNotFound(id);
+        }
 
     }
 
