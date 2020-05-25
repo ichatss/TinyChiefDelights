@@ -36,6 +36,8 @@ public class Order {
     @Column(name = "order_status")
     private boolean orderStatus;
 
+    @Column(name = "cost")
+    private double cost;
 
     // Relationships
     //

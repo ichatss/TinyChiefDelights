@@ -199,12 +199,12 @@ public class CustomerService extends UserService {
         }
         changeCookStatus(cooks); // запускаю метод для смены статуса поваров
 
-        double coast = calculateCoast(basketId, cooks, bonus);
+        double cost = calculateCost(basketId, cooks, bonus);
 
         Customer customer = customerRepository
                 .findByIdAndUserRole(User.getCurrentUser().getId(), User.ROLE_CUSTOMER);
 
-        withdrawMoney(coast); // вызываю метод снятия денег со счета
+        withdrawMoney(cost); // вызываю метод снятия денег со счета
 
         Order order = new Order();
         order.setPhoneNumber(phoneNumber);
@@ -214,6 +214,7 @@ public class CustomerService extends UserService {
         order.setCustomer(customerRepository.findByIdAndUserRole(User.getCurrentUser().getId(), User.ROLE_CUSTOMER));
         order.setCookList(cooks);
         order.setBasket(basketRepository.getById(basketId));
+        order.setCost(cost);
         orderRepository.save(order);
     }
 
@@ -238,19 +239,13 @@ public class CustomerService extends UserService {
     // Отменить заказ
     public void cancelOrder(Long id) {
 
-        Customer customer = customerRepository.findByIdAndUserRole(User.getCurrentUser().getId(), User.ROLE_CUSTOMER);
+        Customer customer = customerRepository
+                .findByIdAndUserRole(User.getCurrentUser().getId(), User.ROLE_CUSTOMER);
 
-        List<Order> orderList = customer.getOrderList(); // Перекинул все orders в orderList для удобства
-
-        List<Long> orderIds = new ArrayList<>(); // Создал новую коллекцию для хранения всех ИД заказов пользователя
-
-        for (Order o : orderList) { // Кидаю все ИД заказов в коллекицю
-            orderIds.add(o.getId());
-        }
-
-        if (orderIds.contains(id)) {
+        if (orderRepository.existsOrderByIdAndCustomerIdAndOrderStatus(id, customer.getId(), true)) {
             Order order = orderRepository.getById(id);
             order.setOrderStatus(false);
+            customer.setWallet(customer.getWallet() + order.getCost());
             orderRepository.save(order);
         } else {
             throw new MainNullPointer("Заказ с таким ID отсутствует!");
@@ -301,23 +296,23 @@ public class CustomerService extends UserService {
 
 
     // Подсчет цены
-    private double calculateCoast(Long basketId, List<Cook> cooks, double bonus) {
+    private double calculateCost(Long basketId, List<Cook> cooks, double bonus) {
 
         Basket basket = basketRepository.getById(basketId);
 
-        double coast = 0;
+        double cost = 0;
 
         for (Dish i : basket.getDishList()) {
-            coast += i.getDishCost();
+            cost += i.getDishCost();
         }
 
         for (Cook i : cooks) {
-            coast += i.getStartSalary();
+            cost += i.getStartSalary();
 
         }
-        coast += bonus;
+        cost += bonus;
 
-        return coast;
+        return cost;
     }
 
 
