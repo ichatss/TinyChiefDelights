@@ -111,7 +111,6 @@ public class CookService extends UserService {
 
             dish.setCookList(cookList); // С коллекциями проделывать такое BadPractise (для hibernate)
             dish.setAboutDish(aboutDish);
-
             dishRepository.save(dish); // Save edits
 
         } catch (NullPointerException ex) {

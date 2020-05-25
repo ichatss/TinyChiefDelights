@@ -158,8 +158,6 @@ public class CustomerService extends UserService {
     }
 
 
-
-
     // Заполнить карзину
     public void setBasket(List<Long> dishListId) {
 
@@ -253,26 +251,6 @@ public class CustomerService extends UserService {
     }
 
 
-    // Регистрация
-    public Customer registration(String name, String lastName, String login, String password) {
-
-        User newUser = new User();
-
-        newUser.setRole(User.ROLE_CUSTOMER);
-        newUser.setName(name);
-        newUser.setLastName(lastName);
-        newUser.setLogin(login);
-        newUser.setPassword(passwordEncoder.encode(password));
-        Customer newCustomer = new Customer();
-        newCustomer.setUser(newUser);
-        newCustomer.setWallet(0);
-
-        userRepository.save(newUser);
-
-        return customerRepository.save(newCustomer);
-    }
-
-
     // ТУТ НАХОДЯТСЯ ВСПОМОГАТЕЛЬНЫЕ МЕТОДЫ
     //
     //
@@ -293,7 +271,6 @@ public class CustomerService extends UserService {
             cookRepository.save(i);
         }
     }
-
 
 
     // Подсчет цены

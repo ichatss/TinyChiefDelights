@@ -2,7 +2,9 @@ package com.tinychiefdelights.service;
 
 import com.tinychiefdelights.exceptions.MainIllegalArgument;
 import com.tinychiefdelights.exceptions.MainNullPointer;
+import com.tinychiefdelights.model.Customer;
 import com.tinychiefdelights.model.User;
+import com.tinychiefdelights.repository.CustomerRepository;
 import com.tinychiefdelights.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,6 +20,8 @@ public class UserService implements UserDetailsService {
 
     // Fields
     //
+    private CustomerRepository customerRepository;
+
     private UserRepository userRepository;
 
     private PasswordEncoder passwordEncoder;
@@ -25,6 +29,11 @@ public class UserService implements UserDetailsService {
 
     // Injects are here
     //
+    @Autowired
+    public void setCustomerRepository(CustomerRepository customerRepository) {
+        this.customerRepository = customerRepository;
+    }
+
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -38,6 +47,26 @@ public class UserService implements UserDetailsService {
 
     // Методы
     //
+    // Регистрация
+    public Customer registration(String name, String lastName, String login, String password) {
+
+        User newUser = new User();
+
+        newUser.setRole(User.ROLE_CUSTOMER);
+        newUser.setName(name);
+        newUser.setLastName(lastName);
+        newUser.setLogin(login);
+        newUser.setPassword(passwordEncoder.encode(password));
+        Customer newCustomer = new Customer();
+        newCustomer.setUser(newUser);
+        newCustomer.setWallet(0);
+
+        userRepository.save(newUser);
+
+        return customerRepository.save(newCustomer);
+    }
+
+
     // Сменить пароль
     public User changePassword(String login, String newPass) {
 
