@@ -160,32 +160,6 @@ public class CustomerService extends UserService {
     // }
 
 
-    private void calculateCookRate(List<Cook> cookList, Long orderId) {
-
-        List<Cook> cooks = new ArrayList<>(cookList);
-
-        Review review = reviewRepository.findReviewByOrderId(orderId);
-
-        byte rate = review.getRate();
-
-        for (Cook k :
-                cooks) {
-            DecimalFormat df = new DecimalFormat("###.###");
-            double value = (k.getRating() + rate) / 2;
-            k.setRating(round(value, 1));
-        }
-    }
-
-    //метод для округления
-    private double round(double value, int places) {
-        if (places < 0) throw new IllegalArgumentException();
-
-        BigDecimal bd = new BigDecimal(Double.toString(value));
-        bd = bd.setScale(places, RoundingMode.HALF_UP);
-        return bd.doubleValue();
-    }
-
-
     // Заполнить карзину
     public void setBasket(List<Long> dishListId) {
 
@@ -203,122 +177,6 @@ public class CustomerService extends UserService {
         }
         basket.setDishList(dishList);
         basketRepository.save(basket);
-    }
-
-
-    // Подсчет цены
-    public double calculateCoast(Long basketId, List<Cook> cooks, double bonus) {
-
-        Basket basket = basketRepository.getById(basketId);
-
-        double coast = 0;
-
-        for (Dish i : basket.getDishList()) {
-            coast += i.getDishCost();
-        }
-
-        for (Cook i : cooks) {
-            coast += i.getStartSalary();
-
-        }
-
-        coast += bonus;
-
-        return coast;
-    }
-
-
-    // Создание массива флагов для makeOrder
-    public boolean[] generateFlags(Long basketId) {
-
-        try {
-            List<Dish> dishes = basketRepository.getById(basketId).getDishList();
-            boolean[] flag = {false, false, false};
-
-            for (Dish i : dishes) {
-                if (i.getDishType() == DishType.CONFECTIONERY) {
-                    flag[0] = true;
-                }
-                if (i.getDishType() == DishType.FISH) {
-                    flag[1] = true;
-                }
-                if (i.getDishType() == DishType.MEAT) {
-                    flag[2] = true;
-                }
-            }
-            return flag;
-        } catch (NullPointerException ex) {
-            throw new MainNotFound(basketId);
-        }
-    }
-
-
-    // Автоматическое назначение поворов
-    public List<Cook> cooksAuto(Long basketId) {
-
-        boolean[] flag = generateFlags(basketId);
-        List<Cook> cooks = new ArrayList<>();
-
-        List<Cook> c;
-        c = cookRepository.findByUserRoleAndCookStatus(User.ROLE_COOK, true);
-        if (flag[0]) {
-            for (Cook i : c) {
-                if (i.getCookType() == CookType.CONFECTIONER || i.getCookType() == CookType.CHEF) {
-                    cooks.add(i);
-                    c.remove(i);
-                    break;
-                }
-            }
-        }
-        if (flag[1]) {
-            for (Cook i : c) {
-                if (i.getCookType() == CookType.FISH_COOK || i.getCookType() == CookType.CHEF) {
-                    cooks.add(i);
-                    c.remove(i);
-                    break;
-                }
-            }
-        }
-        if (flag[2]) {
-            for (Cook i : c) {
-                if (i.getCookType() == CookType.MEAT_COOK || i.getCookType() == CookType.CHEF) {
-                    cooks.add(i);
-                    c.remove(i);
-                    break;
-                }
-            }
-        }
-        return cooks;
-    }
-
-
-    public boolean cooksAreCorrect(List<Cook> cooks, Long basketId) {
-        boolean[] f1 = generateFlags(basketId);
-        boolean[] f2 = {false, false, false};
-
-        for (Cook i : cooks) {
-            if (i.getCookType() == CookType.CONFECTIONER || i.getCookType() == CookType.CHEF) {
-                f2[0] = true;
-                continue;
-            }
-            if (i.getCookType() == CookType.FISH_COOK || i.getCookType() == CookType.CHEF) {
-                f2[1] = true;
-                continue;
-            }
-            if (i.getCookType() == CookType.MEAT_COOK || i.getCookType() == CookType.CHEF) {
-                f2[2] = true;
-                continue;
-            }
-        }
-        boolean flag = true;
-        for (int i = 0; i < 3; i++) {
-            if (f1[i] != f2[i]) {
-                flag = false;
-                break;
-            }
-
-        }
-        return flag;
     }
 
 
@@ -361,15 +219,6 @@ public class CustomerService extends UserService {
         order.setCookList(cooks);
         order.setBasket(basketRepository.getById(basketId));
         orderRepository.save(order);
-    }
-
-
-    // Меняем статус назначенным поварам
-    private void changeCookStatus(List<Cook> cooks) {
-        for (Cook i : cooks) {
-            i.setCookStatus(false);
-            cookRepository.save(i);
-        }
     }
 
 
@@ -430,5 +279,159 @@ public class CustomerService extends UserService {
         userRepository.save(newUser);
 
         return customerRepository.save(newCustomer);
+    }
+
+
+    // ТУТ НАХОДЯТСЯ ВСПОМОГАТЕЛЬНЫЕ МЕТОДЫ
+    //
+    //
+    // Меняем статус назначенным поварам
+    private void changeCookStatus(List<Cook> cooks) {
+        for (Cook i : cooks) {
+            i.setCookStatus(false);
+            cookRepository.save(i);
+        }
+    }
+
+
+    // Метод для округления
+    private double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = new BigDecimal(Double.toString(value));
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
+    }
+
+
+    // Подсчет цены
+    private double calculateCoast(Long basketId, List<Cook> cooks, double bonus) {
+
+        Basket basket = basketRepository.getById(basketId);
+
+        double coast = 0;
+
+        for (Dish i : basket.getDishList()) {
+            coast += i.getDishCost();
+        }
+
+        for (Cook i : cooks) {
+            coast += i.getStartSalary();
+
+        }
+        coast += bonus;
+
+        return coast;
+    }
+
+
+    // Создание массива флагов для makeOrder
+    private boolean[] generateFlags(Long basketId) {
+
+        try {
+            List<Dish> dishes = basketRepository.getById(basketId).getDishList();
+            boolean[] flag = {false, false, false};
+
+            for (Dish i : dishes) {
+                if (i.getDishType() == DishType.CONFECTIONERY) {
+                    flag[0] = true;
+                }
+                if (i.getDishType() == DishType.FISH) {
+                    flag[1] = true;
+                }
+                if (i.getDishType() == DishType.MEAT) {
+                    flag[2] = true;
+                }
+            }
+            return flag;
+        } catch (NullPointerException ex) {
+            throw new MainNotFound(basketId);
+        }
+    }
+
+
+
+    private boolean cooksAreCorrect(List<Cook> cooks, Long basketId) {
+        boolean[] f1 = generateFlags(basketId);
+        boolean[] f2 = {false, false, false};
+
+        for (Cook i : cooks) {
+            if (i.getCookType() == CookType.CONFECTIONER || i.getCookType() == CookType.CHEF) {
+                f2[0] = true;
+                continue;
+            }
+            if (i.getCookType() == CookType.FISH_COOK || i.getCookType() == CookType.CHEF) {
+                f2[1] = true;
+                continue;
+            }
+            if (i.getCookType() == CookType.MEAT_COOK || i.getCookType() == CookType.CHEF) {
+                f2[2] = true;
+                continue;
+            }
+        }
+        boolean flag = true;
+        for (int i = 0; i < 3; i++) {
+            if (f1[i] != f2[i]) {
+                flag = false;
+                break;
+            }
+        }
+        return flag;
+    }
+
+
+    // Автоматическое назначение поворов
+    private List<Cook> cooksAuto(Long basketId) {
+
+        boolean[] flag = generateFlags(basketId);
+        List<Cook> cooks = new ArrayList<>();
+
+        List<Cook> c;
+        c = cookRepository.findByUserRoleAndCookStatus(User.ROLE_COOK, true);
+        if (flag[0]) {
+            for (Cook i : c) {
+                if (i.getCookType() == CookType.CONFECTIONER || i.getCookType() == CookType.CHEF) {
+                    cooks.add(i);
+                    c.remove(i);
+                    break;
+                }
+            }
+        }
+        if (flag[1]) {
+            for (Cook i : c) {
+                if (i.getCookType() == CookType.FISH_COOK || i.getCookType() == CookType.CHEF) {
+                    cooks.add(i);
+                    c.remove(i);
+                    break;
+                }
+            }
+        }
+        if (flag[2]) {
+            for (Cook i : c) {
+                if (i.getCookType() == CookType.MEAT_COOK || i.getCookType() == CookType.CHEF) {
+                    cooks.add(i);
+                    c.remove(i);
+                    break;
+                }
+            }
+        }
+        return cooks;
+    }
+
+
+    private void calculateCookRate(List<Cook> cookList, Long orderId) {
+
+        List<Cook> cooks = new ArrayList<>(cookList);
+
+        Review review = reviewRepository.findReviewByOrderId(orderId);
+
+        byte rate = review.getRate();
+
+        for (Cook k :
+                cooks) {
+            DecimalFormat df = new DecimalFormat("###.###");
+            double value = (k.getRating() + rate) / 2;
+            k.setRating(round(value, 1));
+        }
     }
 }
