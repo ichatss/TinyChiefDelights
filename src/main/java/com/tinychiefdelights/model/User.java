@@ -42,6 +42,9 @@ public class User implements UserDetails {
     @JsonIgnore
     private String password;
 
+    @JsonIgnore
+    private String password2; // Это нам необходимо для регистрации
+
     @Column(name = "role")
     private String role;
 

@@ -48,15 +48,24 @@ public class UserService implements UserDetailsService {
     // Методы
     //
     // Регистрация
-    public Customer registration(String name, String lastName, String login, String password) {
+    public Customer registration(String name, String lastName, String login, String password, String password2) {
 
         User newUser = new User();
 
         newUser.setRole(User.ROLE_CUSTOMER);
         newUser.setName(name);
         newUser.setLastName(lastName);
-        newUser.setLogin(login);
-        newUser.setPassword(passwordEncoder.encode(password));
+        if (!userRepository.existsByLogin(login)) {
+            newUser.setLogin(login);
+        } else {
+            throw new MainIllegalArgument("Пользователем с таким логином уже имеется!");
+        }
+
+        if (password == password2) {
+            newUser.setPassword(passwordEncoder.encode(password));
+        } else {
+            throw new IllegalArgumentException("Пароли не совпадают!");
+        }
         Customer newCustomer = new Customer();
         newCustomer.setUser(newUser);
         newCustomer.setWallet(0);
