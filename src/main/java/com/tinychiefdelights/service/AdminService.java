@@ -122,9 +122,9 @@ public class AdminService extends UserService {
 
 
     // Изменить карту повара
-    public void editCook(Long id, String name, String lastName, float rating, String aboutCook) {
+    public void editCook(Long id, String name, String lastName, float rating, String aboutCook, CookType cookType) {
 
-        Cook cook = cookRepository.findByIdAndUserRole(id, User.ROLE_COOK);
+        Cook cook = cookRepository.getCookById(id);
 
         if (cook != null) {
 
@@ -132,6 +132,7 @@ public class AdminService extends UserService {
             cook.getUser().setLastName(lastName);
             cook.setRating(rating);
             cook.setAboutCook(aboutCook);
+            cook.setCookType(cookType);
             cookRepository.save(cook);
 
         } else {

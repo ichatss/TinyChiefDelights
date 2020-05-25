@@ -153,7 +153,7 @@ public class CustomerService extends UserService {
                 throw new MainNotFound(id);
             }
         } else {
-            throw new MainIllegalArgument("Заказ незавершен, либо отсутствует!");
+            throw new MainIllegalArgument("Заказ незавершен, либо отзыв уже оставлен!");
         }
     }
 

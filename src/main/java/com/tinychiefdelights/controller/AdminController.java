@@ -115,7 +115,8 @@ public class AdminController {
     // Изменяем Повара по ID
     @PutMapping("/edit/cook/{id}")
     void editCook(@PathVariable Long id, @RequestParam String name,
-                  @RequestParam String lastName, @RequestParam float rating, @RequestParam String aboutCook) {
+                  @RequestParam String lastName, @RequestParam float rating,
+                  @RequestParam String aboutCook, @RequestParam CookType cookType) {
 
         // Валидация
         if (name.length() <= 1 || name.length() >= 27) {
@@ -132,7 +133,7 @@ public class AdminController {
         }
         //
 
-        adminService.editCook(id, name, lastName, rating, aboutCook);
+        adminService.editCook(id, name, lastName, rating, aboutCook, cookType);
     }
 
 

@@ -78,7 +78,7 @@ public class CustomerController {
             throw new MainIllegalArgument("Пожалуйста! Укажите город доставки, улицу и номер дома!");
         }
         if (phoneNumber.length() > 10 || phoneNumber.length() < 10) {
-            throw new MainIllegalArgument("Номер телефона должен содержать 11 цифр. Пример: 8... или 7...");
+            throw new MainIllegalArgument("Номер телефона должен содержать 11 цифр. Пример: 8-*** или 7-***");
         }
         //
 
@@ -96,8 +96,8 @@ public class CustomerController {
         if (address.length() < 10) {
             throw new MainIllegalArgument("Пожалуйста! Укажите город доставки, улицу и номер дома!");
         }
-        if (phoneNumber.length() > 10 || phoneNumber.length() < 10) {
-            throw new MainIllegalArgument("Номер телефона должен содержать 11 цифр. Пример: 8... или 7...");
+        if (phoneNumber.length() > 10 || phoneNumber.length() < 11) {
+            throw new MainIllegalArgument("Номер телефона должен содержать 11 цифр. Пример: 8-*** или 7-***");
         }
         //
 

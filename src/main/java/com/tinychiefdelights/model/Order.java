@@ -51,6 +51,7 @@ public class Order {
     private Customer customer;
 
     // Корзина
+    @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "basket_id", referencedColumnName = "id")
     private Basket basket;
