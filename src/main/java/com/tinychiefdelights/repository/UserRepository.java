@@ -8,4 +8,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     // Найти пользователя по Login (логин уникален)
     User getByLogin(String login);
+
+    Boolean existsByLogin(String login);
 }

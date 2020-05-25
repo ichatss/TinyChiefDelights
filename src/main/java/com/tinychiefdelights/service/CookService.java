@@ -59,7 +59,7 @@ public class CookService extends UserService {
         Dish dish = new Dish(); //Создаем новое блюдо
 
         // Ставим значения его полям
-        if (dishRepository.findByDishName(dishName) == null) { // Делаем проверку, чтобы блюда с таким названием не было
+        if (!dishRepository.existsByDishName(dishName)) { // Делаем проверку, чтобы блюда с таким названием не было
             dish.setDishName(dishName);
         } else {
             throw new MainIllegalArgument("Блюдо с таким названием уже существует!");

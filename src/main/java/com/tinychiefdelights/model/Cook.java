@@ -2,11 +2,9 @@ package com.tinychiefdelights.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.Pattern;
 import java.util.List;
 
 @Setter
@@ -50,16 +48,6 @@ public class Cook {
     @JoinColumn(name = "user_id", referencedColumnName = "id") // Join without Cook in User class
     private User user;
 
-//    // Лист отзывов
-//    @OneToMany(mappedBy = "cook", cascade = CascadeType.ALL)
-//    @JsonIgnore // Таким образом я предотвратил рекурсию
-//    private List<Review> reviewList;
-
-    // Лист поваров
-//    @OneToMany(mappedBy = "cook", cascade = CascadeType.ALL)
-//    @JsonIgnore // Таким образом я предотвратил рекурсию
-//    private List<Order> orderList;
-
     // Лист блюд
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinTable(
@@ -69,6 +57,7 @@ public class Cook {
     @JsonIgnore // Таким образом я предотвратил рекурсию
     private List<Dish> dish;
 
+    // Лист заказов
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name = "order_cook",

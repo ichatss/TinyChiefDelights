@@ -19,6 +19,7 @@ public class Dish {
 
 
     // Поля
+    //
     private @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;

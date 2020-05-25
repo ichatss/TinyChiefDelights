@@ -6,10 +6,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Controller;
 
 import javax.persistence.*;
-import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -40,7 +38,6 @@ public class User implements UserDetails {
     @Column(name = "login")
     private String login;
 
-//    @Size(min = 5, max = 18, message = "Длина пароля должна быть от 5 до 18")
     @JsonIgnore
     @Column(name = "password")
     private String password;
@@ -57,7 +54,7 @@ public class User implements UserDetails {
 
     // Методы
     //
-
+    // Берем авторизованного пользователя
     public static User getCurrentUser() {
         return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal(); //
     }

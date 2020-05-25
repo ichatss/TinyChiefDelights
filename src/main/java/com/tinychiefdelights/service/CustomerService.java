@@ -121,7 +121,7 @@ public class CustomerService extends UserService {
             customer.setWallet(customer.getWallet() - money);
             customerRepository.save(customer);
         } else {
-            throw new MainIllegalArgument("Введенная Вами сумма превшает остаток на счете!");
+            throw new MainIllegalArgument("На счете недостаточно средств!");
         }
     }
 
@@ -171,7 +171,7 @@ public class CustomerService extends UserService {
             dishList.add(dishRepository.getById(i));
 
             // Делаем проверку, если блюда нет в меню
-            if (dishRepository.getById(i) == null) {
+            if (!dishRepository.existsById(i)) {
                 throw new MainNotFound(i);
             }
         }
@@ -204,11 +204,7 @@ public class CustomerService extends UserService {
         Customer customer = customerRepository
                 .findByIdAndUserRole(User.getCurrentUser().getId(), User.ROLE_CUSTOMER);
 
-        if (coast <= customer.getWallet()) {
-            customer.setWallet(customer.getWallet() - coast);
-        } else {
-            throw new MainIllegalArgument("На счете недостаточно средств!");
-        }
+        withdrawMoney(coast); // вызываю метод снятия денег со счета
 
         Order order = new Order();
         order.setPhoneNumber(phoneNumber);

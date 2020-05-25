@@ -1,6 +1,5 @@
 package com.tinychiefdelights.model;
 
-
 // Типы повара
 public enum CookType {
 

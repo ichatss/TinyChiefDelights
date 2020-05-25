@@ -18,6 +18,7 @@ public class Order {
 
 
     // Поля
+    //
     private @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
@@ -45,12 +46,12 @@ public class Order {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) // Решение проблемы
     private Customer customer;
 
-
+    // Корзина
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "basket_id", referencedColumnName = "id")
     private Basket basket;
 
-
+    // Лист поваров
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name = "order_cook",
@@ -59,6 +60,7 @@ public class Order {
     @JsonIgnore
     private List<Cook> cookList;
 
+    // Отзыв
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "review_id", referencedColumnName = "id")
     @JsonIgnore

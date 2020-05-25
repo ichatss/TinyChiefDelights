@@ -1,6 +1,5 @@
 package com.tinychiefdelights.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -28,13 +27,9 @@ public class Review {  // Отзыв
     private byte rate;
 
 
+    // RelationShips
+    //
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "order_id", referencedColumnName = "id")
     private Order order;
-
-//    // Relationships
-//    // Повар
-//    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    @JsonIgnore
-//    private Cook cook;
 }

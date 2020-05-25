@@ -10,4 +10,8 @@ public interface DishRepository extends JpaRepository<Dish, Long> { // Инте�
     Dish getById(Long id);
 
     Dish findByDishName(String dishName);
+
+    Boolean existsByDishName(String dishName);
+
+    boolean existsById(Long id);
 }

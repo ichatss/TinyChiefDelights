@@ -124,7 +124,7 @@ public class AdminService extends UserService {
     // Изменить карту повара
     public void editCook(Long id, String name, String lastName, float rating, String aboutCook) {
 
-        Cook cook = cookRepository.findByIdAndUserRole(id, "COOK");
+        Cook cook = cookRepository.findByIdAndUserRole(id, User.ROLE_COOK);
 
         if (cook != null) {
 
@@ -146,7 +146,7 @@ public class AdminService extends UserService {
         Admin admin = adminRepository
                 .findByIdAndUserRole(User.getCurrentUser().getId(), User.ROLE_ADMIN);
 
-        if (userRepository.getByLogin(login) == null) {
+        if (!userRepository.existsByLogin(login)) {
 
             admin.getUser().setLogin(login);
 

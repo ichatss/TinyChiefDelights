@@ -17,10 +17,17 @@ public class Basket {
 
     }
 
+
+    // Поля
+    //
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
+    // Relationships
+    //
+    // Лист блюд
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
             name = "basket_dish",
