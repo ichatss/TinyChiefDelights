@@ -42,6 +42,7 @@ public class User implements UserDetails {
     @JsonIgnore
     private String password;
 
+    @Transient
     @JsonIgnore
     private String password2; // Это нам необходимо для регистрации
 

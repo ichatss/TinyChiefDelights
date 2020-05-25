@@ -61,10 +61,10 @@ public class UserService implements UserDetailsService {
             throw new MainIllegalArgument("Пользователем с таким логином уже имеется!");
         }
 
-        if (password == password2) {
+        if (password.equals(password2)) { // Делаем проверку, чтобы пароли совпадали
             newUser.setPassword(passwordEncoder.encode(password));
         } else {
-            throw new IllegalArgumentException("Пароли не совпадают!");
+            throw new MainIllegalArgument("Пароли не совпадают!");
         }
         Customer newCustomer = new Customer();
         newCustomer.setUser(newUser);

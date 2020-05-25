@@ -26,7 +26,7 @@ public class MainPageController {
 
     @PostMapping("/registration")
     void registration(@RequestParam String name, @RequestParam String lastName,
-                      @RequestParam String login, @RequestParam String password) {
+                      @RequestParam String login, @RequestParam String password, @RequestParam String password2) {
 
         // Валидация
         if (name.length() <= 1 || name.length() >= 27) {
@@ -43,7 +43,7 @@ public class MainPageController {
         }
         //
 
-        userService.registration(name, lastName, login, password);
+        userService.registration(name, lastName, login, password, password2);
 
     }
 }
