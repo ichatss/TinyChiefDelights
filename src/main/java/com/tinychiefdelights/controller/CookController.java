@@ -1,7 +1,6 @@
 package com.tinychiefdelights.controller;
 
 import com.tinychiefdelights.model.DishType;
-import com.tinychiefdelights.repository.CookRepository;
 import com.tinychiefdelights.service.CookService;
 import com.tinychiefdelights.service.UserService;
 import io.swagger.annotations.Api;
@@ -24,8 +23,7 @@ public class CookController {
 
     //Injects через конструктор
     @Autowired
-    public CookController(CookRepository cookRepository, UserService userService, CookService cookService) {
-        this.cookRepository = cookRepository;
+    public CookController(UserService userService, CookService cookService) {
         this.userService = userService;
         this.cookService = cookService;
     }
@@ -33,8 +31,6 @@ public class CookController {
 
     // Поля
     //
-    private final CookRepository cookRepository;
-
     private final UserService userService;
 
     private final CookService cookService;
@@ -48,9 +44,10 @@ public class CookController {
     // Шеф-Повар создает блюдо для меню
     @RolesAllowed({ROLE_CHEF})
     @PostMapping("/create/dish")
-    void createDish(@RequestParam String dishName, @RequestParam String aboutDish, @RequestParam DishType dishType,
-                    @RequestParam short cookingTime, @RequestParam short weight,
-                    @RequestParam double dishCost, @RequestParam List<Long> cooksId) {
+    void createDish(@RequestParam String dishName, @RequestParam String aboutDish,
+                    @RequestParam DishType dishType, @RequestParam short cookingTime,
+                    @RequestParam short weight, @RequestParam double dishCost,
+                    @RequestParam List<Long> cooksId) {
 
         cookService.createDish(dishName, aboutDish, dishType, cookingTime, weight, dishCost, cooksId);
     }

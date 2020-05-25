@@ -43,7 +43,6 @@ public class CustomerService extends UserService {
     // SETTERS
     //
     // Injects into Setters
-
     @Autowired
     public void setBasketRepository(BasketRepository basketRepository) {
         this.basketRepository = basketRepository;
@@ -132,35 +131,33 @@ public class CustomerService extends UserService {
 
         //try {
 
-            Customer customer = customerRepository
-                    .findByIdAndUserRole(User.getCurrentUser().getId(), User.ROLE_CUSTOMER);
-            // Беру блюдо если и у заказчика оно имеется
-            Order order = orderRepository.getOrderByIdAndCustomerId(id, customer.getId());
-            if(order == null){
-                throw new MainNullPointer("Заказ с ИД: " + id + " не найден!");
-            }
-            // Позволяем оставлять отзыв если только отзыва еще нет и заказ завершен
-            if (order.getReview() == null && !order.isOrderStatus()) {
+        Customer customer = customerRepository
+                .findByIdAndUserRole(User.getCurrentUser().getId(), User.ROLE_CUSTOMER);
+        // Беру блюдо если и у заказчика оно имеется
+        Order order = orderRepository.getOrderByIdAndCustomerId(id, customer.getId());
+        if (order == null) {
+            throw new MainNullPointer("Заказ с ИД: " + id + " не найден!");
+        }
+        // Позволяем оставлять отзыв если только отзыва еще нет и заказ завершен
+        if (order.getReview() == null && !order.isOrderStatus()) {
 
-                Review rev = new Review();
-                rev.setReview(review);
-                rev.setRate(rate);
-                rev.setOrder(order);
+            Review rev = new Review();
+            rev.setReview(review);
+            rev.setRate(rate);
+            rev.setOrder(order);
 
-                order.setReview(rev);
+            order.setReview(rev);
 
-               // reviewRepository.save(rev);
-
-                orderRepository.save(order);
-                reviewRepository.save(rev);
-                calculateCookRate(order.getCookList(), id);
-            } else {
-                throw new MainIllegalArgument("Заказ еще не завершен или отзыв уже оставлен!");
-            }
-        } //catch (NullPointerException ex) {
-           // throw new MainNullPointer("Заказ с ИД: " + id + " не найден!");
-        //}
-   // }
+            orderRepository.save(order);
+            reviewRepository.save(rev);
+            calculateCookRate(order.getCookList(), id);
+        } else {
+            throw new MainIllegalArgument("Заказ еще не завершен или отзыв уже оставлен!");
+        }
+    } //catch (NullPointerException ex) {
+    // throw new MainNullPointer("Заказ с ИД: " + id + " не найден!");
+    //}
+    // }
 
 
     private void calculateCookRate(List<Cook> cookList, Long orderId) {
@@ -178,6 +175,7 @@ public class CustomerService extends UserService {
             k.setRating(round(value, 1));
         }
     }
+
     //метод для округления
     private double round(double value, int places) {
         if (places < 0) throw new IllegalArgumentException();
@@ -214,9 +212,11 @@ public class CustomerService extends UserService {
         Basket basket = basketRepository.getById(basketId);
 
         double coast = 0;
+
         for (Dish i : basket.getDishList()) {
             coast += i.getDishCost();
         }
+
         for (Cook i : cooks) {
             coast += i.getStartSalary();
 
@@ -233,7 +233,6 @@ public class CustomerService extends UserService {
 
         try {
             List<Dish> dishes = basketRepository.getById(basketId).getDishList();
-
             boolean[] flag = {false, false, false};
 
             for (Dish i : dishes) {
@@ -248,7 +247,6 @@ public class CustomerService extends UserService {
                 }
             }
             return flag;
-
         } catch (NullPointerException ex) {
             throw new MainNotFound(basketId);
         }
@@ -259,36 +257,34 @@ public class CustomerService extends UserService {
     public List<Cook> cooksAuto(Long basketId) {
 
         boolean[] flag = generateFlags(basketId);
-
         List<Cook> cooks = new ArrayList<>();
-        {
-            List<Cook> c;
-            c = cookRepository.findByUserRoleAndCookStatus(User.ROLE_COOK, true);
-            if (flag[0]) {
-                for (Cook i : c) {
-                    if (i.getCookType() == CookType.CONFECTIONER || i.getCookType() == CookType.CHEF) {
-                        cooks.add(i);
-                        c.remove(i);
-                        break;
-                    }
+
+        List<Cook> c;
+        c = cookRepository.findByUserRoleAndCookStatus(User.ROLE_COOK, true);
+        if (flag[0]) {
+            for (Cook i : c) {
+                if (i.getCookType() == CookType.CONFECTIONER || i.getCookType() == CookType.CHEF) {
+                    cooks.add(i);
+                    c.remove(i);
+                    break;
                 }
             }
-            if (flag[1]) {
-                for (Cook i : c) {
-                    if (i.getCookType() == CookType.FISH_COOK || i.getCookType() == CookType.CHEF) {
-                        cooks.add(i);
-                        c.remove(i);
-                        break;
-                    }
+        }
+        if (flag[1]) {
+            for (Cook i : c) {
+                if (i.getCookType() == CookType.FISH_COOK || i.getCookType() == CookType.CHEF) {
+                    cooks.add(i);
+                    c.remove(i);
+                    break;
                 }
             }
-            if (flag[2]) {
-                for (Cook i : c) {
-                    if (i.getCookType() == CookType.MEAT_COOK || i.getCookType() == CookType.CHEF) {
-                        cooks.add(i);
-                        c.remove(i);
-                        break;
-                    }
+        }
+        if (flag[2]) {
+            for (Cook i : c) {
+                if (i.getCookType() == CookType.MEAT_COOK || i.getCookType() == CookType.CHEF) {
+                    cooks.add(i);
+                    c.remove(i);
+                    break;
                 }
             }
         }
@@ -296,34 +292,27 @@ public class CustomerService extends UserService {
     }
 
 
-    //Получение списка свободных поворов
-    public List<Cook> getFreeCooks() {
-        List<Cook> freeCooks = cookRepository.findByUserRoleAndCookStatus(User.ROLE_COOK, true);
-        return freeCooks;
-    }
-
-    public boolean cooksIsCorrect(List<Cook> cooks, Long basketId){
-
+    public boolean cooksAreCorrect(List<Cook> cooks, Long basketId) {
         boolean[] f1 = generateFlags(basketId);
         boolean[] f2 = {false, false, false};
 
         for (Cook i : cooks) {
-            if(i.getCookType() == CookType.CONFECTIONER || i.getCookType() == CookType.CHEF){
+            if (i.getCookType() == CookType.CONFECTIONER || i.getCookType() == CookType.CHEF) {
                 f2[0] = true;
                 continue;
             }
-            if(i.getCookType() == CookType.FISH_COOK || i.getCookType() == CookType.CHEF){
+            if (i.getCookType() == CookType.FISH_COOK || i.getCookType() == CookType.CHEF) {
                 f2[1] = true;
                 continue;
             }
-            if(i.getCookType() == CookType.MEAT_COOK || i.getCookType() == CookType.CHEF){
+            if (i.getCookType() == CookType.MEAT_COOK || i.getCookType() == CookType.CHEF) {
                 f2[2] = true;
                 continue;
             }
         }
         boolean flag = true;
         for (int i = 0; i < 3; i++) {
-            if(f1[i] != f2[i]){
+            if (f1[i] != f2[i]) {
                 flag = false;
                 break;
             }
@@ -333,39 +322,24 @@ public class CustomerService extends UserService {
     }
 
 
-
     // Сделать Заказ
     public void makeOrder(String address, String phoneNumber, Long basketId, Date date, List<Long> cooksId) {
 
-        if(basketRepository.findById(basketId) == null){
-            throw new MainNotFound(basketId);
-        }
-
+        basketRepository.findById(basketId).orElseThrow(() -> new MainNotFound(basketId));
         List<Cook> cooks = new ArrayList<>();
-        double bonus = 0;
+        double bonus = 200;
 
-        //здесь происходит выбор стратегии в зависимоси от того есть ли на входе назначенные повора
-        if (cooksId != null) {
+        if (cooksId != null) { // Здесь происходит выбор стратегии в зависимоси от того есть ли на входе назначенные повора
             for (Long i : cooksId) {
-                if(cookRepository.findByIdAndUserRole(i, User.ROLE_COOK) == null){
-                    throw new MainNotFound(i);
-                }else{
-                cooks.add(cookRepository.findByIdAndUserRole(i, User.ROLE_COOK));
-                }
+                cooks.add(cookRepository.getByIdAndUserRole(i, User.ROLE_COOK).orElseThrow(() -> new MainNotFound(i)));
             }
-            bonus = 200;
-            if(!cooksIsCorrect(cooks, basketId)){
-                throw new MainIllegalArgument("Не соответсвие типов поваров с типами блюд в корзине");
-            }
+        }
+        if (!cooksAreCorrect(cooks, basketId)) {
+            throw new MainIllegalArgument("Не соответсвие типов поваров с типами блюд в корзине");
         } else {
             cooks = cooksAuto(basketId);
         }
-
-        //меняем статус, назначенным поварам
-        for (Cook i : cooks) {
-            i.setCookStatus(false);
-            cookRepository.save(i);
-        }
+        changeCookStatus(cooks); // запускаю метод для смены статуса поваров
 
         double coast = calculateCoast(basketId, cooks, bonus);
 
@@ -389,6 +363,14 @@ public class CustomerService extends UserService {
         orderRepository.save(order);
     }
 
+
+    // Меняем статус назначенным поварам
+    private void changeCookStatus(List<Cook> cooks) {
+        for (Cook i : cooks) {
+            i.setCookStatus(false);
+            cookRepository.save(i);
+        }
+    }
 
 
     // Изменить свои данные

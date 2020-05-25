@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AdminService extends UserService {
@@ -29,16 +28,8 @@ public class AdminService extends UserService {
 
     private UserRepository userRepository; // Общий пользователь
 
-    private PasswordEncoder passwordEncoder; // для шифра пароля
-
     private DishRepository dishRepository; // Блюдо
 
-
-    @Autowired
-//    @Override
-    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-    }
 
     // Getters and Setters
     //
@@ -77,9 +68,21 @@ public class AdminService extends UserService {
 
     // Методы
     //
-    // Выести блюдо по ID (метод есть только у админа)
-    public Optional<Dish> getDish(Long id){
-        return dishRepository.findById(id);
+    // Вывести блюдо по ID (метод есть только у админа)
+    public Dish getDish(Long id) {
+        return dishRepository.findById(id).orElseThrow(() -> new MainNotFound(id));
+    }
+
+
+    // Вывод Заказчика по ID
+    public Customer getCustomer(Long id) {
+        return customerRepository.getByIdAndUserRole(id, User.ROLE_CUSTOMER).orElseThrow(() -> new MainNotFound(id));
+    }
+
+
+    // Вывод всех Заказчиков
+    public List<Customer> getAllCustomers() {
+        return customerRepository.findByUserRole(User.ROLE_CUSTOMER);
     }
 
 
@@ -90,20 +93,32 @@ public class AdminService extends UserService {
 
 
     // Вывод информации по конкретному заказу
-    public Optional<Order> getOrderInfo(Long id) {
-        return orderRepository.findById(id);
+    public Order getOrderInfo(Long id) {
+        return orderRepository.findById(id).orElseThrow(() -> new MainNotFound(id));
+    }
+
+
+    // Вывод всех поваров
+    public List<Cook> getAllCooks() {
+        return cookRepository.findAll();
     }
 
 
     // Вывод Повара по ID
-    public Optional<Cook> getCook(Long id) {
-        try {
-            return cookRepository.getCookAndChefById(id);
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException();
-        }
+    public Cook getCook(Long id) {
+        return cookRepository.getCookAndChefById(id).orElseThrow(() -> new MainNotFound(id));
     }
 
+
+    // Удалить Повара
+    @Transactional
+    public void deleteCook(Long id) {
+        try {
+            cookRepository.deleteById(id);
+        } catch (EmptyResultDataAccessException ex) {
+            throw new MainNotFound(id);
+        }
+    }
 
 
     // Изменить карту повара
@@ -118,60 +133,29 @@ public class AdminService extends UserService {
             cook.setRating(rating);
             cook.setAboutCook(aboutCook);
             cookRepository.save(cook);
+
         } else {
             throw new MainNotFound(id);
         }
     }
 
 
-    // Изменить свой данные
+    // Изменить свои данные
     public Admin editAdmin(String login, String name, String lastName) {
 
         Admin admin = adminRepository
                 .findByIdAndUserRole(User.getCurrentUser().getId(), User.ROLE_ADMIN);
 
         if (userRepository.getByLogin(login) == null) {
+
             admin.getUser().setLogin(login);
+
         } else {
             throw new MainIllegalArgument("Данный логин уже занят!");
         }
+
         admin.getUser().setName(name);
         admin.getUser().setLastName(lastName);
         return adminRepository.save(admin);
-    }
-
-
-    // Вывод всех поваров
-    public List<Cook> getAllCooks() {
-        return cookRepository.findAll();
-    }
-
-
-    // Удалить Повара
-    @Transactional
-    public void deleteCook(Long id) {
-
-        try {
-            cookRepository.deleteById(id);
-        } catch (EmptyResultDataAccessException ex) {
-            throw new MainNotFound(id);
-        }
-
-    }
-
-
-    // Вывод всех Заказчиков
-    public List<Customer> getAllCustomers() {
-        return customerRepository.findByUserRole("CUSTOMER");
-    }
-
-
-    // Вывод Заказчика по ID
-    public Optional<Customer> getCustomer(Long id) {
-        try {
-            return customerRepository.getByIdAndUserRole(id, "CUSTOMER");
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException();
-        }
     }
 }

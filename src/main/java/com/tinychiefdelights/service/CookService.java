@@ -41,6 +41,17 @@ public class CookService extends UserService {
 
     // Методы
     //
+    // Удалить блюдо
+    public void removeDish(Long id) {
+
+        try {
+            dishRepository.deleteById(id);
+        } catch (EmptyResultDataAccessException ex) {
+            throw new MainNotFound(id);
+        }
+    }
+
+
     // Добавить блюдо
     public Dish createDish(String dishName, String aboutDish, DishType dishType,
                            short cookingTime, short weight, double dishCost, List<Long> cooksId) {
@@ -98,24 +109,12 @@ public class CookService extends UserService {
                 throw new MainNotFound(id);
             }
 
-
             dish.setCookList(cookList); // С коллекциями проделывать такое BadPractise (для hibernate)
             dish.setAboutDish(aboutDish);
 
             dishRepository.save(dish); // Save edits
 
         } catch (NullPointerException ex) {
-            throw new MainNotFound(id);
-        }
-    }
-
-
-    // Удалить блюдо
-    public void removeDish(Long id) {
-
-        try {
-            dishRepository.deleteById(id);
-        } catch (EmptyResultDataAccessException ex) {
             throw new MainNotFound(id);
         }
     }

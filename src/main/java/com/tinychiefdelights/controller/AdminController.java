@@ -1,6 +1,5 @@
 package com.tinychiefdelights.controller;
 
-import com.tinychiefdelights.exceptions.MainNotFound;
 import com.tinychiefdelights.model.*;
 import com.tinychiefdelights.repository.AdminRepository;
 import com.tinychiefdelights.service.AdminService;
@@ -52,14 +51,17 @@ public class AdminController {
     //
     // Показать меню
     @GetMapping("/menu")
-    List<Dish> getMenu(){
+    List<Dish> getMenu() {
         return customerService.getMenu();
     }
 
+
+    // Показать блюдо по ИД
     @GetMapping("/dish/{id}")
-    Dish getDish(@PathVariable Long id){
-        return adminService.getDish(id).orElseThrow(() -> new MainNotFound(id));
+    Dish getDish(@PathVariable Long id) {
+        return adminService.getDish(id);
     }
+
 
     // Вывод списка всех заказов
     @GetMapping("/orders")
@@ -71,7 +73,7 @@ public class AdminController {
     // Вывод информации по заказу по ID
     @GetMapping("/order/{id}")
     Order getOrderInfo(@PathVariable Long id) {
-        return adminService.getOrderInfo(id).orElseThrow(() -> new MainNotFound(id));
+        return adminService.getOrderInfo(id);
     }
 
 
@@ -85,7 +87,7 @@ public class AdminController {
     // Вывод Повара по ID
     @GetMapping("/cook/{id}")
     Cook getCook(@PathVariable Long id) {
-        return adminService.getCook(id).orElseThrow(() -> new MainNotFound(id));
+        return adminService.getCook(id);
     }
 
 
@@ -99,7 +101,7 @@ public class AdminController {
     // Вывод Заказчика по ID
     @GetMapping("/customer/{id}")
     Customer getCustomer(@PathVariable Long id) {
-        return adminService.getCustomer(id).orElseThrow(() -> new MainNotFound(id));
+        return adminService.getCustomer(id);
     }
 
 
@@ -111,8 +113,8 @@ public class AdminController {
     //
     // Изменяем Повара по ID
     @PutMapping("/edit/cook/{id}")
-    void editCook(@PathVariable Long id, String name,
-                  String lastName, float rating, String aboutCook) {
+    void editCook(@PathVariable Long id, @RequestParam String name,
+                  @RequestParam String lastName, @RequestParam float rating, @RequestParam String aboutCook) {
 
         adminService.editCook(id, name, lastName, rating, aboutCook);
     }
