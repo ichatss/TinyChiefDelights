@@ -80,6 +80,10 @@ public class CustomerController {
         if (phoneNumber.length() != 11) {
             throw new MainIllegalArgument("Номер телефона должен содержать 11 цифр. Пример: 8-*** или 7-***");
         }
+        Date date = new Date();
+        if (!dateInput.after(date)) {
+            throw new MainIllegalArgument("Неверно указана дата!");
+        }
         //
 
         customerService.makeOrder(address, phoneNumber, basketId, dateInput, cooksId);
@@ -92,7 +96,7 @@ public class CustomerController {
                               @RequestParam Long basketId, @RequestParam("dateInput")
                               @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date dateInput) {
 
-        // Валдация
+        // Валидация
         if (address.length() < 10) {
             throw new MainIllegalArgument("Пожалуйста! Укажите город доставки, улицу и номер дома!");
         }

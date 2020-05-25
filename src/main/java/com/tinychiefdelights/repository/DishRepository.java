@@ -9,9 +9,12 @@ public interface DishRepository extends JpaRepository<Dish, Long> { // Инте�
     // Берем Блюдо по ID
     Dish getById(Long id);
 
+    // Поиск по названию рыбы
     Dish findByDishName(String dishName);
 
+    // Проверка по названию
     Boolean existsByDishName(String dishName);
 
+    // Проверка по Id
     boolean existsById(Long id);
 }

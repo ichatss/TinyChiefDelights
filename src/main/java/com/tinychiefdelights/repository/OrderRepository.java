@@ -12,8 +12,10 @@ public interface OrderRepository extends JpaRepository<Order, Long> { // Инт�
     // Берем блюдо из базы по логике (Ключ - Значение)
     Order getOrderByIdAndCustomerId(Long id, Long id2);
 
+    // Проверка по Id + CustId + OrderStatus
     boolean existsOrderByIdAndCustomerIdAndOrderStatus(Long ordId, Long custId, Boolean status);
 
+    // Проверка по Id + custId + status
     boolean existsOrderByIdAndCustomerIdAndOrderStatusAndReviewIsNull(Long ordId, Long custId, Boolean status);
 
 }

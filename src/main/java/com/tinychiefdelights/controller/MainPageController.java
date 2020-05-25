@@ -44,5 +44,6 @@ public class MainPageController {
         //
 
         userService.registration(name, lastName, login, password);
+
     }
 }

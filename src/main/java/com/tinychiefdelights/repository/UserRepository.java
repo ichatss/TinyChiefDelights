@@ -9,5 +9,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     // Найти пользователя по Login (логин уникален)
     User getByLogin(String login);
 
+    // Проверка на логин
     Boolean existsByLogin(String login);
 }
