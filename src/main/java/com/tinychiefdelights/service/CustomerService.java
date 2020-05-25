@@ -9,9 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -187,14 +184,15 @@ public class CustomerService extends UserService {
 
         if (cooksId != null) { // Здесь происходит выбор стратегии в зависимоси от того есть ли на входе назначенные повора
             for (Long i : cooksId) {
-                cooks.add(cookRepository.getByIdAndUserRole(i, User.ROLE_COOK).orElseThrow(() -> new MainNotFound(i)));
+                cooks.add(cookRepository.getCookAndChefById(i).orElseThrow(() -> new MainNotFound(i)));
             }
+        }else{
+            cooks = cooksAuto(basketId);
         }
         if (!cooksAreCorrect(cooks, basketId)) {
             throw new MainIllegalArgument("Не соответсвие типов поваров с типами блюд в корзине");
-        } else {
-            cooks = cooksAuto(basketId);
         }
+
         changeCookStatus(cooks); // запускаю метод для смены статуса поваров
 
         double cost = calculateCost(basketId, cooks, bonus);
@@ -324,15 +322,15 @@ public class CustomerService extends UserService {
         boolean[] f2 = {false, false, false};
 
         for (Cook i : cooks) {
-            if (i.getCookType() == CookType.CONFECTIONER || i.getCookType() == CookType.CHEF) {
+            if (i.getCookType() == CookType.CONFECTIONER) {
                 f2[0] = true;
                 continue;
             }
-            if (i.getCookType() == CookType.FISH_COOK || i.getCookType() == CookType.CHEF) {
+            if (i.getCookType() == CookType.FISH_COOK || i.getUser().getRole() == "ROLE_CHEF") {
                 f2[1] = true;
                 continue;
             }
-            if (i.getCookType() == CookType.MEAT_COOK || i.getCookType() == CookType.CHEF) {
+            if (i.getCookType() == CookType.MEAT_COOK || i.getUser().getRole() == "ROLE_CHEF") {
                 f2[2] = true;
                 continue;
             }
