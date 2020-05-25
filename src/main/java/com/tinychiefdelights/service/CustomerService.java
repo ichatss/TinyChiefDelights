@@ -138,7 +138,6 @@ public class CustomerService extends UserService {
             try {
 
                 Order order = orderRepository.getOrderByIdAndCustomerId(id, customer.getId());
-
                 Review review = new Review();
                 review.setReview(rev);
                 review.setRate(rate);
@@ -148,6 +147,8 @@ public class CustomerService extends UserService {
                 order.setReview(review);
                 orderRepository.save(order);
 
+                calculateRate(order.getCookList(), rate);
+
             } catch (NullPointerException ex) {
                 throw new MainNotFound(id);
             }
@@ -155,6 +156,7 @@ public class CustomerService extends UserService {
             throw new MainIllegalArgument("Заказ незавершен, либо отсутствует!");
         }
     }
+
 
 
 
@@ -274,6 +276,16 @@ public class CustomerService extends UserService {
     // ТУТ НАХОДЯТСЯ ВСПОМОГАТЕЛЬНЫЕ МЕТОДЫ
     //
     //
+    // Подсчет нового рейтинга повара
+    private void calculateRate(List<Cook> cookList, float rate) {
+
+        for (Cook c : cookList) {
+            c.setRating((c.getRating() + rate) / 2);
+            cookRepository.save(c);
+        }
+    }
+
+
     // Меняем статус назначенным поварам
     private void changeCookStatus(List<Cook> cooks) {
         for (Cook i : cooks) {
@@ -282,15 +294,6 @@ public class CustomerService extends UserService {
         }
     }
 
-
-    // Метод для округления
-    private double round(double value, int places) {
-        if (places < 0) throw new IllegalArgumentException();
-
-        BigDecimal bd = new BigDecimal(Double.toString(value));
-        bd = bd.setScale(places, RoundingMode.HALF_UP);
-        return bd.doubleValue();
-    }
 
 
     // Подсчет цены
@@ -404,22 +407,5 @@ public class CustomerService extends UserService {
             }
         }
         return cooks;
-    }
-
-
-    private void calculateCookRate(List<Cook> cookList, Long orderId) {
-
-        List<Cook> cooks = new ArrayList<>(cookList);
-
-        Review review = reviewRepository.findReviewByOrderId(orderId);
-
-        byte rate = review.getRate();
-
-        for (Cook k :
-                cooks) {
-            DecimalFormat df = new DecimalFormat("###.###");
-            double value = (k.getRating() + rate) / 2;
-            k.setRating(round(value, 1));
-        }
     }
 }
