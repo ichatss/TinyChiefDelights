@@ -127,37 +127,35 @@ public class CustomerService extends UserService {
 
 
     // Оставить Отзыв
-    public void setReview(Long id, byte rate, String review) {
-
-        //try {
+    public void setReview(Long id, byte rate, String rev) {
 
         Customer customer = customerRepository
                 .findByIdAndUserRole(User.getCurrentUser().getId(), User.ROLE_CUSTOMER);
-        // Беру блюдо если и у заказчика оно имеется
-        Order order = orderRepository.getOrderByIdAndCustomerId(id, customer.getId());
-        if (order == null) {
-            throw new MainNullPointer("Заказ с ИД: " + id + " не найден!");
-        }
-        // Позволяем оставлять отзыв если только отзыва еще нет и заказ завершен
-        if (order.getReview() == null && !order.isOrderStatus()) {
 
-            Review rev = new Review();
-            rev.setReview(review);
-            rev.setRate(rate);
-            rev.setOrder(order);
+        if (orderRepository
+                .existsOrderByIdAndCustomerIdAndOrderStatusAndReviewIsNull(id, customer.getId(), false)) {
 
-            order.setReview(rev);
+            try {
 
-            orderRepository.save(order);
-            reviewRepository.save(rev);
-            calculateCookRate(order.getCookList(), id);
+                Order order = orderRepository.getOrderByIdAndCustomerId(id, customer.getId());
+
+                Review review = new Review();
+                review.setReview(rev);
+                review.setRate(rate);
+                review.setOrder(order);
+                reviewRepository.save(review);
+
+                order.setReview(review);
+                orderRepository.save(order);
+
+            } catch (NullPointerException ex) {
+                throw new MainNotFound(id);
+            }
         } else {
-            throw new MainIllegalArgument("Заказ еще не завершен или отзыв уже оставлен!");
+            throw new MainIllegalArgument("Заказ незавершен, либо отсутствует!");
         }
-    } //catch (NullPointerException ex) {
-    // throw new MainNullPointer("Заказ с ИД: " + id + " не найден!");
-    //}
-    // }
+    }
+
 
 
     // Заполнить карзину
@@ -339,7 +337,6 @@ public class CustomerService extends UserService {
             throw new MainNotFound(basketId);
         }
     }
-
 
 
     private boolean cooksAreCorrect(List<Cook> cooks, Long basketId) {

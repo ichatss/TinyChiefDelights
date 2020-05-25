@@ -13,4 +13,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> { // Инт�
     Order getOrderByIdAndCustomerId(Long id, Long id2);
 
     boolean existsOrderByIdAndCustomerIdAndOrderStatus(Long ordId, Long custId, Boolean status);
+
+    boolean existsOrderByIdAndCustomerIdAndOrderStatusAndReviewIsNull(Long ordId, Long custId, Boolean status);
+
 }
