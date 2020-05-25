@@ -1,7 +1,6 @@
 package com.tinychiefdelights.controller;
 
 import com.tinychiefdelights.model.*;
-import com.tinychiefdelights.repository.CustomerRepository;
 import com.tinychiefdelights.service.CustomerService;
 import com.tinychiefdelights.service.UserService;
 import io.swagger.annotations.Api;
@@ -26,11 +25,7 @@ public class CustomerController {
     //
     // Injects через конструктор
     @Autowired
-    public CustomerController(CustomerRepository customerRepository,
-                              CustomerService customerService,
-                              UserService userService) {
-
-        this.customerRepository = customerRepository;
+    public CustomerController(CustomerService customerService, UserService userService) {
         this.customerService = customerService;
         this.userService = userService;
     }
@@ -39,8 +34,6 @@ public class CustomerController {
     // Fields
     // Injects into constructor
     //
-    private final CustomerRepository customerRepository;
-
     private final CustomerService customerService;
 
     private final UserService userService;
@@ -50,10 +43,17 @@ public class CustomerController {
     //
     // Посмотреть меню
     @GetMapping("/menu")
-    List<Dish> getMenu(){
+    List<Dish> getMenu() {
         return customerService.getMenu();
     }
 
+
+    // Возвращаем пользователю информацию о том каких поваров ему нужно назначить
+    @GetMapping("/types")
+    public String getTypes(Long basketId) {
+        boolean[] flags = customerService.generateFlags(basketId);
+        return "CONFECTIONER- " + flags[0] + ", FISH_COOK- " + flags[1] + ", MEAT_COOK- " + flags[2];
+    }
 
 
     // POST
@@ -65,14 +65,7 @@ public class CustomerController {
     }
 
 
-    //Возвращаем пользователю информацию о том каких поваров ему нужно назначить
-    @GetMapping("/types")
-    public String getTypes(Long basketId){
-        boolean[] flags = customerService.generateFlags(basketId);
-        return "CONFECTIONER- " + flags[0] + ", FISH_COOK- " + flags[1] + ", MEAT_COOK- " + flags[2];
-    }
-
-    //Оформление заказа с самостоятельным добавлением поваров
+    // Оформление заказа с самостоятельным добавлением поваров
     @PostMapping("/make/order/")
     public void makeOrder(@RequestParam String address, @RequestParam String phoneNumber,
                           @RequestParam Long basketId, @RequestParam List<Long> cooksId,
@@ -81,6 +74,7 @@ public class CustomerController {
 
         customerService.makeOrder(address, phoneNumber, basketId, dateInput, cooksId);
     }
+
 
     // Сделать заказ
     @PostMapping("/make/order/auto")

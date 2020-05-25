@@ -326,7 +326,7 @@ public class CustomerService extends UserService {
 
 
     // Создание массива флагов для makeOrder
-    private boolean[] generateFlags(Long basketId) {
+    public boolean[] generateFlags(Long basketId) {
 
         try {
             List<Dish> dishes = basketRepository.getById(basketId).getDishList();
