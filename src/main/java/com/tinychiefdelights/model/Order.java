@@ -39,6 +39,8 @@ public class Order {
     @Column(name = "cost")
     private double cost;
 
+
+
     // Relationships
     //
     // Заказчик

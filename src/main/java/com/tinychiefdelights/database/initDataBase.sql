@@ -16,7 +16,7 @@ alter sequence hibernate_sequence restart;
 alter sequence pg_order_id_seq restart;
 alter sequence pg_user_id_seq restart;
 alter sequence review_id_seq restart;
-alter sequence basket_basket_id_seq restart with 6;
+alter sequence basket_id_seq restart with 6;
 
 
 -- Создаем новых пользователей
@@ -214,37 +214,36 @@ values (5, 2);
 insert into basket_dish(basket_id, dish_id)
 values (5, 2);
 
+-- Заполняем таблицу заказов
+insert into pg_order(address, phone_number, date_order, order_status, customer_id, basket_id, review_id, cost)
+VALUES ('г.Воронеж, ул.Владимира Невского 45Д, кв.2', +79805421578, '03.03.2020 20:00', false, 1, 1, 1, 1458);
+
+insert into pg_order(address, phone_number, date_order, order_status, customer_id, basket_id, review_id, cost)
+VALUES ('г.Воронеж, ул.Ленина 5А, кв.55', +79805561578, '08.04.2020 22:00', false, 2, 2, 3, 3422);
+
+insert into pg_order(address, phone_number, date_order, order_status, customer_id, basket_id, review_id, cost)
+VALUES ('г.Воронеж, ул.Владимира Невского 2', +74504521778, '22.01.2020 14:00', false, 3, 3, 2, 5423);
+
+insert into pg_order(address, phone_number, date_order, order_status, customer_id, basket_id, review_id, cost)
+VALUES ('г.Воронеж, пл.Космонавтов 12, кв.34', +79764561478, '11.03.2020 12:25', false, 1, 4, 4, 3242);
+
 
 -- Заполняем таблицу отзывов
-insert into review(review, rate)
+insert into review(review, rate, order_id)
 VALUES ('Отличный повар. Сразу видно - мастер своего дела! Очень вкусно! Спасибо!',
-        5);
+        5, 1);
 
-insert into review(review, rate)
+insert into review(review, rate, order_id)
 VALUES ('Хороший повар. Очень вкусно! Спасибо!',
-        4);
+        4, 3);
 
-insert into review(review, rate)
+insert into review(review, rate, order_id)
 VALUES ('Отвратительно. Нашли волос в блюде!',
-        2);
+        2, 2);
 
-insert into review(review, rate)
+insert into review(review, rate, order_id)
 VALUES ('Сойдет. Могло быть получше! Ожидал большего!',
-        3);
-
-
--- Заполняем таблицу заказов
-insert into pg_order(address, phone_number, date_order, order_status, customer_id, basket_id, review_id)
-VALUES ('г.Воронеж, ул.Владимира Невского 45Д, кв.2', +79805421578, '03.03.2020 20:00', true, 1, 1, 1);
-
-insert into pg_order(address, phone_number, date_order, order_status, customer_id, basket_id, review_id)
-VALUES ('г.Воронеж, ул.Ленина 5А, кв.55', +79805561578, '08.04.2020 22:00', true, 2, 2, 3);
-
-insert into pg_order(address, phone_number, date_order, order_status, customer_id, basket_id, review_id)
-VALUES ('г.Воронеж, ул.Владимира Невского 2', +74504521778, '22.01.2020 14:00', true, 3, 3, 2);
-
-insert into pg_order(address, phone_number, date_order, order_status, customer_id, basket_id, review_id)
-VALUES ('г.Воронеж, пл.Космонавтов 12, кв.34', +79764561478, '11.03.2020 12:25', true, 1, 4, 4);
+        3, 4);
 
 
 -- Заполняем кросс-таблицу cook_dish
