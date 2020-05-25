@@ -6,6 +6,8 @@ import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Size;
+
 
 @Api(value = "Главная страница", tags = {"Главное"})
 @RestController
@@ -24,9 +26,11 @@ public class MainPageController {
         this.userService = userService;
     }
 
+
     @PostMapping("/registration")
     void registration(@RequestParam String name, @RequestParam String lastName,
-                      @RequestParam String login, @RequestParam String password, @RequestParam String password2) {
+                      @RequestParam @Size String login,
+                      @RequestParam String password, @RequestParam String password2) {
 
         // Валидация
         if (name.length() <= 1 || name.length() >= 27) {
@@ -44,6 +48,5 @@ public class MainPageController {
         //
 
         userService.registration(name, lastName, login, password, password2);
-
     }
 }

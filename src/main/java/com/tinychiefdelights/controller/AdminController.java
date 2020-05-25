@@ -112,9 +112,11 @@ public class AdminController {
 
     // PUT MAPPING
     //
+    // Создаем повара
+
     // Изменяем Повара по ID
     @PutMapping("/edit/cook/{id}")
-    void editCook(@PathVariable Long id, @RequestParam String name,
+    void editCook(@PathVariable Long id, @RequestParam String name, @RequestParam float startSalary,
                   @RequestParam String lastName, @RequestParam float rating,
                   @RequestParam String aboutCook, @RequestParam CookType cookType) {
 
@@ -131,9 +133,12 @@ public class AdminController {
         if (aboutCook.length() <= 15) {
             throw new MainIllegalArgument("Минимальное количество символов должно быть 15");
         }
+        if (startSalary < 100 && startSalary > 5000) {
+            throw new MainIllegalArgument("Минимальное значение 100, максимальное 5000");
+        }
         //
 
-        adminService.editCook(id, name, lastName, rating, aboutCook, cookType);
+        adminService.editCook(id, name, lastName, rating, aboutCook, cookType, startSalary);
     }
 
 

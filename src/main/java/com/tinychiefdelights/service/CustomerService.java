@@ -194,7 +194,6 @@ public class CustomerService extends UserService {
         }
 
         changeCookStatus(cooks); // запускаю метод для смены статуса поваров
-
         double cost = calculateCost(basketId, cooks, bonus);
 
         Customer customer = customerRepository

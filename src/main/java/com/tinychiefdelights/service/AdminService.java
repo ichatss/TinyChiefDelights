@@ -6,7 +6,6 @@ import com.tinychiefdelights.model.*;
 import com.tinychiefdelights.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -122,7 +121,8 @@ public class AdminService extends UserService {
 
 
     // Изменить карту повара
-    public void editCook(Long id, String name, String lastName, float rating, String aboutCook, CookType cookType) {
+    public void editCook(Long id, String name, String lastName, float rating,
+                         String aboutCook, CookType cookType, float startSalary) {
 
         Cook cook = cookRepository.getCookById(id);
 
@@ -133,6 +133,7 @@ public class AdminService extends UserService {
             cook.setRating(rating);
             cook.setAboutCook(aboutCook);
             cook.setCookType(cookType);
+            cook.setStartSalary(startSalary);
             cookRepository.save(cook);
 
         } else {

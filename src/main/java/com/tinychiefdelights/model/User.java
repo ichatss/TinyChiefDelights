@@ -8,6 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -35,23 +36,27 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+//    @Size(min = 4, max = 24, message = "Логин должен быть не менее 4 символов и не более 24!")
     @Column(name = "login")
     private String login;
 
+//    @Size(min = 6, max = 18, message = "Пароль должен быть не менее 6 символов и не более 18!")
     @Column(name = "password")
     @JsonIgnore
     private String password;
 
     @Transient
     @JsonIgnore
-    private String password2; // Это нам необходимо для регистрации
+    private String password2;
 
     @Column(name = "role")
     private String role;
 
+//    @Size(min = 2, max = 26, message = "Имя должно быть не менее 2 символов и не более 26!")
     @Column(name = "name")
     private String name;
 
+//    @Size(min = 2, max = 26, message = "Фамилия должна быть не менее 2 символов и не более 26!")
     @Column(name = "last_name")
     private String lastName;
 
