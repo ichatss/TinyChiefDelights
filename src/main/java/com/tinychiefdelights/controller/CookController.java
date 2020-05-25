@@ -1,5 +1,6 @@
 package com.tinychiefdelights.controller;
 
+import com.tinychiefdelights.exceptions.MainIllegalArgument;
 import com.tinychiefdelights.model.DishType;
 import com.tinychiefdelights.service.CookService;
 import com.tinychiefdelights.service.UserService;
@@ -49,6 +50,24 @@ public class CookController {
                     @RequestParam short weight, @RequestParam double dishCost,
                     @RequestParam List<Long> cooksId) {
 
+        // Валидация
+        if (dishName.length() > 20) {
+            throw new MainIllegalArgument("Название блюда должно содержать не более 20 символов!");
+        }
+        if (aboutDish.length() < 10) {
+            throw new MainIllegalArgument("Описание блюда должно содержать не менее 10 символов!");
+        }
+        if (cookingTime > 3000 || cookingTime < 5) {
+            throw new MainIllegalArgument("Блюдо не может готовится больше 6 часов и меньше 5 минут!");
+        }
+        if (weight > 30000 || weight < 20) {
+            throw new MainIllegalArgument("Блюдо не может весить больше 30 кг. и меньше 20 грамм!");
+        }
+        if (dishCost < 100 || dishCost > 15000) {
+            throw new MainIllegalArgument("Блюдо не может быть дороже 15000 руб. и дешевле 100 руб.!");
+        }
+        //
+
         cookService.createDish(dishName, aboutDish, dishType, cookingTime, weight, dishCost, cooksId);
     }
 
@@ -58,6 +77,13 @@ public class CookController {
     // Изменить свой пароль
     @PutMapping("/change/password")
     void changePassword(@RequestParam String login, @RequestParam String newPass) {
+
+        // Валидация
+        if (newPass.length() <= 5 || newPass.length() >= 16) {
+            throw new MainIllegalArgument("Пароль должен быть не менее 6 символов и не более 18!");
+        }
+        //
+
         userService.changePassword(login, newPass);
     }
 
@@ -68,6 +94,24 @@ public class CookController {
     void editDish(@PathVariable Long id, @RequestParam String dishName, @RequestParam String aboutDish,
                   @RequestParam short cookingTime, @RequestParam short weight, @RequestParam DishType dishType,
                   @RequestParam double dishCost, @RequestParam List<Long> cooksId) {
+
+        // Валидация
+        if (dishName.length() > 20) {
+            throw new MainIllegalArgument("Название блюда должно содержать не более 20 символов!");
+        }
+        if (aboutDish.length() < 10) {
+            throw new MainIllegalArgument("Описание блюда должно содержать не менее 10 символов!");
+        }
+        if (cookingTime > 3000 || cookingTime < 5) {
+            throw new MainIllegalArgument("Блюдо не может готовится больше 6 часов и меньше 5 минут!");
+        }
+        if (weight > 30000 || weight < 20) {
+            throw new MainIllegalArgument("Блюдо не может весить больше 30 кг. и меньше 20 грамм!");
+        }
+        if (dishCost < 100 || dishCost > 15000) {
+            throw new MainIllegalArgument("Блюдо не может быть дороже 15000 руб. и дешевле 100 руб.!");
+        }
+        //
 
         cookService.editDish(id, dishName, aboutDish, cookingTime, weight, dishCost, cooksId, dishType);
     }

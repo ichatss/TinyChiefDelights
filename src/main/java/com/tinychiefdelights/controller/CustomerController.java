@@ -1,5 +1,6 @@
 package com.tinychiefdelights.controller;
 
+import com.tinychiefdelights.exceptions.MainIllegalArgument;
 import com.tinychiefdelights.model.*;
 import com.tinychiefdelights.service.CustomerService;
 import com.tinychiefdelights.service.UserService;
@@ -72,6 +73,15 @@ public class CustomerController {
                           @RequestParam("dateInput")
                           @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date dateInput) {
 
+        // Валидация
+        if (address.length() < 10) {
+            throw new MainIllegalArgument("Пожалуйста! Укажите город доставки, улицу и номер дома!");
+        }
+        if (phoneNumber.length() > 10 || phoneNumber.length() < 10) {
+            throw new MainIllegalArgument("Номер телефона должен содержать 11 цифр. Пример: 8... или 7...");
+        }
+        //
+
         customerService.makeOrder(address, phoneNumber, basketId, dateInput, cooksId);
     }
 
@@ -82,6 +92,15 @@ public class CustomerController {
                               @RequestParam Long basketId, @RequestParam("dateInput")
                               @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date dateInput) {
 
+        // Валдация
+        if (address.length() < 10) {
+            throw new MainIllegalArgument("Пожалуйста! Укажите город доставки, улицу и номер дома!");
+        }
+        if (phoneNumber.length() > 10 || phoneNumber.length() < 10) {
+            throw new MainIllegalArgument("Номер телефона должен содержать 11 цифр. Пример: 8... или 7...");
+        }
+        //
+
         customerService.makeOrder(address, phoneNumber, basketId, dateInput, null);
     }
 
@@ -89,6 +108,13 @@ public class CustomerController {
     // Оставить отзыв
     @PostMapping("/set/{id}/review/")
     public void setReview(@PathVariable Long id, @RequestParam String text, @RequestParam byte rate) {
+
+        if (rate > 5 || rate < 1) {
+            throw new MainIllegalArgument("Рейтинг повара должен быть не более 5 и не менее 1!");
+        }
+        if (text.length() <= 15) {
+            throw new MainIllegalArgument("Минимальное количество символов должно быть 15");
+        }
 
         customerService.setReview(id, rate, text);
     }
@@ -101,6 +127,18 @@ public class CustomerController {
     Customer editCustomer(@RequestParam String login,
                           @RequestParam String name,
                           @RequestParam String lastName) {
+
+        // Валидация
+        if (name.length() <= 1 || name.length() >= 27) {
+            throw new MainIllegalArgument("Имя должно быть не менее 2 символов и не более 26!");
+        }
+        if (lastName.length() <= 1 || lastName.length() >= 27) {
+            throw new MainIllegalArgument("Имя должно быть не менее 2 символов и не более 26!");
+        }
+        if (login.length() <= 3 || login.length() >= 23) {
+            throw new MainIllegalArgument("Логин должен быть не менее 4 символов и не более 24!");
+        }
+        //
 
         return customerService.editCustomer(login, name, lastName);
     }
@@ -116,6 +154,13 @@ public class CustomerController {
     // Изменить свой пароль
     @PutMapping("/change/password")
     void changePassword(@RequestParam String login, @RequestParam String newPass) {
+
+        // Валидация
+        if (newPass.length() <= 5 || newPass.length() >= 16) {
+            throw new MainIllegalArgument("Пароль должен быть не менее 6 символов и не более 18!");
+        }
+        //
+
         userService.changePassword(login, newPass);
     }
 

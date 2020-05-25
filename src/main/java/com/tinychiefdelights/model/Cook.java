@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Setter
@@ -28,6 +29,7 @@ public class Cook {
     @Enumerated(EnumType.STRING)
     @Column(name = "type")
     private CookType cookType;
+
 
     @Column(name = "rating")
     private double rating;

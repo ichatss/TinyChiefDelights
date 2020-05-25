@@ -1,5 +1,6 @@
 package com.tinychiefdelights.controller;
 
+import com.tinychiefdelights.exceptions.MainIllegalArgument;
 import com.tinychiefdelights.model.*;
 import com.tinychiefdelights.repository.AdminRepository;
 import com.tinychiefdelights.service.AdminService;
@@ -116,6 +117,21 @@ public class AdminController {
     void editCook(@PathVariable Long id, @RequestParam String name,
                   @RequestParam String lastName, @RequestParam float rating, @RequestParam String aboutCook) {
 
+        // Валидация
+        if (name.length() <= 1 || name.length() >= 27) {
+            throw new MainIllegalArgument("Имя должно быть не менее 2 символов и не более 26!");
+        }
+        if (lastName.length() <= 1 || lastName.length() >= 27) {
+            throw new MainIllegalArgument("Имя должно быть не менее 2 символов и не более 26!");
+        }
+        if (rating >= 5 || rating < 1) {
+            throw new MainIllegalArgument("Рейтинг повара должен быть не более 4.99 и не менее 1!");
+        }
+        if (aboutCook.length() <= 15) {
+            throw new MainIllegalArgument("Минимальное количество символов должно быть 15");
+        }
+        //
+
         adminService.editCook(id, name, lastName, rating, aboutCook);
     }
 
@@ -132,6 +148,18 @@ public class AdminController {
     @PutMapping("/edit")
     Admin editAdmin(@RequestParam String login,
                     @RequestParam String name, @RequestParam String lastName) {
+
+        // Валидация
+        if (name.length() <= 1 || name.length() >= 27) {
+            throw new MainIllegalArgument("Имя должно быть не менее 2 символов и не более 26!");
+        }
+        if (lastName.length() <= 1 || lastName.length() >= 27) {
+            throw new MainIllegalArgument("Имя должно быть не менее 2 символов и не более 26!");
+        }
+        if (login.length() <= 3 || login.length() >= 23) {
+            throw new MainIllegalArgument("Логин должен быть не менее 4 символов и не более 24!");
+        }
+        //
 
         return adminService.editAdmin(login, name, lastName);
     }

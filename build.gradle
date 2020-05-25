@@ -19,9 +19,9 @@ repositories {
 }
 
 dependencies {
-	// https://mvnrepository.com/artifact/org.mybatis/mybatis
+	// MyBatis
 	compile group: 'org.mybatis', name: 'mybatis', version: '3.5.4'
-	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-thymeleaf
+	// Thymeleaf Starter
 	compile group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: '2.2.6.RELEASE'
 	// Spring boot WEB starter
 	compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.2.6.RELEASE'

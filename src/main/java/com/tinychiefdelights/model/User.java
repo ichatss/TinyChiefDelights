@@ -38,8 +38,8 @@ public class User implements UserDetails {
     @Column(name = "login")
     private String login;
 
-    @JsonIgnore
     @Column(name = "password")
+    @JsonIgnore
     private String password;
 
     @Column(name = "role")
@@ -54,9 +54,9 @@ public class User implements UserDetails {
 
     // Методы
     //
-    // Берем авторизованного пользователя
+    // Возвращает авторизованного пользователя
     public static User getCurrentUser() {
-        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal(); //
+        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
     // GrantedAuthority
